@@ -1,0 +1,80 @@
+[
+  {
+    "id": "feat-query-builder",
+    "name": "Advanced Query Builder",
+    "key": "queryBuilder",
+    "category": "Analytics & SQL",
+    "adoptionRatePercent": 32.4,
+    "previousAdoptionRatePercent": 67.8,
+    "weeklyGrowthPercent": -52.2,
+    "satisfactionScore": 54,
+    "monthlyActiveUsers": 8400,
+    "status": "Degraded",
+    "alertMessage": "Sharp 52% weekly decline following Release v2.8.4 query planning optimizer regression."
+  },
+  {
+    "id": "feat-ai-summarizer",
+    "name": "AI Summary & Executive Briefings",
+    "key": "aiSummarizer",
+    "category": "AI & Intelligence",
+    "adoptionRatePercent": 41.2,
+    "previousAdoptionRatePercent": 44.5,
+    "weeklyGrowthPercent": -7.4,
+    "satisfactionScore": 78,
+    "monthlyActiveUsers": 11200,
+    "status": "Impacted",
+    "alertMessage": "Dependent on Query Builder outputs; intermittent failures reported by enterprise users."
+  },
+  {
+    "id": "feat-live-dashboards",
+    "name": "Real-Time Interactive Dashboards",
+    "key": "dashboards",
+    "category": "Visualization",
+    "adoptionRatePercent": 82.5,
+    "previousAdoptionRatePercent": 81,
+    "weeklyGrowthPercent": 1.8,
+    "satisfactionScore": 92,
+    "monthlyActiveUsers": 22400,
+    "status": "Healthy",
+    "alertMessage": null
+  },
+  {
+    "id": "feat-workflow-automation",
+    "name": "Autonomous Trigger Workflows",
+    "key": "workflows",
+    "category": "Automation",
+    "adoptionRatePercent": 58,
+    "previousAdoptionRatePercent": 54.2,
+    "weeklyGrowthPercent": 7,
+    "satisfactionScore": 89,
+    "monthlyActiveUsers": 15600,
+    "status": "Healthy",
+    "alertMessage": null
+  },
+  {
+    "id": "feat-connectors",
+    "name": "Universal Cloud Data Connectors",
+    "key": "dataConnectors",
+    "category": "Data Pipeline",
+    "adoptionRatePercent": 49.3,
+    "previousAdoptionRatePercent": 48.1,
+    "weeklyGrowthPercent": 2.5,
+    "satisfactionScore": 86,
+    "monthlyActiveUsers": 13300,
+    "status": "Healthy",
+    "alertMessage": null
+  },
+  {
+    "id": "feat-alerts",
+    "name": "Anomaly Detection & Real-time Alerts",
+    "key": "alertsNotifications",
+    "category": "Monitoring",
+    "adoptionRatePercent": 37.1,
+    "previousAdoptionRatePercent": 36.5,
+    "weeklyGrowthPercent": 1.6,
+    "satisfactionScore": 88,
+    "monthlyActiveUsers": 9900,
+    "status": "Healthy",
+    "alertMessage": null
+  }
+]

@@ -1,0 +1,246 @@
+[
+  {
+    "version": "v2.8.4",
+    "title": "Query Engine v2 Migration & Schema Optimizer",
+    "deployedAt": "2026-10-04T18:30:00Z",
+    "deployedBy": "Elena Rostova (VP Engineering)",
+    "type": "Major Subsystem Update",
+    "impactLevel": "High Risk",
+    "status": "Regression Identified",
+    "affectedFeatures": [
+      "Advanced Query Builder",
+      "AI Summary & Executive Briefings"
+    ],
+    "changelog": [
+      "Migrated SQL planner to cost-based optimizer v2",
+      "Introduced speculative query cache for multi-tenant shards",
+      "Refactored Okta SSO session claims validation",
+      "Known issue: Complex aggregations exceeding 4 joins suffer memory threshold timeouts"
+    ],
+    "rollbackStatus": "Rollback candidate prepared (v2.8.5 hotfix pending QA validation)"
+  },
+  {
+    "version": "v2.8.3",
+    "title": "Webhook Batch Streaming & Retry Backoff",
+    "deployedAt": "2026-09-28T14:15:00Z",
+    "deployedBy": "Kevin Zhang",
+    "type": "Feature Update",
+    "impactLevel": "Medium",
+    "status": "Stable",
+    "affectedFeatures": [
+      "Universal Cloud Data Connectors"
+    ],
+    "changelog": [
+      "Exponential backoff up to 7 retry attempts",
+      "Dead letter queue inspection API"
+    ]
+  },
+  {
+    "version": "v2.8.2",
+    "title": "Adaptive Dashboard Tile Drag-and-Drop Fixes",
+    "deployedAt": "2026-09-21T11:00:00Z",
+    "deployedBy": "Julian Thorne",
+    "type": "UI Patch",
+    "impactLevel": "Low",
+    "status": "Stable",
+    "affectedFeatures": [
+      "Real-Time Interactive Dashboards"
+    ],
+    "changelog": [
+      "Smooth layout reflow during window resize",
+      "Keyboard navigation accessibility improvements"
+    ]
+  },
+  {
+    "version": "v2.8.1",
+    "title": "SOC2 Audit Log Streaming to S3/GCS",
+    "deployedAt": "2026-09-15T09:40:00Z",
+    "deployedBy": "Aisha Al-Mansoor",
+    "type": "Security Enhancement",
+    "impactLevel": "Medium",
+    "status": "Stable",
+    "affectedFeatures": [
+      "Compliance & Security"
+    ],
+    "changelog": [
+      "Encrypted JSON log stream delivery",
+      "SHA-256 integrity verification receipts"
+    ]
+  },
+  {
+    "version": "v2.8.0",
+    "title": "Autonomous Trigger Engine GA",
+    "deployedAt": "2026-09-05T16:00:00Z",
+    "deployedBy": "Alex Rivera",
+    "type": "Major Minor Release",
+    "impactLevel": "High",
+    "status": "Stable",
+    "affectedFeatures": [
+      "Autonomous Trigger Workflows"
+    ],
+    "changelog": [
+      "Visual rule builder for event conditional branching",
+      "Webhook trigger destinations"
+    ]
+  },
+  {
+    "version": "v2.7.9",
+    "title": "Infrastructure & Performance Optimization Iteration #6",
+    "deployedAt": "2026-08-16T12:00:00Z",
+    "deployedBy": "Maya Lin",
+    "type": "Maintenance & Reliability",
+    "impactLevel": "Low",
+    "status": "Stable",
+    "affectedFeatures": [
+      "Real-Time Interactive Dashboards"
+    ],
+    "changelog": [
+      "Optimized index compaction on telemetry store",
+      "Memory cache tuning for cold starts"
+    ]
+  },
+  {
+    "version": "v2.7.8",
+    "title": "Infrastructure & Performance Optimization Iteration #7",
+    "deployedAt": "2026-08-17T12:00:00Z",
+    "deployedBy": "Lucas Meyer",
+    "type": "Maintenance & Reliability",
+    "impactLevel": "Low",
+    "status": "Stable",
+    "affectedFeatures": [
+      "Real-Time Interactive Dashboards"
+    ],
+    "changelog": [
+      "Optimized index compaction on telemetry store",
+      "Memory cache tuning for cold starts"
+    ]
+  },
+  {
+    "version": "v2.7.7",
+    "title": "Infrastructure & Performance Optimization Iteration #8",
+    "deployedAt": "2026-08-18T12:00:00Z",
+    "deployedBy": "Aisha Al-Mansoor",
+    "type": "Maintenance & Reliability",
+    "impactLevel": "Low",
+    "status": "Stable",
+    "affectedFeatures": [
+      "Real-Time Interactive Dashboards"
+    ],
+    "changelog": [
+      "Optimized index compaction on telemetry store",
+      "Memory cache tuning for cold starts"
+    ]
+  },
+  {
+    "version": "v2.7.6",
+    "title": "Infrastructure & Performance Optimization Iteration #9",
+    "deployedAt": "2026-08-19T12:00:00Z",
+    "deployedBy": "Julian Thorne",
+    "type": "Maintenance & Reliability",
+    "impactLevel": "Low",
+    "status": "Stable",
+    "affectedFeatures": [
+      "Real-Time Interactive Dashboards"
+    ],
+    "changelog": [
+      "Optimized index compaction on telemetry store",
+      "Memory cache tuning for cold starts"
+    ]
+  },
+  {
+    "version": "v2.7.5",
+    "title": "Infrastructure & Performance Optimization Iteration #10",
+    "deployedAt": "2026-08-20T12:00:00Z",
+    "deployedBy": "Rachel Green",
+    "type": "Maintenance & Reliability",
+    "impactLevel": "Low",
+    "status": "Stable",
+    "affectedFeatures": [
+      "Real-Time Interactive Dashboards"
+    ],
+    "changelog": [
+      "Optimized index compaction on telemetry store",
+      "Memory cache tuning for cold starts"
+    ]
+  },
+  {
+    "version": "v2.7.4",
+    "title": "Infrastructure & Performance Optimization Iteration #11",
+    "deployedAt": "2026-08-21T12:00:00Z",
+    "deployedBy": "Thomas Wright",
+    "type": "Maintenance & Reliability",
+    "impactLevel": "Low",
+    "status": "Stable",
+    "affectedFeatures": [
+      "Real-Time Interactive Dashboards"
+    ],
+    "changelog": [
+      "Optimized index compaction on telemetry store",
+      "Memory cache tuning for cold starts"
+    ]
+  },
+  {
+    "version": "v2.7.3",
+    "title": "Infrastructure & Performance Optimization Iteration #12",
+    "deployedAt": "2026-08-22T12:00:00Z",
+    "deployedBy": "Sofia Rodriguez",
+    "type": "Maintenance & Reliability",
+    "impactLevel": "Low",
+    "status": "Stable",
+    "affectedFeatures": [
+      "Real-Time Interactive Dashboards"
+    ],
+    "changelog": [
+      "Optimized index compaction on telemetry store",
+      "Memory cache tuning for cold starts"
+    ]
+  },
+  {
+    "version": "v2.7.2",
+    "title": "Infrastructure & Performance Optimization Iteration #13",
+    "deployedAt": "2026-08-23T12:00:00Z",
+    "deployedBy": "Kevin Zhang",
+    "type": "Maintenance & Reliability",
+    "impactLevel": "Low",
+    "status": "Stable",
+    "affectedFeatures": [
+      "Real-Time Interactive Dashboards"
+    ],
+    "changelog": [
+      "Optimized index compaction on telemetry store",
+      "Memory cache tuning for cold starts"
+    ]
+  },
+  {
+    "version": "v2.7.1",
+    "title": "Infrastructure & Performance Optimization Iteration #14",
+    "deployedAt": "2026-08-24T12:00:00Z",
+    "deployedBy": "Nora Lindqvist",
+    "type": "Maintenance & Reliability",
+    "impactLevel": "Low",
+    "status": "Stable",
+    "affectedFeatures": [
+      "Real-Time Interactive Dashboards"
+    ],
+    "changelog": [
+      "Optimized index compaction on telemetry store",
+      "Memory cache tuning for cold starts"
+    ]
+  },
+  {
+    "version": "v2.7.0",
+    "title": "Infrastructure & Performance Optimization Iteration #15",
+    "deployedAt": "2026-08-25T12:00:00Z",
+    "deployedBy": "Brian O'Connor",
+    "type": "Maintenance & Reliability",
+    "impactLevel": "Low",
+    "status": "Stable",
+    "affectedFeatures": [
+      "Real-Time Interactive Dashboards"
+    ],
+    "changelog": [
+      "Optimized index compaction on telemetry store",
+      "Memory cache tuning for cold starts"
+    ]
+  }
+]

@@ -1,0 +1,1532 @@
+[
+  {
+    "date": "2026-07-13",
+    "dayIndex": 1,
+    "dailyActiveUsers": 15085,
+    "totalSessions": 42487,
+    "avgSessionDurationMinutes": 19.4,
+    "errorRatePercent": 0.24,
+    "apiEventsMillion": 1206.8,
+    "featureBreakdown": {
+      "queryBuilder": 9654,
+      "workflows": 8749,
+      "dashboards": 12370,
+      "aiSummarizer": 6788,
+      "dataConnectors": 7241,
+      "alertsNotifications": 5280
+    }
+  },
+  {
+    "date": "2026-07-14",
+    "dayIndex": 2,
+    "dailyActiveUsers": 15296,
+    "totalSessions": 48698,
+    "avgSessionDurationMinutes": 19.2,
+    "errorRatePercent": 0.2,
+    "apiEventsMillion": 1223.68,
+    "featureBreakdown": {
+      "queryBuilder": 9789,
+      "workflows": 8872,
+      "dashboards": 12543,
+      "aiSummarizer": 6883,
+      "dataConnectors": 7342,
+      "alertsNotifications": 5354
+    }
+  },
+  {
+    "date": "2026-07-15",
+    "dayIndex": 3,
+    "dailyActiveUsers": 15390,
+    "totalSessions": 46636,
+    "avgSessionDurationMinutes": 18.7,
+    "errorRatePercent": 0.2,
+    "apiEventsMillion": 1231.2,
+    "featureBreakdown": {
+      "queryBuilder": 9850,
+      "workflows": 8926,
+      "dashboards": 12620,
+      "aiSummarizer": 6926,
+      "dataConnectors": 7387,
+      "alertsNotifications": 5387
+    }
+  },
+  {
+    "date": "2026-07-16",
+    "dayIndex": 4,
+    "dailyActiveUsers": 15933,
+    "totalSessions": 50853,
+    "avgSessionDurationMinutes": 19.2,
+    "errorRatePercent": 0.21,
+    "apiEventsMillion": 1274.64,
+    "featureBreakdown": {
+      "queryBuilder": 10197,
+      "workflows": 9241,
+      "dashboards": 13065,
+      "aiSummarizer": 7170,
+      "dataConnectors": 7648,
+      "alertsNotifications": 5577
+    }
+  },
+  {
+    "date": "2026-07-17",
+    "dayIndex": 5,
+    "dailyActiveUsers": 16055,
+    "totalSessions": 45716,
+    "avgSessionDurationMinutes": 18.7,
+    "errorRatePercent": 0.24,
+    "apiEventsMillion": 1284.4,
+    "featureBreakdown": {
+      "queryBuilder": 10275,
+      "workflows": 9312,
+      "dashboards": 13165,
+      "aiSummarizer": 7225,
+      "dataConnectors": 7706,
+      "alertsNotifications": 5619
+    }
+  },
+  {
+    "date": "2026-07-18",
+    "dayIndex": 6,
+    "dailyActiveUsers": 10263,
+    "totalSessions": 30867,
+    "avgSessionDurationMinutes": 19.4,
+    "errorRatePercent": 0.19,
+    "apiEventsMillion": 821.04,
+    "featureBreakdown": {
+      "queryBuilder": 6568,
+      "workflows": 5953,
+      "dashboards": 8416,
+      "aiSummarizer": 4618,
+      "dataConnectors": 4926,
+      "alertsNotifications": 3592
+    }
+  },
+  {
+    "date": "2026-07-19",
+    "dayIndex": 7,
+    "dailyActiveUsers": 10463,
+    "totalSessions": 32351,
+    "avgSessionDurationMinutes": 18.8,
+    "errorRatePercent": 0.19,
+    "apiEventsMillion": 837.04,
+    "featureBreakdown": {
+      "queryBuilder": 6696,
+      "workflows": 6069,
+      "dashboards": 8580,
+      "aiSummarizer": 4708,
+      "dataConnectors": 5022,
+      "alertsNotifications": 3662
+    }
+  },
+  {
+    "date": "2026-07-20",
+    "dayIndex": 8,
+    "dailyActiveUsers": 16172,
+    "totalSessions": 49001,
+    "avgSessionDurationMinutes": 19.5,
+    "errorRatePercent": 0.25,
+    "apiEventsMillion": 1293.76,
+    "featureBreakdown": {
+      "queryBuilder": 10350,
+      "workflows": 9380,
+      "dashboards": 13261,
+      "aiSummarizer": 7277,
+      "dataConnectors": 7763,
+      "alertsNotifications": 5660
+    }
+  },
+  {
+    "date": "2026-07-21",
+    "dayIndex": 9,
+    "dailyActiveUsers": 16048,
+    "totalSessions": 51141,
+    "avgSessionDurationMinutes": 19.3,
+    "errorRatePercent": 0.24,
+    "apiEventsMillion": 1283.84,
+    "featureBreakdown": {
+      "queryBuilder": 10271,
+      "workflows": 9308,
+      "dashboards": 13159,
+      "aiSummarizer": 7222,
+      "dataConnectors": 7703,
+      "alertsNotifications": 5617
+    }
+  },
+  {
+    "date": "2026-07-22",
+    "dayIndex": 10,
+    "dailyActiveUsers": 15941,
+    "totalSessions": 47926,
+    "avgSessionDurationMinutes": 19.2,
+    "errorRatePercent": 0.22,
+    "apiEventsMillion": 1275.28,
+    "featureBreakdown": {
+      "queryBuilder": 10202,
+      "workflows": 9246,
+      "dashboards": 13072,
+      "aiSummarizer": 7173,
+      "dataConnectors": 7652,
+      "alertsNotifications": 5579
+    }
+  },
+  {
+    "date": "2026-07-23",
+    "dayIndex": 11,
+    "dailyActiveUsers": 15584,
+    "totalSessions": 48243,
+    "avgSessionDurationMinutes": 19.4,
+    "errorRatePercent": 0.2,
+    "apiEventsMillion": 1246.72,
+    "featureBreakdown": {
+      "queryBuilder": 9974,
+      "workflows": 9039,
+      "dashboards": 12779,
+      "aiSummarizer": 7013,
+      "dataConnectors": 7480,
+      "alertsNotifications": 5454
+    }
+  },
+  {
+    "date": "2026-07-24",
+    "dayIndex": 12,
+    "dailyActiveUsers": 15607,
+    "totalSessions": 48187,
+    "avgSessionDurationMinutes": 19,
+    "errorRatePercent": 0.24,
+    "apiEventsMillion": 1248.56,
+    "featureBreakdown": {
+      "queryBuilder": 9988,
+      "workflows": 9052,
+      "dashboards": 12798,
+      "aiSummarizer": 7023,
+      "dataConnectors": 7491,
+      "alertsNotifications": 5462
+    }
+  },
+  {
+    "date": "2026-07-25",
+    "dayIndex": 13,
+    "dailyActiveUsers": 10042,
+    "totalSessions": 30382,
+    "avgSessionDurationMinutes": 19,
+    "errorRatePercent": 0.24,
+    "apiEventsMillion": 803.36,
+    "featureBreakdown": {
+      "queryBuilder": 6427,
+      "workflows": 5824,
+      "dashboards": 8234,
+      "aiSummarizer": 4519,
+      "dataConnectors": 4820,
+      "alertsNotifications": 3515
+    }
+  },
+  {
+    "date": "2026-07-26",
+    "dayIndex": 14,
+    "dailyActiveUsers": 9707,
+    "totalSessions": 30251,
+    "avgSessionDurationMinutes": 19.1,
+    "errorRatePercent": 0.25,
+    "apiEventsMillion": 776.56,
+    "featureBreakdown": {
+      "queryBuilder": 6212,
+      "workflows": 5630,
+      "dashboards": 7960,
+      "aiSummarizer": 4368,
+      "dataConnectors": 4659,
+      "alertsNotifications": 3397
+    }
+  },
+  {
+    "date": "2026-07-27",
+    "dayIndex": 15,
+    "dailyActiveUsers": 14745,
+    "totalSessions": 42329,
+    "avgSessionDurationMinutes": 19.3,
+    "errorRatePercent": 0.23,
+    "apiEventsMillion": 1179.6,
+    "featureBreakdown": {
+      "queryBuilder": 9437,
+      "workflows": 8552,
+      "dashboards": 12091,
+      "aiSummarizer": 6635,
+      "dataConnectors": 7078,
+      "alertsNotifications": 5161
+    }
+  },
+  {
+    "date": "2026-07-28",
+    "dayIndex": 16,
+    "dailyActiveUsers": 14787,
+    "totalSessions": 42151,
+    "avgSessionDurationMinutes": 18.8,
+    "errorRatePercent": 0.18,
+    "apiEventsMillion": 1182.96,
+    "featureBreakdown": {
+      "queryBuilder": 9464,
+      "workflows": 8576,
+      "dashboards": 12125,
+      "aiSummarizer": 6654,
+      "dataConnectors": 7098,
+      "alertsNotifications": 5175
+    }
+  },
+  {
+    "date": "2026-07-29",
+    "dayIndex": 17,
+    "dailyActiveUsers": 14728,
+    "totalSessions": 41828,
+    "avgSessionDurationMinutes": 19.6,
+    "errorRatePercent": 0.22,
+    "apiEventsMillion": 1178.24,
+    "featureBreakdown": {
+      "queryBuilder": 9426,
+      "workflows": 8542,
+      "dashboards": 12077,
+      "aiSummarizer": 6628,
+      "dataConnectors": 7069,
+      "alertsNotifications": 5155
+    }
+  },
+  {
+    "date": "2026-07-30",
+    "dayIndex": 18,
+    "dailyActiveUsers": 14664,
+    "totalSessions": 41589,
+    "avgSessionDurationMinutes": 19.1,
+    "errorRatePercent": 0.21,
+    "apiEventsMillion": 1173.12,
+    "featureBreakdown": {
+      "queryBuilder": 9385,
+      "workflows": 8505,
+      "dashboards": 12024,
+      "aiSummarizer": 6599,
+      "dataConnectors": 7039,
+      "alertsNotifications": 5132
+    }
+  },
+  {
+    "date": "2026-07-31",
+    "dayIndex": 19,
+    "dailyActiveUsers": 14390,
+    "totalSessions": 43558,
+    "avgSessionDurationMinutes": 19.6,
+    "errorRatePercent": 0.21,
+    "apiEventsMillion": 1151.2,
+    "featureBreakdown": {
+      "queryBuilder": 9210,
+      "workflows": 8346,
+      "dashboards": 11800,
+      "aiSummarizer": 6476,
+      "dataConnectors": 6907,
+      "alertsNotifications": 5037
+    }
+  },
+  {
+    "date": "2026-08-01",
+    "dayIndex": 20,
+    "dailyActiveUsers": 9407,
+    "totalSessions": 29715,
+    "avgSessionDurationMinutes": 19.1,
+    "errorRatePercent": 0.21,
+    "apiEventsMillion": 752.56,
+    "featureBreakdown": {
+      "queryBuilder": 6020,
+      "workflows": 5456,
+      "dashboards": 7714,
+      "aiSummarizer": 4233,
+      "dataConnectors": 4515,
+      "alertsNotifications": 3292
+    }
+  },
+  {
+    "date": "2026-08-02",
+    "dayIndex": 21,
+    "dailyActiveUsers": 9487,
+    "totalSessions": 30026,
+    "avgSessionDurationMinutes": 19.3,
+    "errorRatePercent": 0.25,
+    "apiEventsMillion": 758.96,
+    "featureBreakdown": {
+      "queryBuilder": 6072,
+      "workflows": 5502,
+      "dashboards": 7779,
+      "aiSummarizer": 4269,
+      "dataConnectors": 4554,
+      "alertsNotifications": 3320
+    }
+  },
+  {
+    "date": "2026-08-03",
+    "dayIndex": 22,
+    "dailyActiveUsers": 14332,
+    "totalSessions": 43513,
+    "avgSessionDurationMinutes": 19.8,
+    "errorRatePercent": 0.18,
+    "apiEventsMillion": 1146.56,
+    "featureBreakdown": {
+      "queryBuilder": 9172,
+      "workflows": 8313,
+      "dashboards": 11752,
+      "aiSummarizer": 6449,
+      "dataConnectors": 6879,
+      "alertsNotifications": 5016
+    }
+  },
+  {
+    "date": "2026-08-04",
+    "dayIndex": 23,
+    "dailyActiveUsers": 14636,
+    "totalSessions": 44419,
+    "avgSessionDurationMinutes": 19.3,
+    "errorRatePercent": 0.2,
+    "apiEventsMillion": 1170.88,
+    "featureBreakdown": {
+      "queryBuilder": 9367,
+      "workflows": 8489,
+      "dashboards": 12002,
+      "aiSummarizer": 6586,
+      "dataConnectors": 7025,
+      "alertsNotifications": 5123
+    }
+  },
+  {
+    "date": "2026-08-05",
+    "dayIndex": 24,
+    "dailyActiveUsers": 14596,
+    "totalSessions": 42724,
+    "avgSessionDurationMinutes": 19,
+    "errorRatePercent": 0.2,
+    "apiEventsMillion": 1167.68,
+    "featureBreakdown": {
+      "queryBuilder": 9341,
+      "workflows": 8466,
+      "dashboards": 11969,
+      "aiSummarizer": 6568,
+      "dataConnectors": 7006,
+      "alertsNotifications": 5109
+    }
+  },
+  {
+    "date": "2026-08-06",
+    "dayIndex": 25,
+    "dailyActiveUsers": 14794,
+    "totalSessions": 46739,
+    "avgSessionDurationMinutes": 19.1,
+    "errorRatePercent": 0.21,
+    "apiEventsMillion": 1183.52,
+    "featureBreakdown": {
+      "queryBuilder": 9468,
+      "workflows": 8581,
+      "dashboards": 12131,
+      "aiSummarizer": 6657,
+      "dataConnectors": 7101,
+      "alertsNotifications": 5178
+    }
+  },
+  {
+    "date": "2026-08-07",
+    "dayIndex": 26,
+    "dailyActiveUsers": 15085,
+    "totalSessions": 46213,
+    "avgSessionDurationMinutes": 19,
+    "errorRatePercent": 0.23,
+    "apiEventsMillion": 1206.8,
+    "featureBreakdown": {
+      "queryBuilder": 9654,
+      "workflows": 8749,
+      "dashboards": 12370,
+      "aiSummarizer": 6788,
+      "dataConnectors": 7241,
+      "alertsNotifications": 5280
+    }
+  },
+  {
+    "date": "2026-08-08",
+    "dayIndex": 27,
+    "dailyActiveUsers": 9980,
+    "totalSessions": 28383,
+    "avgSessionDurationMinutes": 18.7,
+    "errorRatePercent": 0.19,
+    "apiEventsMillion": 798.4,
+    "featureBreakdown": {
+      "queryBuilder": 6387,
+      "workflows": 5788,
+      "dashboards": 8184,
+      "aiSummarizer": 4491,
+      "dataConnectors": 4790,
+      "alertsNotifications": 3493
+    }
+  },
+  {
+    "date": "2026-08-09",
+    "dayIndex": 28,
+    "dailyActiveUsers": 9986,
+    "totalSessions": 31360,
+    "avgSessionDurationMinutes": 18.7,
+    "errorRatePercent": 0.25,
+    "apiEventsMillion": 798.88,
+    "featureBreakdown": {
+      "queryBuilder": 6391,
+      "workflows": 5792,
+      "dashboards": 8189,
+      "aiSummarizer": 4494,
+      "dataConnectors": 4793,
+      "alertsNotifications": 3495
+    }
+  },
+  {
+    "date": "2026-08-10",
+    "dayIndex": 29,
+    "dailyActiveUsers": 15854,
+    "totalSessions": 49416,
+    "avgSessionDurationMinutes": 18.7,
+    "errorRatePercent": 0.23,
+    "apiEventsMillion": 1268.32,
+    "featureBreakdown": {
+      "queryBuilder": 10147,
+      "workflows": 9195,
+      "dashboards": 13000,
+      "aiSummarizer": 7134,
+      "dataConnectors": 7610,
+      "alertsNotifications": 5549
+    }
+  },
+  {
+    "date": "2026-08-11",
+    "dayIndex": 30,
+    "dailyActiveUsers": 16008,
+    "totalSessions": 46490,
+    "avgSessionDurationMinutes": 19.7,
+    "errorRatePercent": 0.21,
+    "apiEventsMillion": 1280.64,
+    "featureBreakdown": {
+      "queryBuilder": 10245,
+      "workflows": 9285,
+      "dashboards": 13127,
+      "aiSummarizer": 7204,
+      "dataConnectors": 7684,
+      "alertsNotifications": 5603
+    }
+  },
+  {
+    "date": "2026-08-12",
+    "dayIndex": 31,
+    "dailyActiveUsers": 16132,
+    "totalSessions": 47052,
+    "avgSessionDurationMinutes": 19.1,
+    "errorRatePercent": 0.25,
+    "apiEventsMillion": 1290.56,
+    "featureBreakdown": {
+      "queryBuilder": 10324,
+      "workflows": 9357,
+      "dashboards": 13228,
+      "aiSummarizer": 7259,
+      "dataConnectors": 7743,
+      "alertsNotifications": 5646
+    }
+  },
+  {
+    "date": "2026-08-13",
+    "dayIndex": 32,
+    "dailyActiveUsers": 15943,
+    "totalSessions": 44776,
+    "avgSessionDurationMinutes": 19.2,
+    "errorRatePercent": 0.22,
+    "apiEventsMillion": 1275.44,
+    "featureBreakdown": {
+      "queryBuilder": 10204,
+      "workflows": 9247,
+      "dashboards": 13073,
+      "aiSummarizer": 7174,
+      "dataConnectors": 7653,
+      "alertsNotifications": 5580
+    }
+  },
+  {
+    "date": "2026-08-14",
+    "dayIndex": 33,
+    "dailyActiveUsers": 15811,
+    "totalSessions": 45189,
+    "avgSessionDurationMinutes": 18.7,
+    "errorRatePercent": 0.19,
+    "apiEventsMillion": 1264.88,
+    "featureBreakdown": {
+      "queryBuilder": 10119,
+      "workflows": 9170,
+      "dashboards": 12965,
+      "aiSummarizer": 7115,
+      "dataConnectors": 7589,
+      "alertsNotifications": 5534
+    }
+  },
+  {
+    "date": "2026-08-15",
+    "dayIndex": 34,
+    "dailyActiveUsers": 10431,
+    "totalSessions": 30630,
+    "avgSessionDurationMinutes": 19.7,
+    "errorRatePercent": 0.2,
+    "apiEventsMillion": 834.48,
+    "featureBreakdown": {
+      "queryBuilder": 6676,
+      "workflows": 6050,
+      "dashboards": 8553,
+      "aiSummarizer": 4694,
+      "dataConnectors": 5007,
+      "alertsNotifications": 3651
+    }
+  },
+  {
+    "date": "2026-08-16",
+    "dayIndex": 35,
+    "dailyActiveUsers": 10193,
+    "totalSessions": 28892,
+    "avgSessionDurationMinutes": 19.7,
+    "errorRatePercent": 0.25,
+    "apiEventsMillion": 815.44,
+    "featureBreakdown": {
+      "queryBuilder": 6524,
+      "workflows": 5912,
+      "dashboards": 8358,
+      "aiSummarizer": 4587,
+      "dataConnectors": 4893,
+      "alertsNotifications": 3568
+    }
+  },
+  {
+    "date": "2026-08-17",
+    "dayIndex": 36,
+    "dailyActiveUsers": 15592,
+    "totalSessions": 46272,
+    "avgSessionDurationMinutes": 19.6,
+    "errorRatePercent": 0.22,
+    "apiEventsMillion": 1247.36,
+    "featureBreakdown": {
+      "queryBuilder": 9979,
+      "workflows": 9043,
+      "dashboards": 12785,
+      "aiSummarizer": 7016,
+      "dataConnectors": 7484,
+      "alertsNotifications": 5457
+    }
+  },
+  {
+    "date": "2026-08-18",
+    "dayIndex": 37,
+    "dailyActiveUsers": 15588,
+    "totalSessions": 49878,
+    "avgSessionDurationMinutes": 19.7,
+    "errorRatePercent": 0.2,
+    "apiEventsMillion": 1247.04,
+    "featureBreakdown": {
+      "queryBuilder": 9976,
+      "workflows": 9041,
+      "dashboards": 12782,
+      "aiSummarizer": 7015,
+      "dataConnectors": 7482,
+      "alertsNotifications": 5456
+    }
+  },
+  {
+    "date": "2026-08-19",
+    "dayIndex": 38,
+    "dailyActiveUsers": 15207,
+    "totalSessions": 47739,
+    "avgSessionDurationMinutes": 19.1,
+    "errorRatePercent": 0.19,
+    "apiEventsMillion": 1216.56,
+    "featureBreakdown": {
+      "queryBuilder": 9732,
+      "workflows": 8820,
+      "dashboards": 12470,
+      "aiSummarizer": 6843,
+      "dataConnectors": 7299,
+      "alertsNotifications": 5322
+    }
+  },
+  {
+    "date": "2026-08-20",
+    "dayIndex": 39,
+    "dailyActiveUsers": 15167,
+    "totalSessions": 44620,
+    "avgSessionDurationMinutes": 19.3,
+    "errorRatePercent": 0.25,
+    "apiEventsMillion": 1213.36,
+    "featureBreakdown": {
+      "queryBuilder": 9707,
+      "workflows": 8797,
+      "dashboards": 12437,
+      "aiSummarizer": 6825,
+      "dataConnectors": 7280,
+      "alertsNotifications": 5308
+    }
+  },
+  {
+    "date": "2026-08-21",
+    "dayIndex": 40,
+    "dailyActiveUsers": 14987,
+    "totalSessions": 46565,
+    "avgSessionDurationMinutes": 18.6,
+    "errorRatePercent": 0.19,
+    "apiEventsMillion": 1198.96,
+    "featureBreakdown": {
+      "queryBuilder": 9592,
+      "workflows": 8692,
+      "dashboards": 12289,
+      "aiSummarizer": 6744,
+      "dataConnectors": 7194,
+      "alertsNotifications": 5245
+    }
+  },
+  {
+    "date": "2026-08-22",
+    "dayIndex": 41,
+    "dailyActiveUsers": 9485,
+    "totalSessions": 29010,
+    "avgSessionDurationMinutes": 18.8,
+    "errorRatePercent": 0.23,
+    "apiEventsMillion": 758.8,
+    "featureBreakdown": {
+      "queryBuilder": 6070,
+      "workflows": 5501,
+      "dashboards": 7778,
+      "aiSummarizer": 4268,
+      "dataConnectors": 4553,
+      "alertsNotifications": 3320
+    }
+  },
+  {
+    "date": "2026-08-23",
+    "dayIndex": 42,
+    "dailyActiveUsers": 9617,
+    "totalSessions": 30354,
+    "avgSessionDurationMinutes": 19.8,
+    "errorRatePercent": 0.26,
+    "apiEventsMillion": 769.36,
+    "featureBreakdown": {
+      "queryBuilder": 6155,
+      "workflows": 5578,
+      "dashboards": 7886,
+      "aiSummarizer": 4328,
+      "dataConnectors": 4616,
+      "alertsNotifications": 3366
+    }
+  },
+  {
+    "date": "2026-08-24",
+    "dayIndex": 43,
+    "dailyActiveUsers": 14651,
+    "totalSessions": 42705,
+    "avgSessionDurationMinutes": 19.8,
+    "errorRatePercent": 0.26,
+    "apiEventsMillion": 1172.08,
+    "featureBreakdown": {
+      "queryBuilder": 9377,
+      "workflows": 8498,
+      "dashboards": 12014,
+      "aiSummarizer": 6593,
+      "dataConnectors": 7032,
+      "alertsNotifications": 5128
+    }
+  },
+  {
+    "date": "2026-08-25",
+    "dayIndex": 44,
+    "dailyActiveUsers": 14524,
+    "totalSessions": 42005,
+    "avgSessionDurationMinutes": 19.5,
+    "errorRatePercent": 0.2,
+    "apiEventsMillion": 1161.92,
+    "featureBreakdown": {
+      "queryBuilder": 9295,
+      "workflows": 8424,
+      "dashboards": 11910,
+      "aiSummarizer": 6536,
+      "dataConnectors": 6972,
+      "alertsNotifications": 5083
+    }
+  },
+  {
+    "date": "2026-08-26",
+    "dayIndex": 45,
+    "dailyActiveUsers": 14567,
+    "totalSessions": 46573,
+    "avgSessionDurationMinutes": 19.2,
+    "errorRatePercent": 0.19,
+    "apiEventsMillion": 1165.36,
+    "featureBreakdown": {
+      "queryBuilder": 9323,
+      "workflows": 8449,
+      "dashboards": 11945,
+      "aiSummarizer": 6555,
+      "dataConnectors": 6992,
+      "alertsNotifications": 5098
+    }
+  },
+  {
+    "date": "2026-08-27",
+    "dayIndex": 46,
+    "dailyActiveUsers": 14369,
+    "totalSessions": 44277,
+    "avgSessionDurationMinutes": 18.8,
+    "errorRatePercent": 0.21,
+    "apiEventsMillion": 1149.52,
+    "featureBreakdown": {
+      "queryBuilder": 9196,
+      "workflows": 8334,
+      "dashboards": 11783,
+      "aiSummarizer": 6466,
+      "dataConnectors": 6897,
+      "alertsNotifications": 5029
+    }
+  },
+  {
+    "date": "2026-08-28",
+    "dayIndex": 47,
+    "dailyActiveUsers": 14363,
+    "totalSessions": 40588,
+    "avgSessionDurationMinutes": 18.7,
+    "errorRatePercent": 0.19,
+    "apiEventsMillion": 1149.04,
+    "featureBreakdown": {
+      "queryBuilder": 9192,
+      "workflows": 8331,
+      "dashboards": 11778,
+      "aiSummarizer": 6463,
+      "dataConnectors": 6894,
+      "alertsNotifications": 5027
+    }
+  },
+  {
+    "date": "2026-08-29",
+    "dayIndex": 48,
+    "dailyActiveUsers": 9631,
+    "totalSessions": 30044,
+    "avgSessionDurationMinutes": 18.8,
+    "errorRatePercent": 0.2,
+    "apiEventsMillion": 770.48,
+    "featureBreakdown": {
+      "queryBuilder": 6164,
+      "workflows": 5586,
+      "dashboards": 7897,
+      "aiSummarizer": 4334,
+      "dataConnectors": 4623,
+      "alertsNotifications": 3371
+    }
+  },
+  {
+    "date": "2026-08-30",
+    "dayIndex": 49,
+    "dailyActiveUsers": 9529,
+    "totalSessions": 30251,
+    "avgSessionDurationMinutes": 18.7,
+    "errorRatePercent": 0.25,
+    "apiEventsMillion": 762.32,
+    "featureBreakdown": {
+      "queryBuilder": 6099,
+      "workflows": 5527,
+      "dashboards": 7814,
+      "aiSummarizer": 4288,
+      "dataConnectors": 4574,
+      "alertsNotifications": 3335
+    }
+  },
+  {
+    "date": "2026-08-31",
+    "dayIndex": 50,
+    "dailyActiveUsers": 14966,
+    "totalSessions": 42017,
+    "avgSessionDurationMinutes": 18.9,
+    "errorRatePercent": 0.19,
+    "apiEventsMillion": 1197.28,
+    "featureBreakdown": {
+      "queryBuilder": 9578,
+      "workflows": 8680,
+      "dashboards": 12272,
+      "aiSummarizer": 6735,
+      "dataConnectors": 7184,
+      "alertsNotifications": 5238
+    }
+  },
+  {
+    "date": "2026-09-01",
+    "dayIndex": 51,
+    "dailyActiveUsers": 15281,
+    "totalSessions": 47116,
+    "avgSessionDurationMinutes": 18.6,
+    "errorRatePercent": 0.23,
+    "apiEventsMillion": 1222.48,
+    "featureBreakdown": {
+      "queryBuilder": 9780,
+      "workflows": 8863,
+      "dashboards": 12530,
+      "aiSummarizer": 6876,
+      "dataConnectors": 7335,
+      "alertsNotifications": 5348
+    }
+  },
+  {
+    "date": "2026-09-02",
+    "dayIndex": 52,
+    "dailyActiveUsers": 15526,
+    "totalSessions": 48481,
+    "avgSessionDurationMinutes": 19.5,
+    "errorRatePercent": 0.21,
+    "apiEventsMillion": 1242.08,
+    "featureBreakdown": {
+      "queryBuilder": 9937,
+      "workflows": 9005,
+      "dashboards": 12731,
+      "aiSummarizer": 6987,
+      "dataConnectors": 7452,
+      "alertsNotifications": 5434
+    }
+  },
+  {
+    "date": "2026-09-03",
+    "dayIndex": 53,
+    "dailyActiveUsers": 15730,
+    "totalSessions": 44223,
+    "avgSessionDurationMinutes": 18.9,
+    "errorRatePercent": 0.26,
+    "apiEventsMillion": 1258.4,
+    "featureBreakdown": {
+      "queryBuilder": 10067,
+      "workflows": 9123,
+      "dashboards": 12899,
+      "aiSummarizer": 7079,
+      "dataConnectors": 7550,
+      "alertsNotifications": 5506
+    }
+  },
+  {
+    "date": "2026-09-04",
+    "dayIndex": 54,
+    "dailyActiveUsers": 15818,
+    "totalSessions": 46743,
+    "avgSessionDurationMinutes": 19.4,
+    "errorRatePercent": 0.19,
+    "apiEventsMillion": 1265.44,
+    "featureBreakdown": {
+      "queryBuilder": 10124,
+      "workflows": 9174,
+      "dashboards": 12971,
+      "aiSummarizer": 7118,
+      "dataConnectors": 7593,
+      "alertsNotifications": 5536
+    }
+  },
+  {
+    "date": "2026-09-05",
+    "dayIndex": 55,
+    "dailyActiveUsers": 10324,
+    "totalSessions": 31746,
+    "avgSessionDurationMinutes": 19.4,
+    "errorRatePercent": 0.23,
+    "apiEventsMillion": 825.92,
+    "featureBreakdown": {
+      "queryBuilder": 6607,
+      "workflows": 5988,
+      "dashboards": 8466,
+      "aiSummarizer": 4646,
+      "dataConnectors": 4956,
+      "alertsNotifications": 3613
+    }
+  },
+  {
+    "date": "2026-09-06",
+    "dayIndex": 56,
+    "dailyActiveUsers": 10384,
+    "totalSessions": 31054,
+    "avgSessionDurationMinutes": 19.1,
+    "errorRatePercent": 0.25,
+    "apiEventsMillion": 830.72,
+    "featureBreakdown": {
+      "queryBuilder": 6646,
+      "workflows": 6023,
+      "dashboards": 8515,
+      "aiSummarizer": 4673,
+      "dataConnectors": 4984,
+      "alertsNotifications": 3634
+    }
+  },
+  {
+    "date": "2026-09-07",
+    "dayIndex": 57,
+    "dailyActiveUsers": 15850,
+    "totalSessions": 48844,
+    "avgSessionDurationMinutes": 19.3,
+    "errorRatePercent": 0.2,
+    "apiEventsMillion": 1268,
+    "featureBreakdown": {
+      "queryBuilder": 10144,
+      "workflows": 9193,
+      "dashboards": 12997,
+      "aiSummarizer": 7133,
+      "dataConnectors": 7608,
+      "alertsNotifications": 5548
+    }
+  },
+  {
+    "date": "2026-09-08",
+    "dayIndex": 58,
+    "dailyActiveUsers": 16026,
+    "totalSessions": 49134,
+    "avgSessionDurationMinutes": 19.4,
+    "errorRatePercent": 0.25,
+    "apiEventsMillion": 1282.08,
+    "featureBreakdown": {
+      "queryBuilder": 10257,
+      "workflows": 9295,
+      "dashboards": 13141,
+      "aiSummarizer": 7212,
+      "dataConnectors": 7692,
+      "alertsNotifications": 5609
+    }
+  },
+  {
+    "date": "2026-09-09",
+    "dayIndex": 59,
+    "dailyActiveUsers": 15830,
+    "totalSessions": 44946,
+    "avgSessionDurationMinutes": 19.5,
+    "errorRatePercent": 0.24,
+    "apiEventsMillion": 1266.4,
+    "featureBreakdown": {
+      "queryBuilder": 10131,
+      "workflows": 9181,
+      "dashboards": 12981,
+      "aiSummarizer": 7124,
+      "dataConnectors": 7598,
+      "alertsNotifications": 5541
+    }
+  },
+  {
+    "date": "2026-09-10",
+    "dayIndex": 60,
+    "dailyActiveUsers": 16018,
+    "totalSessions": 45057,
+    "avgSessionDurationMinutes": 19.3,
+    "errorRatePercent": 0.22,
+    "apiEventsMillion": 1281.44,
+    "featureBreakdown": {
+      "queryBuilder": 10252,
+      "workflows": 9290,
+      "dashboards": 13135,
+      "aiSummarizer": 7208,
+      "dataConnectors": 7689,
+      "alertsNotifications": 5606
+    }
+  },
+  {
+    "date": "2026-09-11",
+    "dayIndex": 61,
+    "dailyActiveUsers": 15863,
+    "totalSessions": 45412,
+    "avgSessionDurationMinutes": 19.5,
+    "errorRatePercent": 0.21,
+    "apiEventsMillion": 1269.04,
+    "featureBreakdown": {
+      "queryBuilder": 10152,
+      "workflows": 9201,
+      "dashboards": 13008,
+      "aiSummarizer": 7138,
+      "dataConnectors": 7614,
+      "alertsNotifications": 5552
+    }
+  },
+  {
+    "date": "2026-09-12",
+    "dayIndex": 62,
+    "dailyActiveUsers": 10043,
+    "totalSessions": 30639,
+    "avgSessionDurationMinutes": 19,
+    "errorRatePercent": 0.26,
+    "apiEventsMillion": 803.44,
+    "featureBreakdown": {
+      "queryBuilder": 6428,
+      "workflows": 5825,
+      "dashboards": 8235,
+      "aiSummarizer": 4519,
+      "dataConnectors": 4821,
+      "alertsNotifications": 3515
+    }
+  },
+  {
+    "date": "2026-09-13",
+    "dayIndex": 63,
+    "dailyActiveUsers": 10060,
+    "totalSessions": 31909,
+    "avgSessionDurationMinutes": 19.8,
+    "errorRatePercent": 0.22,
+    "apiEventsMillion": 804.8,
+    "featureBreakdown": {
+      "queryBuilder": 6438,
+      "workflows": 5835,
+      "dashboards": 8249,
+      "aiSummarizer": 4527,
+      "dataConnectors": 4829,
+      "alertsNotifications": 3521
+    }
+  },
+  {
+    "date": "2026-09-14",
+    "dayIndex": 64,
+    "dailyActiveUsers": 15333,
+    "totalSessions": 45477,
+    "avgSessionDurationMinutes": 19.2,
+    "errorRatePercent": 0.22,
+    "apiEventsMillion": 1226.64,
+    "featureBreakdown": {
+      "queryBuilder": 9813,
+      "workflows": 8893,
+      "dashboards": 12573,
+      "aiSummarizer": 6900,
+      "dataConnectors": 7360,
+      "alertsNotifications": 5367
+    }
+  },
+  {
+    "date": "2026-09-15",
+    "dayIndex": 65,
+    "dailyActiveUsers": 14783,
+    "totalSessions": 46516,
+    "avgSessionDurationMinutes": 19.3,
+    "errorRatePercent": 0.19,
+    "apiEventsMillion": 1182.64,
+    "featureBreakdown": {
+      "queryBuilder": 9461,
+      "workflows": 8574,
+      "dashboards": 12122,
+      "aiSummarizer": 6652,
+      "dataConnectors": 7096,
+      "alertsNotifications": 5174
+    }
+  },
+  {
+    "date": "2026-09-16",
+    "dayIndex": 66,
+    "dailyActiveUsers": 14945,
+    "totalSessions": 46935,
+    "avgSessionDurationMinutes": 19.1,
+    "errorRatePercent": 0.23,
+    "apiEventsMillion": 1195.6,
+    "featureBreakdown": {
+      "queryBuilder": 9565,
+      "workflows": 8668,
+      "dashboards": 12255,
+      "aiSummarizer": 6725,
+      "dataConnectors": 7174,
+      "alertsNotifications": 5231
+    }
+  },
+  {
+    "date": "2026-09-17",
+    "dayIndex": 67,
+    "dailyActiveUsers": 14575,
+    "totalSessions": 45542,
+    "avgSessionDurationMinutes": 18.9,
+    "errorRatePercent": 0.21,
+    "apiEventsMillion": 1166,
+    "featureBreakdown": {
+      "queryBuilder": 9328,
+      "workflows": 8454,
+      "dashboards": 11952,
+      "aiSummarizer": 6559,
+      "dataConnectors": 6996,
+      "alertsNotifications": 5101
+    }
+  },
+  {
+    "date": "2026-09-18",
+    "dayIndex": 68,
+    "dailyActiveUsers": 14556,
+    "totalSessions": 40805,
+    "avgSessionDurationMinutes": 19,
+    "errorRatePercent": 0.2,
+    "apiEventsMillion": 1164.48,
+    "featureBreakdown": {
+      "queryBuilder": 9316,
+      "workflows": 8442,
+      "dashboards": 11936,
+      "aiSummarizer": 6550,
+      "dataConnectors": 6987,
+      "alertsNotifications": 5095
+    }
+  },
+  {
+    "date": "2026-09-19",
+    "dayIndex": 69,
+    "dailyActiveUsers": 9268,
+    "totalSessions": 27961,
+    "avgSessionDurationMinutes": 19.7,
+    "errorRatePercent": 0.19,
+    "apiEventsMillion": 741.44,
+    "featureBreakdown": {
+      "queryBuilder": 5932,
+      "workflows": 5375,
+      "dashboards": 7600,
+      "aiSummarizer": 4171,
+      "dataConnectors": 4449,
+      "alertsNotifications": 3244
+    }
+  },
+  {
+    "date": "2026-09-20",
+    "dayIndex": 70,
+    "dailyActiveUsers": 9265,
+    "totalSessions": 27319,
+    "avgSessionDurationMinutes": 19.2,
+    "errorRatePercent": 0.23,
+    "apiEventsMillion": 741.2,
+    "featureBreakdown": {
+      "queryBuilder": 5930,
+      "workflows": 5374,
+      "dashboards": 7597,
+      "aiSummarizer": 4169,
+      "dataConnectors": 4447,
+      "alertsNotifications": 3243
+    }
+  },
+  {
+    "date": "2026-09-21",
+    "dayIndex": 71,
+    "dailyActiveUsers": 14562,
+    "totalSessions": 46231,
+    "avgSessionDurationMinutes": 18.7,
+    "errorRatePercent": 0.22,
+    "apiEventsMillion": 1164.96,
+    "featureBreakdown": {
+      "queryBuilder": 9320,
+      "workflows": 8446,
+      "dashboards": 11941,
+      "aiSummarizer": 6553,
+      "dataConnectors": 6990,
+      "alertsNotifications": 5097
+    }
+  },
+  {
+    "date": "2026-09-22",
+    "dayIndex": 72,
+    "dailyActiveUsers": 14392,
+    "totalSessions": 42892,
+    "avgSessionDurationMinutes": 19.2,
+    "errorRatePercent": 0.25,
+    "apiEventsMillion": 1151.36,
+    "featureBreakdown": {
+      "queryBuilder": 9211,
+      "workflows": 8347,
+      "dashboards": 11801,
+      "aiSummarizer": 6476,
+      "dataConnectors": 6908,
+      "alertsNotifications": 5037
+    }
+  },
+  {
+    "date": "2026-09-23",
+    "dayIndex": 73,
+    "dailyActiveUsers": 14703,
+    "totalSessions": 43108,
+    "avgSessionDurationMinutes": 19.2,
+    "errorRatePercent": 0.21,
+    "apiEventsMillion": 1176.24,
+    "featureBreakdown": {
+      "queryBuilder": 9410,
+      "workflows": 8528,
+      "dashboards": 12056,
+      "aiSummarizer": 6616,
+      "dataConnectors": 7057,
+      "alertsNotifications": 5146
+    }
+  },
+  {
+    "date": "2026-09-24",
+    "dayIndex": 74,
+    "dailyActiveUsers": 14907,
+    "totalSessions": 46449,
+    "avgSessionDurationMinutes": 18.9,
+    "errorRatePercent": 0.21,
+    "apiEventsMillion": 1192.56,
+    "featureBreakdown": {
+      "queryBuilder": 9540,
+      "workflows": 8646,
+      "dashboards": 12224,
+      "aiSummarizer": 6708,
+      "dataConnectors": 7155,
+      "alertsNotifications": 5217
+    }
+  },
+  {
+    "date": "2026-09-25",
+    "dayIndex": 75,
+    "dailyActiveUsers": 15101,
+    "totalSessions": 48256,
+    "avgSessionDurationMinutes": 18.8,
+    "errorRatePercent": 0.25,
+    "apiEventsMillion": 1208.08,
+    "featureBreakdown": {
+      "queryBuilder": 9665,
+      "workflows": 8759,
+      "dashboards": 12383,
+      "aiSummarizer": 6795,
+      "dataConnectors": 7248,
+      "alertsNotifications": 5285
+    }
+  },
+  {
+    "date": "2026-09-26",
+    "dayIndex": 76,
+    "dailyActiveUsers": 9864,
+    "totalSessions": 31117,
+    "avgSessionDurationMinutes": 19.7,
+    "errorRatePercent": 0.25,
+    "apiEventsMillion": 789.12,
+    "featureBreakdown": {
+      "queryBuilder": 6313,
+      "workflows": 5721,
+      "dashboards": 8088,
+      "aiSummarizer": 4439,
+      "dataConnectors": 4735,
+      "alertsNotifications": 3452
+    }
+  },
+  {
+    "date": "2026-09-27",
+    "dayIndex": 77,
+    "dailyActiveUsers": 10071,
+    "totalSessions": 30173,
+    "avgSessionDurationMinutes": 18.6,
+    "errorRatePercent": 0.23,
+    "apiEventsMillion": 805.68,
+    "featureBreakdown": {
+      "queryBuilder": 6445,
+      "workflows": 5841,
+      "dashboards": 8258,
+      "aiSummarizer": 4532,
+      "dataConnectors": 4834,
+      "alertsNotifications": 3525
+    }
+  },
+  {
+    "date": "2026-09-28",
+    "dayIndex": 78,
+    "dailyActiveUsers": 15447,
+    "totalSessions": 47498,
+    "avgSessionDurationMinutes": 18.8,
+    "errorRatePercent": 0.21,
+    "apiEventsMillion": 1235.76,
+    "featureBreakdown": {
+      "queryBuilder": 9886,
+      "workflows": 8959,
+      "dashboards": 12667,
+      "aiSummarizer": 6951,
+      "dataConnectors": 7415,
+      "alertsNotifications": 5406
+    }
+  },
+  {
+    "date": "2026-09-29",
+    "dayIndex": 79,
+    "dailyActiveUsers": 15792,
+    "totalSessions": 50071,
+    "avgSessionDurationMinutes": 19.7,
+    "errorRatePercent": 0.22,
+    "apiEventsMillion": 1263.36,
+    "featureBreakdown": {
+      "queryBuilder": 10107,
+      "workflows": 9159,
+      "dashboards": 12949,
+      "aiSummarizer": 7106,
+      "dataConnectors": 7580,
+      "alertsNotifications": 5527
+    }
+  },
+  {
+    "date": "2026-09-30",
+    "dayIndex": 80,
+    "dailyActiveUsers": 15672,
+    "totalSessions": 45136,
+    "avgSessionDurationMinutes": 19.5,
+    "errorRatePercent": 0.19,
+    "apiEventsMillion": 1253.76,
+    "featureBreakdown": {
+      "queryBuilder": 10030,
+      "workflows": 9090,
+      "dashboards": 12851,
+      "aiSummarizer": 7052,
+      "dataConnectors": 7523,
+      "alertsNotifications": 5485
+    }
+  },
+  {
+    "date": "2026-10-01",
+    "dayIndex": 81,
+    "dailyActiveUsers": 16060,
+    "totalSessions": 45070,
+    "avgSessionDurationMinutes": 19.7,
+    "errorRatePercent": 0.26,
+    "apiEventsMillion": 1284.8,
+    "featureBreakdown": {
+      "queryBuilder": 10278,
+      "workflows": 9315,
+      "dashboards": 13169,
+      "aiSummarizer": 7227,
+      "dataConnectors": 7709,
+      "alertsNotifications": 5621
+    }
+  },
+  {
+    "date": "2026-10-02",
+    "dayIndex": 82,
+    "dailyActiveUsers": 16114,
+    "totalSessions": 48852,
+    "avgSessionDurationMinutes": 18.8,
+    "errorRatePercent": 0.2,
+    "apiEventsMillion": 1289.12,
+    "featureBreakdown": {
+      "queryBuilder": 10313,
+      "workflows": 9346,
+      "dashboards": 13213,
+      "aiSummarizer": 7251,
+      "dataConnectors": 7735,
+      "alertsNotifications": 5640
+    }
+  },
+  {
+    "date": "2026-10-03",
+    "dayIndex": 83,
+    "dailyActiveUsers": 10368,
+    "totalSessions": 30583,
+    "avgSessionDurationMinutes": 18.9,
+    "errorRatePercent": 0.26,
+    "apiEventsMillion": 829.44,
+    "featureBreakdown": {
+      "queryBuilder": 6636,
+      "workflows": 6013,
+      "dashboards": 8502,
+      "aiSummarizer": 4666,
+      "dataConnectors": 4977,
+      "alertsNotifications": 3629
+    }
+  },
+  {
+    "date": "2026-10-04",
+    "dayIndex": 84,
+    "dailyActiveUsers": 10367,
+    "totalSessions": 32582,
+    "avgSessionDurationMinutes": 18.9,
+    "errorRatePercent": 0.22,
+    "apiEventsMillion": 829.36,
+    "featureBreakdown": {
+      "queryBuilder": 6635,
+      "workflows": 6013,
+      "dashboards": 8501,
+      "aiSummarizer": 4665,
+      "dataConnectors": 4976,
+      "alertsNotifications": 3628
+    }
+  },
+  {
+    "date": "2026-10-05",
+    "dayIndex": 85,
+    "dailyActiveUsers": 10906,
+    "totalSessions": 34561,
+    "avgSessionDurationMinutes": 10,
+    "errorRatePercent": 4.02,
+    "apiEventsMillion": 610.74,
+    "featureBreakdown": {
+      "queryBuilder": 2399,
+      "workflows": 6325,
+      "dashboards": 8943,
+      "aiSummarizer": 2727,
+      "dataConnectors": 5235,
+      "alertsNotifications": 3817
+    }
+  },
+  {
+    "date": "2026-10-06",
+    "dayIndex": 86,
+    "dailyActiveUsers": 10325,
+    "totalSessions": 29772,
+    "avgSessionDurationMinutes": 10.6,
+    "errorRatePercent": 4.54,
+    "apiEventsMillion": 578.2,
+    "featureBreakdown": {
+      "queryBuilder": 2272,
+      "workflows": 5989,
+      "dashboards": 8467,
+      "aiSummarizer": 2581,
+      "dataConnectors": 4956,
+      "alertsNotifications": 3614
+    }
+  },
+  {
+    "date": "2026-10-07",
+    "dayIndex": 87,
+    "dailyActiveUsers": 9866,
+    "totalSessions": 28153,
+    "avgSessionDurationMinutes": 10.1,
+    "errorRatePercent": 5.21,
+    "apiEventsMillion": 552.5,
+    "featureBreakdown": {
+      "queryBuilder": 2171,
+      "workflows": 5722,
+      "dashboards": 8090,
+      "aiSummarizer": 2467,
+      "dataConnectors": 4736,
+      "alertsNotifications": 3453
+    }
+  },
+  {
+    "date": "2026-10-08",
+    "dayIndex": 88,
+    "dailyActiveUsers": 9478,
+    "totalSessions": 28237,
+    "avgSessionDurationMinutes": 11.3,
+    "errorRatePercent": 5.85,
+    "apiEventsMillion": 530.77,
+    "featureBreakdown": {
+      "queryBuilder": 2085,
+      "workflows": 5497,
+      "dashboards": 7772,
+      "aiSummarizer": 2370,
+      "dataConnectors": 4549,
+      "alertsNotifications": 3317
+    }
+  },
+  {
+    "date": "2026-10-09",
+    "dayIndex": 89,
+    "dailyActiveUsers": 9080,
+    "totalSessions": 27067,
+    "avgSessionDurationMinutes": 11.2,
+    "errorRatePercent": 6.27,
+    "apiEventsMillion": 508.48,
+    "featureBreakdown": {
+      "queryBuilder": 1998,
+      "workflows": 5266,
+      "dashboards": 7446,
+      "aiSummarizer": 2270,
+      "dataConnectors": 4358,
+      "alertsNotifications": 3178
+    }
+  },
+  {
+    "date": "2026-10-10",
+    "dayIndex": 90,
+    "dailyActiveUsers": 5650,
+    "totalSessions": 16503,
+    "avgSessionDurationMinutes": 11.1,
+    "errorRatePercent": 6.87,
+    "apiEventsMillion": 316.4,
+    "featureBreakdown": {
+      "queryBuilder": 1243,
+      "workflows": 3277,
+      "dashboards": 4633,
+      "aiSummarizer": 1413,
+      "dataConnectors": 2712,
+      "alertsNotifications": 1977
+    }
+  }
+]
