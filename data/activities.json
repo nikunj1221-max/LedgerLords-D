@@ -1,0 +1,182 @@
+[
+  {
+    "id": "act-1",
+    "timestamp": "2026-10-10T19:40:00Z",
+    "type": "incident_created",
+    "description": "New critical incident INC-1055 created for Acme Corp (Okta SAML SSO delay)",
+    "actor": "Sarah Jenkins",
+    "entityType": "incident",
+    "entityId": "inc-1055"
+  },
+  {
+    "id": "act-2",
+    "timestamp": "2026-10-10T17:15:00Z",
+    "type": "task_updated",
+    "description": "Elena Rostova set status of task #task-11 to In Progress (Query Engine v2 memory leak)",
+    "actor": "Elena Rostova",
+    "entityType": "task",
+    "entityId": "task-11"
+  },
+  {
+    "id": "act-3",
+    "timestamp": "2026-10-10T15:20:00Z",
+    "type": "meeting_scheduled",
+    "description": "Marcus Vance confirmed Acme Corp Q4 Quarterly Review for tomorrow at 10:00 AM",
+    "actor": "Marcus Vance",
+    "entityType": "meeting",
+    "entityId": "meet-1"
+  },
+  {
+    "id": "act-4",
+    "timestamp": "2026-10-10T14:00:00Z",
+    "type": "alert_triggered",
+    "description": "Product Telemetry Alert: Daily Active Users dropped below 11,000 threshold",
+    "actor": "System Monitor",
+    "entityType": "analytics",
+    "entityId": "alert-dau-drop"
+  },
+  {
+    "id": "act-5",
+    "timestamp": "2026-10-10T11:30:00Z",
+    "type": "task_blocked",
+    "description": "Task #task-8 marked blocked by pending VPC peering transit gateway completion",
+    "actor": "Aisha Al-Mansoor",
+    "entityType": "task",
+    "entityId": "task-8"
+  },
+  {
+    "id": "act-6",
+    "timestamp": "2026-10-10T09:45:00Z",
+    "type": "release_deployed",
+    "description": "Hotfix branch v2.8.5-rc1 merged into staging by Kevin Zhang",
+    "actor": "Kevin Zhang",
+    "entityType": "release",
+    "entityId": "v2.8.5-rc1"
+  },
+  {
+    "id": "act-7",
+    "timestamp": "2026-10-08T17:00:00Z",
+    "type": "milestone_reached",
+    "description": "Activity #7: Operational progress logged by Lucas Meyer regarding Strata Cloud High-Throughput Webhook Bridge",
+    "actor": "Lucas Meyer",
+    "entityType": "project",
+    "entityId": "proj-strata-api-gw"
+  },
+  {
+    "id": "act-8",
+    "timestamp": "2026-10-08T18:00:00Z",
+    "type": "task_completed",
+    "description": "Activity #8: Operational progress logged by Aisha Al-Mansoor regarding NexusFlow 3.0 Platform Launch",
+    "actor": "Aisha Al-Mansoor",
+    "entityType": "project",
+    "entityId": "proj-nexus-3"
+  },
+  {
+    "id": "act-9",
+    "timestamp": "2026-10-07T19:00:00Z",
+    "type": "comment_added",
+    "description": "Activity #9: Operational progress logged by Julian Thorne regarding Acme Corp Global Distribution Integration",
+    "actor": "Julian Thorne",
+    "entityType": "project",
+    "entityId": "proj-acme-onboard"
+  },
+  {
+    "id": "act-10",
+    "timestamp": "2026-10-07T10:00:00Z",
+    "type": "client_updated",
+    "description": "Activity #10: Operational progress logged by Rachel Green regarding Apex Financial Dedicated VPC & SOC2 Compliance",
+    "actor": "Rachel Green",
+    "entityType": "project",
+    "entityId": "proj-apex-soc2"
+  },
+  {
+    "id": "act-11",
+    "timestamp": "2026-10-07T11:00:00Z",
+    "type": "milestone_reached",
+    "description": "Activity #11: Operational progress logged by Thomas Wright regarding Mobile Analytics & Real-Time SDK v2",
+    "actor": "Thomas Wright",
+    "entityType": "project",
+    "entityId": "proj-mobile-sdk"
+  },
+  {
+    "id": "act-12",
+    "timestamp": "2026-10-06T12:00:00Z",
+    "type": "task_completed",
+    "description": "Activity #12: Operational progress logged by Sofia Rodriguez regarding Omni Retail Live Catalog Feed Pipeline",
+    "actor": "Sofia Rodriguez",
+    "entityType": "project",
+    "entityId": "proj-omni-feed"
+  },
+  {
+    "id": "act-13",
+    "timestamp": "2026-10-06T13:00:00Z",
+    "type": "comment_added",
+    "description": "Activity #13: Operational progress logged by Kevin Zhang regarding Hyperion Wind Turbine Telemetry Gateway",
+    "actor": "Kevin Zhang",
+    "entityType": "project",
+    "entityId": "proj-hyperion-iot"
+  },
+  {
+    "id": "act-14",
+    "timestamp": "2026-10-06T14:00:00Z",
+    "type": "client_updated",
+    "description": "Activity #14: Operational progress logged by Nora Lindqvist regarding Autonomous AI Insights & Executive Summarizer",
+    "actor": "Nora Lindqvist",
+    "entityType": "project",
+    "entityId": "proj-ai-summarizer"
+  },
+  {
+    "id": "act-15",
+    "timestamp": "2026-10-05T15:00:00Z",
+    "type": "milestone_reached",
+    "description": "Activity #15: Operational progress logged by Brian O'Connor regarding Strata Cloud High-Throughput Webhook Bridge",
+    "actor": "Brian O'Connor",
+    "entityType": "project",
+    "entityId": "proj-strata-api-gw"
+  },
+  {
+    "id": "act-16",
+    "timestamp": "2026-10-05T16:00:00Z",
+    "type": "task_completed",
+    "description": "Activity #16: Operational progress logged by Fatima Zahra regarding NexusFlow 3.0 Platform Launch",
+    "actor": "Fatima Zahra",
+    "entityType": "project",
+    "entityId": "proj-nexus-3"
+  },
+  {
+    "id": "act-17",
+    "timestamp": "2026-10-05T17:00:00Z",
+    "type": "comment_added",
+    "description": "Activity #17: Operational progress logged by Samuel Gomez regarding Acme Corp Global Distribution Integration",
+    "actor": "Samuel Gomez",
+    "entityType": "project",
+    "entityId": "proj-acme-onboard"
+  },
+  {
+    "id": "act-18",
+    "timestamp": "2026-10-04T18:00:00Z",
+    "type": "client_updated",
+    "description": "Activity #18: Operational progress logged by Leila Farouk regarding Apex Financial Dedicated VPC & SOC2 Compliance",
+    "actor": "Leila Farouk",
+    "entityType": "project",
+    "entityId": "proj-apex-soc2"
+  },
+  {
+    "id": "act-19",
+    "timestamp": "2026-10-04T19:00:00Z",
+    "type": "milestone_reached",
+    "description": "Activity #19: Operational progress logged by Daniel Brooks regarding Mobile Analytics & Real-Time SDK v2",
+    "actor": "Daniel Brooks",
+    "entityType": "project",
+    "entityId": "proj-mobile-sdk"
+  },
+  {
+    "id": "act-20",
+    "timestamp": "2026-10-04T10:00:00Z",
+    "type": "task_completed",
+    "description": "Activity #20: Operational progress logged by Alex Rivera regarding Omni Retail Live Catalog Feed Pipeline",
+    "actor": "Alex Rivera",
+    "entityType": "project",
+    "entityId": "proj-omni-feed"
+  }
+]

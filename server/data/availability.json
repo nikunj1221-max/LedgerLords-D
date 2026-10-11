@@ -1,0 +1,537 @@
+[
+  {
+    "employeeId": "emp-1",
+    "employeeName": "Alex Rivera",
+    "date": "2026-10-11",
+    "timeSlots": [
+      {
+        "time": "09:00 - 10:00",
+        "available": true
+      },
+      {
+        "time": "10:00 - 11:00",
+        "available": false,
+        "meeting": "Acme Corp QBR"
+      },
+      {
+        "time": "11:00 - 12:00",
+        "available": true
+      },
+      {
+        "time": "13:00 - 14:00",
+        "available": true
+      },
+      {
+        "time": "14:00 - 15:00",
+        "available": false,
+        "meeting": "Nexus 3.0 Launch Check"
+      },
+      {
+        "time": "15:00 - 16:00",
+        "available": true
+      },
+      {
+        "time": "16:00 - 17:00",
+        "available": true
+      }
+    ]
+  },
+  {
+    "employeeId": "emp-2",
+    "employeeName": "Elena Rostova",
+    "date": "2026-10-11",
+    "timeSlots": [
+      {
+        "time": "09:00 - 10:00",
+        "available": false,
+        "meeting": "Engineering Standup"
+      },
+      {
+        "time": "10:00 - 11:00",
+        "available": false,
+        "meeting": "Acme Corp QBR"
+      },
+      {
+        "time": "11:00 - 12:00",
+        "available": true
+      },
+      {
+        "time": "13:00 - 14:00",
+        "available": true
+      },
+      {
+        "time": "14:00 - 15:00",
+        "available": false,
+        "meeting": "Nexus 3.0 Launch Check"
+      },
+      {
+        "time": "15:00 - 16:00",
+        "available": true
+      },
+      {
+        "time": "16:00 - 17:00",
+        "available": true
+      }
+    ]
+  },
+  {
+    "employeeId": "emp-3",
+    "employeeName": "Marcus Vance",
+    "date": "2026-10-11",
+    "timeSlots": [
+      {
+        "time": "09:00 - 10:00",
+        "available": true
+      },
+      {
+        "time": "10:00 - 11:00",
+        "available": false,
+        "meeting": "Acme Corp QBR"
+      },
+      {
+        "time": "11:00 - 12:00",
+        "available": true
+      },
+      {
+        "time": "13:00 - 14:00",
+        "available": true
+      },
+      {
+        "time": "14:00 - 15:00",
+        "available": true
+      },
+      {
+        "time": "15:00 - 16:00",
+        "available": false,
+        "meeting": "Pipeline Review"
+      },
+      {
+        "time": "16:00 - 17:00",
+        "available": true
+      }
+    ]
+  },
+  {
+    "employeeId": "emp-4",
+    "employeeName": "Chloe Chen",
+    "date": "2026-10-11",
+    "timeSlots": [
+      {
+        "time": "09:00 - 10:00",
+        "available": true
+      },
+      {
+        "time": "10:00 - 11:00",
+        "available": true
+      },
+      {
+        "time": "11:00 - 12:00",
+        "available": false,
+        "meeting": "Model Evaluation"
+      },
+      {
+        "time": "13:00 - 14:00",
+        "available": true
+      },
+      {
+        "time": "14:00 - 15:00",
+        "available": false,
+        "meeting": "Nexus 3.0 Launch Check"
+      },
+      {
+        "time": "15:00 - 16:00",
+        "available": true
+      },
+      {
+        "time": "16:00 - 17:00",
+        "available": true
+      }
+    ]
+  },
+  {
+    "employeeId": "emp-5",
+    "employeeName": "David Kim",
+    "date": "2026-10-11",
+    "timeSlots": [
+      {
+        "time": "09:00 - 10:00",
+        "available": true
+      },
+      {
+        "time": "10:00 - 11:00",
+        "available": true
+      },
+      {
+        "time": "11:00 - 12:00",
+        "available": true
+      },
+      {
+        "time": "13:00 - 14:00",
+        "available": false,
+        "meeting": "Database Shard Maint"
+      },
+      {
+        "time": "14:00 - 15:00",
+        "available": true
+      },
+      {
+        "time": "15:00 - 16:00",
+        "available": true
+      },
+      {
+        "time": "16:00 - 17:00",
+        "available": true
+      }
+    ]
+  },
+  {
+    "employeeId": "emp-7",
+    "employeeName": "Maya Lin",
+    "date": "2026-10-11",
+    "timeSlots": [
+      {
+        "time": "09:00 - 10:00",
+        "available": false
+      },
+      {
+        "time": "10:00 - 11:00",
+        "available": true
+      },
+      {
+        "time": "11:00 - 12:00",
+        "available": false
+      },
+      {
+        "time": "13:00 - 14:00",
+        "available": true
+      },
+      {
+        "time": "14:00 - 15:00",
+        "available": true
+      },
+      {
+        "time": "15:00 - 16:00",
+        "available": true
+      },
+      {
+        "time": "16:00 - 17:00",
+        "available": true
+      }
+    ]
+  },
+  {
+    "employeeId": "emp-8",
+    "employeeName": "Lucas Meyer",
+    "date": "2026-10-11",
+    "timeSlots": [
+      {
+        "time": "09:00 - 10:00",
+        "available": true
+      },
+      {
+        "time": "10:00 - 11:00",
+        "available": true
+      },
+      {
+        "time": "11:00 - 12:00",
+        "available": true
+      },
+      {
+        "time": "13:00 - 14:00",
+        "available": true
+      },
+      {
+        "time": "14:00 - 15:00",
+        "available": true
+      },
+      {
+        "time": "15:00 - 16:00",
+        "available": false
+      },
+      {
+        "time": "16:00 - 17:00",
+        "available": true
+      }
+    ]
+  },
+  {
+    "employeeId": "emp-9",
+    "employeeName": "Aisha Al-Mansoor",
+    "date": "2026-10-11",
+    "timeSlots": [
+      {
+        "time": "09:00 - 10:00",
+        "available": false
+      },
+      {
+        "time": "10:00 - 11:00",
+        "available": true
+      },
+      {
+        "time": "11:00 - 12:00",
+        "available": true
+      },
+      {
+        "time": "13:00 - 14:00",
+        "available": true
+      },
+      {
+        "time": "14:00 - 15:00",
+        "available": true
+      },
+      {
+        "time": "15:00 - 16:00",
+        "available": true
+      },
+      {
+        "time": "16:00 - 17:00",
+        "available": true
+      }
+    ]
+  },
+  {
+    "employeeId": "emp-10",
+    "employeeName": "Julian Thorne",
+    "date": "2026-10-11",
+    "timeSlots": [
+      {
+        "time": "09:00 - 10:00",
+        "available": true
+      },
+      {
+        "time": "10:00 - 11:00",
+        "available": true
+      },
+      {
+        "time": "11:00 - 12:00",
+        "available": false
+      },
+      {
+        "time": "13:00 - 14:00",
+        "available": true
+      },
+      {
+        "time": "14:00 - 15:00",
+        "available": true
+      },
+      {
+        "time": "15:00 - 16:00",
+        "available": false
+      },
+      {
+        "time": "16:00 - 17:00",
+        "available": true
+      }
+    ]
+  },
+  {
+    "employeeId": "emp-11",
+    "employeeName": "Rachel Green",
+    "date": "2026-10-11",
+    "timeSlots": [
+      {
+        "time": "09:00 - 10:00",
+        "available": false
+      },
+      {
+        "time": "10:00 - 11:00",
+        "available": true
+      },
+      {
+        "time": "11:00 - 12:00",
+        "available": true
+      },
+      {
+        "time": "13:00 - 14:00",
+        "available": true
+      },
+      {
+        "time": "14:00 - 15:00",
+        "available": true
+      },
+      {
+        "time": "15:00 - 16:00",
+        "available": true
+      },
+      {
+        "time": "16:00 - 17:00",
+        "available": true
+      }
+    ]
+  },
+  {
+    "employeeId": "emp-12",
+    "employeeName": "Thomas Wright",
+    "date": "2026-10-11",
+    "timeSlots": [
+      {
+        "time": "09:00 - 10:00",
+        "available": true
+      },
+      {
+        "time": "10:00 - 11:00",
+        "available": true
+      },
+      {
+        "time": "11:00 - 12:00",
+        "available": true
+      },
+      {
+        "time": "13:00 - 14:00",
+        "available": true
+      },
+      {
+        "time": "14:00 - 15:00",
+        "available": true
+      },
+      {
+        "time": "15:00 - 16:00",
+        "available": false
+      },
+      {
+        "time": "16:00 - 17:00",
+        "available": true
+      }
+    ]
+  },
+  {
+    "employeeId": "emp-13",
+    "employeeName": "Sofia Rodriguez",
+    "date": "2026-10-11",
+    "timeSlots": [
+      {
+        "time": "09:00 - 10:00",
+        "available": false
+      },
+      {
+        "time": "10:00 - 11:00",
+        "available": true
+      },
+      {
+        "time": "11:00 - 12:00",
+        "available": false
+      },
+      {
+        "time": "13:00 - 14:00",
+        "available": true
+      },
+      {
+        "time": "14:00 - 15:00",
+        "available": true
+      },
+      {
+        "time": "15:00 - 16:00",
+        "available": true
+      },
+      {
+        "time": "16:00 - 17:00",
+        "available": true
+      }
+    ]
+  },
+  {
+    "employeeId": "emp-14",
+    "employeeName": "Kevin Zhang",
+    "date": "2026-10-11",
+    "timeSlots": [
+      {
+        "time": "09:00 - 10:00",
+        "available": true
+      },
+      {
+        "time": "10:00 - 11:00",
+        "available": true
+      },
+      {
+        "time": "11:00 - 12:00",
+        "available": true
+      },
+      {
+        "time": "13:00 - 14:00",
+        "available": true
+      },
+      {
+        "time": "14:00 - 15:00",
+        "available": true
+      },
+      {
+        "time": "15:00 - 16:00",
+        "available": false
+      },
+      {
+        "time": "16:00 - 17:00",
+        "available": true
+      }
+    ]
+  },
+  {
+    "employeeId": "emp-15",
+    "employeeName": "Nora Lindqvist",
+    "date": "2026-10-11",
+    "timeSlots": [
+      {
+        "time": "09:00 - 10:00",
+        "available": false
+      },
+      {
+        "time": "10:00 - 11:00",
+        "available": true
+      },
+      {
+        "time": "11:00 - 12:00",
+        "available": true
+      },
+      {
+        "time": "13:00 - 14:00",
+        "available": true
+      },
+      {
+        "time": "14:00 - 15:00",
+        "available": true
+      },
+      {
+        "time": "15:00 - 16:00",
+        "available": true
+      },
+      {
+        "time": "16:00 - 17:00",
+        "available": true
+      }
+    ]
+  },
+  {
+    "employeeId": "emp-16",
+    "employeeName": "Brian O'Connor",
+    "date": "2026-10-11",
+    "timeSlots": [
+      {
+        "time": "09:00 - 10:00",
+        "available": true
+      },
+      {
+        "time": "10:00 - 11:00",
+        "available": true
+      },
+      {
+        "time": "11:00 - 12:00",
+        "available": false
+      },
+      {
+        "time": "13:00 - 14:00",
+        "available": true
+      },
+      {
+        "time": "14:00 - 15:00",
+        "available": true
+      },
+      {
+        "time": "15:00 - 16:00",
+        "available": false
+      },
+      {
+        "time": "16:00 - 17:00",
+        "available": true
+      }
+    ]
+  }
+]

@@ -1,0 +1,112 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+// Each row keeps the existing API record intact in JSONB while the primary key
+// remains queryable and stable. This avoids changing the current JSON data contract.
+model Client {
+  id      String @id
+  payload Json   @db.JsonB
+}
+
+model Communication {
+  id      String @id
+  payload Json   @db.JsonB
+}
+
+model Meeting {
+  id      String @id
+  payload Json   @db.JsonB
+}
+
+model UsageMetric {
+  id      String @id
+  payload Json   @db.JsonB
+}
+
+model FeatureAdoption {
+  id      String @id
+  payload Json   @db.JsonB
+}
+
+model Release {
+  id      String @id
+  payload Json   @db.JsonB
+}
+
+model SupportIncident {
+  id      String @id
+  payload Json   @db.JsonB
+}
+
+model Project {
+  id      String @id
+  payload Json   @db.JsonB
+}
+
+model Task {
+  id      String @id
+  payload Json   @db.JsonB
+}
+
+model Employee {
+  id      String @id
+  payload Json   @db.JsonB
+}
+
+model Availability {
+  id      String @id
+  payload Json   @db.JsonB
+}
+
+model Activity {
+  id      String @id
+  payload Json   @db.JsonB
+}
+
+model Recommendation {
+  id      String @id
+  payload Json   @db.JsonB
+}
+
+model User {
+  id                  String         @id @default(cuid())
+  email               String         @unique
+  name                String
+  passwordHash        String
+  onboardingComplete  Boolean        @default(false)
+  createdAt           DateTime       @default(now())
+  updatedAt           DateTime       @updatedAt
+  sessions            UserSession[]
+  datasets            UserDataset[]
+}
+
+model UserSession {
+  tokenHash String   @id
+  userId    String
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([expiresAt])
+}
+
+model UserDataset {
+  id          String   @id @default(cuid())
+  userId      String
+  name        String
+  format      String
+  recordCount Int
+  data        Json     @db.JsonB
+  createdAt   DateTime @default(now())
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, createdAt])
+}

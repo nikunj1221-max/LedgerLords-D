@@ -1,0 +1,294 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* Clean White Background & Evolved Soft UI */
+  --bg-color: #ffffff;
+  --canvas-color: #f4f6fb;
+  --card-color: #ffffff;
+  --card-hover-color: #f8f9fe;
+  --border-color: #e2e8f0;
+  --text-primary: #121624;
+  --text-secondary: #3f4761;
+  --text-muted: #5e6884;
+  --plum-900: #e3e7f3;
+  --plum-800: #d7ddec;
+  --plum-700: #c6cfe3;
+  color-scheme: light;
+}
+
+html.dark {
+  /* Dark Foundation */
+  --bg-color: #0c0a14;
+  --canvas-color: #13111e;
+  --card-color: #1b182a;
+  --card-hover-color: #242038;
+  --border-color: #2e2a47;
+  --text-primary: #f3f0f7;
+  --text-secondary: #c2bcd2;
+  --text-muted: #928b9f;
+  --plum-900: #150f24;
+  --plum-800: #1d1533;
+  --plum-700: #2b2049;
+  color-scheme: dark;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: var(--bg-color);
+  color: var(--text-primary);
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* -------------------------------------------------------------------------
+   EVOLVED SOFT UI / NEUMORPHISM 2.0 (LIGHT MODE)
+   ------------------------------------------------------------------------- */
+
+html:not(.dark) {
+  background-color: var(--bg-color);
+  color: var(--text-primary);
+}
+
+/* Cards & Surfaces: Multi-Layer Soft Depth & 10-12px Radii */
+html:not(.dark) .bg-card {
+  background-color: var(--card-color) !important;
+  border-radius: 12px !important;
+  border: 1px solid rgba(255, 255, 255, 0.75) !important;
+  box-shadow:
+    5px 6px 16px rgba(160, 172, 198, 0.38),
+    -4px -4px 14px rgba(255, 255, 255, 0.95),
+    inset 0 1px 1px rgba(255, 255, 255, 0.8),
+    0 1px 3px rgba(110, 122, 150, 0.1) !important;
+}
+
+html:not(.dark) .bg-card:hover {
+  box-shadow:
+    7px 8px 20px rgba(150, 164, 192, 0.44),
+    -5px -5px 16px rgba(255, 255, 255, 0.98),
+    inset 0 1px 1px rgba(255, 255, 255, 0.9) !important;
+}
+
+/* Soft Elevated Buttons & Controls */
+html:not(.dark) button.bg-card,
+html:not(.dark) .rounded-full.bg-card {
+  background-color: #f0f3f9 !important;
+  border-radius: 10px !important;
+  border: 1px solid rgba(255, 255, 255, 0.7) !important;
+  box-shadow:
+    2px 3px 8px rgba(162, 174, 200, 0.32),
+    -2px -2px 7px rgba(255, 255, 255, 0.92) !important;
+  color: #121624 !important;
+}
+
+html:not(.dark) button.bg-card:hover {
+  background-color: #f7f9fe !important;
+  box-shadow:
+    3px 4px 10px rgba(150, 164, 192, 0.38),
+    -3px -3px 8px rgba(255, 255, 255, 0.98) !important;
+}
+
+html:not(.dark) button.bg-card:active {
+  box-shadow:
+    inset 2px 2px 4px rgba(160, 172, 198, 0.4),
+    inset -2px -2px 4px rgba(255, 255, 255, 0.85) !important;
+}
+
+/* Debossed Inset for Canvas, Inputs, and Table Containers */
+html:not(.dark) .bg-canvas {
+  background-color: var(--canvas-color) !important;
+  border-radius: 10px !important;
+  border: 1px solid rgba(205, 214, 233, 0.75) !important;
+  box-shadow:
+    inset 2px 2px 5px rgba(160, 172, 198, 0.3),
+    inset -2px -2px 5px rgba(255, 255, 255, 0.9) !important;
+}
+
+/* Primary Action Buttons: Project Gradient + Soft Elevation */
+.bg-primary,
+html:not(.dark) .bg-primary,
+html.dark .bg-primary {
+  background: linear-gradient(135deg, #471ca8 0%, #884ab2 50%, #ff8008 100%) !important;
+  color: #ffffff !important;
+  border-radius: 10px !important;
+  box-shadow:
+    3px 4px 12px rgba(71, 28, 168, 0.35),
+    -2px -2px 8px rgba(255, 255, 255, 0.8),
+    inset 0 1px 1px rgba(255, 255, 255, 0.3) !important;
+}
+
+/* Global Project Gradient Classes */
+.bg-project-gradient,
+.project-gradient,
+.bg-primary-gradient,
+[class*="from-primary"][class*="to-teal"] {
+  background: linear-gradient(135deg, #471ca8 0%, #884ab2 50%, #ff8008 100%) !important;
+}
+
+/* High Contrast WCAG AAA Typography Overrides for Light Mode */
+html:not(.dark) .text-white {
+  color: #121624 !important;
+}
+
+/* Ensure buttons and surfaces with dark backgrounds maintain white text in light mode */
+html:not(.dark) .bg-slate-900,
+html:not(.dark) .bg-slate-900 *,
+html:not(.dark) .bg-black,
+html:not(.dark) .bg-black *,
+html:not(.dark) .bg-slate-800,
+html:not(.dark) .bg-slate-800 * {
+  color: #ffffff !important;
+}
+
+html:not(.dark) .text-gray-100 {
+  color: #1c2233 !important;
+}
+
+html:not(.dark) .text-gray-200 {
+  color: #2b334a !important;
+}
+
+html:not(.dark) .text-gray-300 {
+  color: #3f4761 !important;
+}
+
+html:not(.dark) .text-gray-400 {
+  color: #5c6684 !important;
+}
+
+html:not(.dark) .text-gray-500 {
+  color: #7681a0 !important;
+}
+
+/* Light Mode Accent Badges (WCAG compliant) */
+html:not(.dark) .text-primary {
+  color: #471ca8 !important;
+}
+
+html:not(.dark) .text-coral {
+  color: #be123c !important;
+}
+
+html:not(.dark) .text-amber,
+html:not(.dark) .text-amber-300,
+html:not(.dark) .text-amber-400 {
+  color: #b45309 !important;
+}
+
+html:not(.dark) .text-teal,
+html:not(.dark) .text-teal-300,
+html:not(.dark) .text-teal-400 {
+  color: #0f766e !important;
+}
+
+html:not(.dark) .text-mint {
+  color: #047857 !important;
+}
+
+/* Inset Soft Badges */
+html:not(.dark) .bg-primary\/20,
+html:not(.dark) .bg-primary\/10 {
+  background-color: rgba(124, 58, 237, 0.12) !important;
+  border: 1px solid rgba(124, 58, 237, 0.28) !important;
+  border-radius: 8px !important;
+}
+
+html:not(.dark) .bg-coral\/20,
+html:not(.dark) .bg-coral\/10 {
+  background-color: rgba(225, 29, 72, 0.1) !important;
+  border: 1px solid rgba(225, 29, 72, 0.28) !important;
+  border-radius: 8px !important;
+}
+
+html:not(.dark) .bg-amber\/20,
+html:not(.dark) .bg-amber-500\/20,
+html:not(.dark) .bg-amber-500\/10 {
+  background-color: rgba(217, 119, 6, 0.12) !important;
+  border: 1px solid rgba(217, 119, 6, 0.3) !important;
+  border-radius: 8px !important;
+}
+
+html:not(.dark) .bg-teal\/20,
+html:not(.dark) .bg-teal\/10 {
+  background-color: rgba(13, 148, 136, 0.12) !important;
+  border: 1px solid rgba(13, 148, 136, 0.28) !important;
+  border-radius: 8px !important;
+}
+
+html:not(.dark) .bg-mint\/20,
+html:not(.dark) .bg-mint\/10 {
+  background-color: rgba(5, 150, 105, 0.12) !important;
+  border: 1px solid rgba(5, 150, 105, 0.28) !important;
+  border-radius: 8px !important;
+}
+
+/* Subtle Inset Table Rows on Hover */
+html:not(.dark) tr:hover {
+  background-color: rgba(124, 58, 237, 0.05) !important;
+}
+
+html:not(.dark) thead tr {
+  background-color: #e3e7f2 !important;
+  border-bottom: 1px solid rgba(200, 210, 230, 0.8) !important;
+}
+
+/* Recharts Tooltip in Evolved Soft UI */
+html:not(.dark) .recharts-tooltip-wrapper>div,
+html:not(.dark) .recharts-default-tooltip {
+  background-color: #f7f9fd !important;
+  border-radius: 10px !important;
+  border: 1px solid rgba(255, 255, 255, 0.8) !important;
+  box-shadow:
+    4px 5px 14px rgba(150, 164, 190, 0.35),
+    -3px -3px 10px rgba(255, 255, 255, 0.95) !important;
+}
+
+/* Custom scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--canvas-color);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--plum-800);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--plum-700);
+}
+
+@keyframes pulseGlow {
+
+  0%,
+  100% {
+    box-shadow: 0 0 15px rgba(139, 92, 246, 0.25);
+  }
+
+  50% {
+    box-shadow: 0 0 25px rgba(139, 92, 246, 0.45);
+  }
+}
+
+.glow-violet-pulse {
+  animation: pulseGlow 3s infinite ease-in-out;
+}

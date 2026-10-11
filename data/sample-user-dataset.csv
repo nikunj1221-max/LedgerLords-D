@@ -1,0 +1,6 @@
+client_id,client_name,industry,status,mrr,health_score,primary_contact,contact_email
+demo-001,Northstar Analytics,Technology,Active,12500,92,Jordan Lee,jordan.lee@example.com
+demo-002,Maple Street Finance,Financial Services,Active,8400,78,Casey Morgan,casey.morgan@example.com
+demo-003,Greenfield Health,Healthcare,Onboarding,5600,65,Taylor Quinn,taylor.quinn@example.com
+demo-004,Harborlight Retail,Retail,At Risk,10200,48,Alex Rivera,alex.rivera@example.com
+demo-005,Bluebird Logistics,Transportation,Active,7300,86,Sam Chen,sam.chen@example.com
