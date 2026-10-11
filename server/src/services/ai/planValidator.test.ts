@@ -147,6 +147,57 @@ test('same type different dataSource is allowed', () => {
   const r = buildPlanFromDraft(d, ctx);
   assert.ok(r.ok);
 });
+test('meeting scheduling requires the integrated scheduler and attendee picker', () => {
+  const schedulingDraft = draft({
+    intent: 'schedule_meeting',
+    components: [{ type: 'AgendaEditor', title: 'Agenda', dataSource: 'meetings', explanation: 'Drafts the agenda.' }],
+  });
+  const missingScheduler = buildPlanFromDraft(schedulingDraft, {
+    ...ctx,
+    prompt: 'Schedule a meeting with the team.',
+  });
+  assert.ok(!missingScheduler.ok);
+  if (!missingScheduler.ok) {
+    assert.ok(missingScheduler.issues.some(issue => issue.includes('must include MeetingScheduler')));
+  }
+
+  const withScheduler = buildPlanFromDraft({
+    ...schedulingDraft,
+    components: [
+      { type: 'MeetingScheduler', title: 'Schedule a meeting', dataSource: 'meetings', explanation: 'Choose the meeting details and attendees.' },
+      { type: 'ClientProfileCard', title: 'Client', dataSource: 'clients', explanation: 'Shows client context.' },
+      { type: 'MeetingAgendaPanel', title: 'Previous agenda', dataSource: 'meetings', explanation: 'Shows the previous agenda.' },
+      { type: 'MeetingNotesPanel', title: 'Previous notes', dataSource: 'communications', explanation: 'Shows previous notes.' },
+      { type: 'CommunicationTimeline', title: 'Communications', dataSource: 'communications', explanation: 'Shows related communications.' },
+      { type: 'OpenIssuesList', title: 'Open issues', dataSource: 'support-incidents', explanation: 'Shows prior open issues.' },
+    ],
+  }, { ...ctx, prompt: 'Schedule a meeting with the team.' });
+  assert.ok(withScheduler.ok);
+});
+
+test('"prepare a meeting" requires a new-meeting form', () => {
+  const r = buildPlanFromDraft(draft({
+    intent: 'client_meeting_prep',
+    components: [{ type: 'MeetingAgendaPanel', title: 'Existing agenda', dataSource: 'meetings', explanation: 'Shows an existing meeting.' }],
+  }), { ...ctx, prompt: 'Prepare a new meeting with selected attendees.' });
+
+  assert.ok(!r.ok);
+  if (!r.ok) {
+    assert.ok(r.issues.some(issue => issue.includes('must include MeetingScheduler')));
+  }
+});
+
+test('new meeting plans require the previous client meeting context', () => {
+  const r = buildPlanFromDraft(draft({
+    intent: 'schedule_meeting',
+    components: [{ type: 'MeetingScheduler', title: 'New meeting', dataSource: 'meetings', explanation: 'Choose attendees.' }],
+  }), { ...ctx, prompt: 'Prepare a meeting.' });
+
+  assert.ok(!r.ok);
+  if (!r.ok) {
+    assert.ok(r.issues.some(issue => issue.includes('must include MeetingAgendaPanel')));
+  }
+});
 
 // ---- Task 4: config stripping and alias normalization ----
 test('unknown config keys are stripped', () => {

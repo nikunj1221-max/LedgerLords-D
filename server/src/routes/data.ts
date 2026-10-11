@@ -1,6 +1,7 @@
 import { Router, Request, Response } from 'express';
 import { Prisma } from '@prisma/client';
 import { prisma } from '../services/database/prisma';
+import { repository } from '../services/data/repository';
 import { PublicUser } from '../services/auth/auth';
 import {
   DATA_SOURCE_SCHEMAS,
@@ -150,9 +151,16 @@ router.get('/:source', async (req: Request, res: Response) => {
 
     const user = res.locals.authUser as PublicUser;
     const accountData = await getAccountRecords(user.id, source as WorkspaceDataSource);
-    const records = filterAccountRecords(accountData.records, source as WorkspaceDataSource, {
-      clientId, priority, status, date, days, isOverdue,
-    });
+    const ownedScheduledMeetings = source === 'meetings'
+      ? (await repository.getMeetings()).filter(meeting => meeting.hostId === user.id)
+      : [];
+    const records = filterAccountRecords(
+      [...accountData.records, ...ownedScheduledMeetings],
+      source as WorkspaceDataSource,
+      {
+        clientId, priority, status, date, days, isOverdue,
+      }
+    );
     if (source === 'clients' && clientId) {
       return res.json(records.find(record => record.id === clientId) ?? null);
     }

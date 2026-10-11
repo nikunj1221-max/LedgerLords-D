@@ -9,6 +9,7 @@ interface Meeting {
   title: string;
   startTime: string;
   endTime: string;
+  timeZone?: string;
   status: string;
   location: string;
   hostName: string;
@@ -20,23 +21,68 @@ interface Meeting {
 export const MeetingAgendaPanel: React.FC<{ spec: ComponentSpec }> = ({ spec }) => {
   const meetingId = spec.config?.meetingId || 'meet-1';
   const [meeting, setMeeting] = useState<Meeting | null>(null);
+  const [loading, setLoading] = useState(true);
   const { executeMockAction } = useWorkspaceStore();
 
   useEffect(() => {
+    setLoading(true);
     axios
       .get('/api/data/meetings')
       .then(res => {
-        const found = res.data.find((m: any) => m.id === meetingId) || res.data[0];
-        setMeeting(found);
+        const found = res.data.find((m: Meeting) => m.id === meetingId);
+        setMeeting(found ?? null);
       })
-      .catch(console.error);
+      .catch(console.error)
+      .finally(() => setLoading(false));
   }, [meetingId]);
 
-  if (!meeting) {
+  if (loading) {
     return <div className="text-xs text-gray-400 py-4">Loading scheduled meeting details...</div>;
   }
 
-  const startDate = new Date(meeting.startTime);
+  if (!meeting) {
+    return <div className="text-xs text-gray-400 py-4">No matching meeting was found.</div>;
+  }
+
+  const displayTimeZone = meeting.timeZone || 'UTC';
+  const isLocalDateTime = (value: string) =>
+    /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}/.test(value) && !/(Z|[+-]\d{2}:\d{2})$/i.test(value);
+  const displayDate = (value: string) => {
+    if (isLocalDateTime(value)) {
+      const [year, month, day] = value.slice(0, 10).split('-').map(Number);
+      return new Date(Date.UTC(year, month - 1, day, 12)).toLocaleDateString(undefined, {
+        weekday: 'long',
+        month: 'short',
+        day: 'numeric',
+        timeZone: 'UTC',
+      });
+    }
+    return new Date(value).toLocaleDateString(undefined, {
+      weekday: 'long',
+      month: 'short',
+      day: 'numeric',
+      timeZone: displayTimeZone,
+    });
+  };
+  const displayTime = (value: string) => {
+    if (isLocalDateTime(value)) {
+      const [hour, minute] = value.slice(11, 16).split(':').map(Number);
+      return new Date(Date.UTC(2000, 0, 1, hour, minute)).toLocaleTimeString(undefined, {
+        hour: 'numeric',
+        minute: '2-digit',
+        timeZone: 'UTC',
+      });
+    }
+    return new Date(value).toLocaleTimeString(undefined, {
+      hour: 'numeric',
+      minute: '2-digit',
+      timeZone: displayTimeZone,
+    });
+  };
+  const displayDateLabel = displayDate(meeting.startTime);
+  const durationMinutes = Math.round(
+    (new Date(meeting.endTime).getTime() - new Date(meeting.startTime).getTime()) / 60_000
+  );
 
   return (
     <div className="space-y-4">
@@ -45,12 +91,12 @@ export const MeetingAgendaPanel: React.FC<{ spec: ComponentSpec }> = ({ spec }) 
         <div className="flex items-center gap-2">
           <Calendar className="w-4 h-4 text-primary" />
           <span className="text-xs font-semibold text-white">
-            {startDate.toLocaleDateString(undefined, { weekday: 'long', month: 'short', day: 'numeric' })}
+            {displayDateLabel}
           </span>
           <span className="text-xs text-gray-400">•</span>
           <span className="text-xs font-medium text-teal-300 flex items-center gap-1">
             <Clock className="w-3.5 h-3.5" />
-            10:00 AM – 11:00 AM EST (60 min)
+            {displayTime(meeting.startTime)} – {displayTime(meeting.endTime)} {displayTimeZone} ({durationMinutes} min)
           </span>
         </div>
 

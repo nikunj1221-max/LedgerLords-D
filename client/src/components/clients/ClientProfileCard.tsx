@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { Building2, User, Mail, Phone, Calendar, HeartHandshake, ShieldCheck, Tag } from 'lucide-react';
+import { Building2, User, Mail, Phone, Calendar, ShieldCheck, Tag } from 'lucide-react';
 import { ComponentSpec } from '../../types/workspace';
 
 interface Client {
@@ -11,7 +11,6 @@ interface Client {
   tier: string;
   status: string;
   mrr: number;
-  healthScore: number;
   healthTrend: string;
   contractRenewalDate: string;
   primaryContact: {
@@ -44,7 +43,7 @@ export const ClientProfileCard: React.FC<{ spec: ComponentSpec }> = ({ spec }) =
 
   return (
     <div className="space-y-4">
-      {/* Top Banner with Health & Tier */}
+      {/* Top Banner with Tier */}
       <div className="flex flex-wrap items-center justify-between gap-2 pb-3 border-b border-border/50">
         <div>
           <div className="flex items-center gap-2">
@@ -59,16 +58,8 @@ export const ClientProfileCard: React.FC<{ spec: ComponentSpec }> = ({ spec }) =
           </div>
         </div>
 
-        {/* Health score badge */}
         <div className="flex items-center gap-3">
           <div className="text-right">
-            <div className="text-xs text-gray-400">Health Score</div>
-            <div className="text-base font-bold text-teal-400 flex items-center justify-end gap-1">
-              <HeartHandshake className="w-4 h-4" />
-              {client.healthScore}/100
-            </div>
-          </div>
-          <div className="text-right pl-3 border-l border-border/50">
             <div className="text-xs text-gray-400">Monthly Contract</div>
             <div className="text-base font-bold text-white">
               ${(client.mrr / 1000).toFixed(1)}k <span className="text-[10px] font-normal text-gray-400">/mo</span>

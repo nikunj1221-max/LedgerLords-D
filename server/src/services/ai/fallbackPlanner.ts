@@ -27,6 +27,17 @@ export class FallbackPlanner {
     const prevPlan = input.previousPlan;
     const pinnedIds = input.pinnedComponentIds || [];
 
+    const explicitlySchedulesMeeting =
+      /\b(schedule|book|set up|arrange|create)\b/.test(promptLower) &&
+      /\b(meeting|call|calendar event)\b/.test(promptLower);
+    const preparesNewMeeting = /\bprepare\s+(?:(?:a|the)\s+)?(?:new\s+)?meeting\b/.test(promptLower);
+    if (explicitlySchedulesMeeting || preparesNewMeeting) {
+      const availableSources = input.userDatasets?.length
+        ? new Set(input.userDatasets.flatMap(dataset => dataset.sources ?? []))
+        : undefined;
+      return this.buildMeetingSchedulingPlan(prompt, prevPlan, pinnedIds, availableSources);
+    }
+
     if (input.userDatasets?.length) {
       return this.buildUserDatasetPlan(input, prompt, prevPlan, pinnedIds);
     }
@@ -349,7 +360,7 @@ export class FallbackPlanner {
         dataSource: 'clients',
         position: 1,
         colSpan: 2,
-        explanation: 'Primary account profile showing tier, $48.5k MRR, key contacts (Sarah Jenkins), and health status (74/100).',
+        explanation: 'Primary account profile showing tier, monthly contract, and key client contact.',
         evidence: 'Matched client record client-acme-corp with upcoming meeting tomorrow at 10:00 AM.',
         config: { clientId: 'client-acme-corp' }
       },
@@ -715,6 +726,82 @@ export class FallbackPlanner {
       clarificationRequired: false
     };
 
+    plan.changeSummary = computeWorkspaceDiff(prevPlan, plan);
+    return plan;
+  }
+
+  private buildMeetingSchedulingPlan(
+    prompt: string,
+    prevPlan?: UIPlan | null,
+    pinnedIds: string[] = [],
+    availableSources?: Set<string>
+  ): UIPlan {
+    const scheduler: ComponentSpec = {
+      id: 'schedule-meeting-form',
+      type: 'MeetingScheduler',
+      title: 'Schedule a meeting',
+      dataSource: 'meetings',
+      position: 1,
+      colSpan: 2,
+      explanation: 'Set the meeting details and choose invitees from the configured attendee list.',
+    };
+    const previousBrief = this.buildAcmeCorpMeetingPlan(
+      "Prepare for tomorrow's meeting with Acme Corp."
+    );
+    const previousMeetingComponents = previousBrief.components
+      .filter(component => !availableSources || availableSources.has(component.dataSource))
+      .map((component, index) => ({
+        ...component,
+        id: `new-meeting-context-${component.id}`,
+        title: component.type === 'MeetingAgendaPanel'
+          ? 'Previous Acme Corp Meeting — Agenda and Attendees'
+          : `Previous Acme Corp Context — ${component.title}`,
+        explanation: `Previous client-meeting context: ${component.explanation}`,
+        pinned: false,
+        position: index + 2,
+      }));
+    const components = [scheduler, ...previousMeetingComponents];
+    const meetingPreparationTypes = new Set([
+      'ClientProfileCard',
+      'MeetingAgendaPanel',
+      'MeetingConfirmationCard',
+      'MeetingNotesPanel',
+      'OpenIssuesList',
+      'CommunicationTimeline',
+      'AttendeeSelector',
+      'AvailabilityPanel',
+      'AgendaEditor',
+      'DatePicker',
+    ]);
+    const contextPinnedIds = pinnedIds.filter(id =>
+      !prevPlan?.components.some(component =>
+        component.id === id && meetingPreparationTypes.has(component.type)
+      )
+    );
+    this.preservePinnedComponents(components, prevPlan, contextPinnedIds);
+
+    const sources = Array.from(new Set(components.map(component => component.dataSource)));
+    const plan: UIPlan = {
+      id: `plan-schedule-meeting-${Date.now()}`,
+      intent: 'schedule_meeting',
+      intentLabel: 'Schedule a meeting',
+      title: 'Schedule a meeting',
+      subtitle: 'Choose the meeting details and attendees before sending invitations.',
+      prompt,
+      entities: { intent: 'schedule_meeting' },
+      layout: 'focused-dashboard',
+      components,
+      dataSources: sources,
+      filters: {},
+      actions: [],
+      explanations: {
+        overallRationale: 'Provides the new meeting form alongside the previous Acme Corp client brief for context.',
+        selectedSources: sources,
+        confidence: 0.95,
+      },
+      contextReused: prevPlan ? { previousIntent: prevPlan.intent } : {},
+      clarificationRequired: false,
+    };
     plan.changeSummary = computeWorkspaceDiff(prevPlan, plan);
     return plan;
   }

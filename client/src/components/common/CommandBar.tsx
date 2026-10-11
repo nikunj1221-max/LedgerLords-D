@@ -8,7 +8,7 @@ export const CommandBar: React.FC = () => {
   const isInitial = !currentPlan && !isAdapting;
 
   const starterPrompts = [
-    { label: 'Prepare for a client meeting', prompt: "Prepare for tomorrow's meeting with Acme Corp." },
+    { label: 'Prepare a new meeting', prompt: 'Prepare a new meeting with selected attendees.' },
     { label: 'Investigate a product usage drop', prompt: 'Investigate why product usage dropped this week.' },
     { label: 'Review overdue project work', prompt: 'Show me the overdue project work that needs attention first.' }
   ];

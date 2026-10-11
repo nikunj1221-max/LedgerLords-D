@@ -88,6 +88,20 @@ Use `server/data/all-demo-data-upload.json` to upload one combined JSON array co
 
 Sample row values may contain personal or confidential information. If configured, those bounded samples are transmitted to the AI provider (for example, Groq) solely to classify each group. The complete dataset is stored in the user's private JSONB dataset and is not sent to the AI planner when generating the dashboard.
 
+### Google Calendar meeting scheduling
+
+The meeting scheduler creates events in one server-configured Google Calendar and sends invitations only to addresses in `MEETING_ALLOWED_ATTENDEES`. The list must contain one to three valid addresses. If an allowlisted address is not in the signed-in user's employee dataset, the scheduler still presents it as a configured invitee; employee records matching allowlisted addresses are also displayed. The server validates every selected address against its own allowlist. The event includes the configured email and popup reminder for the demo calendar. Invitees receive the Google Calendar invitation and their own calendar reminder behavior depends on their Google account settings.
+
+To enable this integration:
+
+1. Enable the Google Calendar API in a Google Cloud project and configure an OAuth consent screen. For development, use External / Testing when invitees are outside your Workspace and add the demo calendar account as a test user.
+2. Create an OAuth client of type **Web application**. For the one-time OAuth Playground flow, add `https://developers.google.com/oauthplayground` to **Authorized redirect URIs**. No JavaScript origin is needed for the server-only integration.
+3. In OAuth Playground settings, enable **Use your own OAuth credentials**, enter the OAuth client ID and secret, and authorize the demo account with `https://www.googleapis.com/auth/calendar.events`. Exchange the authorization code for a refresh token.
+4. Add the variables listed in `server/.env.example` to the existing `server/.env` (preserve its database and AI settings) and set the client ID, client secret, refresh token, calendar ID (usually `primary`), timezone, reminder minutes, and the one-to-three invitee email addresses. Keep these values private; do not put them in client-side `VITE_` variables or commit `server/.env`.
+5. Ensure the signed-in account has uploaded employee records with matching email addresses, select attendees in the meeting scheduler, and create a test event.
+
+Events are created on the configured demo account's calendar, not on the account of the person using the website. Google sends invitations to allowlisted attendees. An invitee's event visibility and reminder delivery may depend on their calendar settings and whether they accept invitations. OAuth apps left in Testing can have refresh tokens expire after seven days; reauthorize the demo account if calendar access stops working.
+
 Before using the upload feature against Supabase, apply the Prisma schema:
 
 ```bash

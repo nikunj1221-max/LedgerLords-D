@@ -27,7 +27,7 @@ export const RecommendationCard: React.FC<{ spec: ComponentSpec }> = () => {
 
   const handleAction = (item: Recommendation) => {
     if (item.actionId === 'prep_acme_meeting') {
-      submitPrompt("Prepare for tomorrow's meeting with Acme Corp.");
+      submitPrompt('Prepare a new meeting with selected attendees.');
     } else if (item.actionId === 'investigate_usage_drop') {
       submitPrompt("Investigate why product usage dropped this week.");
     } else if (item.actionId === 'view_overdue_tasks') {

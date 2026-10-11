@@ -17,6 +17,32 @@ export const DATA_SOURCES = [
 ] as const;
 
 const CONFIDENCE = { high: 0.9, medium: 0.7, low: 0.4 } as const;
+const MEETING_BRIEF_COMPONENTS = new Set([
+  'ClientProfileCard',
+  'MeetingAgendaPanel',
+  'MeetingNotesPanel',
+  'OpenIssuesList',
+  'CommunicationTimeline',
+]);
+const MEETING_CONTEXT_SOURCES: Record<string, string> = {
+  ClientProfileCard: 'clients',
+  MeetingAgendaPanel: 'meetings',
+  MeetingNotesPanel: 'communications',
+  OpenIssuesList: 'support-incidents',
+  CommunicationTimeline: 'communications',
+};
+const MEETING_CONTEXT_COMPONENT_TYPES = new Set([
+  ...Object.keys(MEETING_CONTEXT_SOURCES),
+  'MeetingConfirmationCard',
+]);
+
+function isNewMeetingRequest(prompt: string): boolean {
+  return (
+    (/\b(schedule|book|set up|arrange|create)\b/i.test(prompt) &&
+      /\b(meeting|call|calendar event)\b/i.test(prompt)) ||
+    /\bprepare\s+(?:(?:a|the)\s+)?(?:new\s+)?meeting\b/i.test(prompt)
+  );
+}
 
 const DraftComponent = z.object({
   retainId: z.string().optional(),
@@ -92,6 +118,7 @@ function normalizeConfigValue(key: string, value: unknown): unknown {
 function semanticIssues(
   d: PlanDraft,
   prevById: Map<string, ComponentSpec>,
+  prompt: string,
   userDatasetIds: string[] = [],
   userDataSources: string[] = []
 ): string[] {
@@ -129,6 +156,30 @@ function semanticIssues(
       (d.components.length !== 1 || d.components[0].type !== 'UserDatasetTable')
     ) {
       issues.push('when uploaded data has no recognized schema category, use exactly one UserDatasetTable');
+    }
+  }
+
+  const schedulesMeeting = isNewMeetingRequest(prompt);
+  if (
+    (d.intent === 'schedule_meeting' || schedulesMeeting) &&
+    !d.components.some(component => component.type === 'MeetingScheduler')
+  ) {
+    issues.push('meeting scheduling plans must include MeetingScheduler, which contains the attendee picker');
+  }
+  if (d.intent === 'schedule_meeting' || schedulesMeeting) {
+    for (const [type, source] of Object.entries(MEETING_CONTEXT_SOURCES)) {
+      if (
+        userDatasetIds.length > 0 &&
+        userDataSources.length > 0 &&
+        !userDataSources.includes(source)
+      ) {
+        continue;
+      }
+      if (!d.components.some(component =>
+        component.type === type && component.dataSource === source
+      )) {
+        issues.push(`meeting scheduling plans must include ${type} from ${source} as previous-meeting context`);
+      }
     }
   }
 
@@ -197,7 +248,7 @@ export function buildPlanFromDraft(raw: unknown, ctx: ValidationContext): PlanRe
   const prev = ctx.previousPlan ?? null;
   const prevById = new Map((prev?.components ?? []).map(c => [c.id, c] as [string, ComponentSpec]));
 
-  const issues = semanticIssues(d, prevById, ctx.userDatasetIds, ctx.userDataSources);
+  const issues = semanticIssues(d, prevById, ctx.prompt, ctx.userDatasetIds, ctx.userDataSources);
   if (issues.length) return { ok: false, stage: 'semantic', issues };
 
   const pinned = new Set(ctx.pinnedComponentIds ?? []);
@@ -217,10 +268,15 @@ export function buildPlanFromDraft(raw: unknown, ctx: ValidationContext): PlanRe
   });
 
   // Pinned components survive, matched by ID (not by type).
+  const startsNewMeeting = d.intent === 'schedule_meeting' || isNewMeetingRequest(ctx.prompt);
   if (!ctx.userDatasetIds?.length) {
     for (const id of pinned) {
       const old = prevById.get(id);
-      if (old && !used.has(id)) {
+      if (
+        old &&
+        !used.has(id) &&
+        !(startsNewMeeting && MEETING_CONTEXT_COMPONENT_TYPES.has(old.type))
+      ) {
         components.push({ ...old, pinned: true, position: components.length + 1 });
         used.add(id);
       }

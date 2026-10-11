@@ -49,6 +49,9 @@ export interface Meeting {
   clientName: string;
   startTime: string;
   endTime: string;
+  timeZone?: string;
+  googleEventId?: string;
+  googleEventLink?: string;
   status: string;
   location: string;
   hostId: string;
@@ -139,8 +142,10 @@ class DataRepository {
   }
 
   public async addMeeting(newMeeting: Meeting): Promise<Meeting> {
-    await this.prisma.meeting.create({
-      data: { id: newMeeting.id, payload: asPayload(newMeeting) },
+    await this.prisma.meeting.upsert({
+      where: { id: newMeeting.id },
+      create: { id: newMeeting.id, payload: asPayload(newMeeting) },
+      update: { payload: asPayload(newMeeting) },
     });
     return newMeeting;
   }

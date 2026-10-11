@@ -36,6 +36,7 @@ interface WorkspaceState {
   currentPlan: UIPlan | null;
   previousPlan: UIPlan | null;
   history: HistoryItem[];
+  selectedAttendeeIds: string[];
   pinnedComponentIds: string[];
   hiddenComponentIds: string[];
   incidentStatusById: Record<string, string>;
@@ -52,6 +53,7 @@ interface WorkspaceState {
 
   // Actions
   clearWorkspace: () => void;
+  setSelectedAttendeeIds: (attendeeIds: string[]) => void;
   toggleTheme: () => void;
   submitPrompt: (prompt: string) => Promise<void>;
   submitRefinement: (prompt: string) => Promise<void>;
@@ -86,6 +88,7 @@ export const useWorkspaceStore = create<WorkspaceState>((set, get) => ({
   currentPlan: null,
   previousPlan: null,
   history: [],
+  selectedAttendeeIds: [],
   pinnedComponentIds: [],
   hiddenComponentIds: [],
   incidentStatusById: {},
@@ -124,6 +127,7 @@ export const useWorkspaceStore = create<WorkspaceState>((set, get) => ({
       currentPlan: null,
       previousPlan: null,
       history: [],
+      selectedAttendeeIds: [],
       pinnedComponentIds: [],
       hiddenComponentIds: [],
       incidentStatusById: {},
@@ -133,6 +137,10 @@ export const useWorkspaceStore = create<WorkspaceState>((set, get) => ({
       error: null,
       notification: null
     });
+  },
+
+  setSelectedAttendeeIds: (attendeeIds: string[]) => {
+    set({ selectedAttendeeIds: Array.from(new Set(attendeeIds)) });
   },
 
   submitPrompt: async (prompt: string) => {
@@ -153,6 +161,7 @@ export const useWorkspaceStore = create<WorkspaceState>((set, get) => ({
       set({
         previousPlan: currentPlan,
         currentPlan: newPlan,
+        selectedAttendeeIds: newPlan.intent === 'schedule_meeting' ? [] : get().selectedAttendeeIds,
         provider: res.data.provider,
         isAdapting: false,
         history: [
