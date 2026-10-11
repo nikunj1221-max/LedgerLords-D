@@ -22,7 +22,7 @@ export const ComponentWrapper: React.FC<ComponentWrapperProps> = ({ spec, childr
 
   return (
     <div
-      className={`${colSpanClasses} group relative rounded-xl bg-card border border-[var(--border-color)] hover:border-primary/50 transition-all duration-200 shadow-sm flex flex-col`}
+      className="group relative rounded-xl bg-card border border-[var(--border-color)] hover:border-primary/50 transition-all duration-200 shadow-sm flex flex-col h-full overflow-hidden"
     >
       {/* Header bar with title and actions */}
       <div className="flex items-center justify-between px-4 py-3 border-b border-[var(--border-color)] bg-card/70 rounded-t-xl">

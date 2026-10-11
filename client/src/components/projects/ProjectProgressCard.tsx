@@ -76,12 +76,17 @@ export const ProjectProgressCard: React.FC<{ spec: ComponentSpec }> = ({ spec })
               <div
                 className={`h-full rounded-full transition-all duration-500 ${
                   proj.progress > 75
-                    ? 'bg-gradient-to-r from-primary to-teal-400'
+                    ? 'bg-project-gradient'
                     : proj.progress > 40
                     ? 'bg-gradient-to-r from-amber-500 to-amber-300'
                     : 'bg-coral'
                 }`}
-                style={{ width: `${proj.progress}%` }}
+                style={{
+                  width: `${proj.progress}%`,
+                  ...(proj.progress > 75
+                    ? { background: 'linear-gradient(135deg, #fc5602 0%, #ffb703 100%)' }
+                    : {})
+                }}
               />
             </div>
           </div>

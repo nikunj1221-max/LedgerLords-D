@@ -57,7 +57,10 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({ unavailable = false, onR
         </div>
 
         <div className="text-center mb-8">
-          <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-primary to-teal-400 flex items-center justify-center shadow-lg mx-auto mb-4">
+          <div
+            style={{ background: 'linear-gradient(135deg, #fc5602 0%, #ffb703 100%)' }}
+            className="w-12 h-12 rounded-2xl flex items-center justify-center shadow-lg shadow-[#fc5602]/25 mx-auto mb-4"
+          >
             <Sparkles className="w-6 h-6 text-white" />
           </div>
           <h1 className="text-2xl font-bold tracking-tight">NexusFlow</h1>
@@ -75,7 +78,8 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({ unavailable = false, onR
               <button
                 type="button"
                 onClick={onRetry}
-                className="mt-6 w-full rounded-xl bg-gradient-to-r from-primary to-teal-400 px-4 py-3 text-sm font-semibold text-white"
+                style={{ background: 'linear-gradient(135deg, #fc5602 0%, #ffb703 100%)' }}
+                className="mt-6 w-full rounded-xl px-4 py-3 text-sm font-semibold text-white shadow-md shadow-[#fc5602]/25"
               >
                 Retry
               </button>
@@ -157,7 +161,8 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({ unavailable = false, onR
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="w-full rounded-xl bg-gradient-to-r from-primary to-teal-400 px-4 py-3 text-sm font-semibold text-white shadow-md transition-opacity hover:opacity-95 disabled:cursor-wait disabled:opacity-60"
+                  style={{ background: 'linear-gradient(135deg, #fc5602 0%, #ffb703 100%)' }}
+                  className="w-full rounded-xl px-4 py-3 text-sm font-semibold text-white shadow-md shadow-[#fc5602]/25 transition-opacity hover:opacity-95 disabled:cursor-wait disabled:opacity-60"
                 >
                   {isSubmitting ? 'Please wait…' : isSignUp ? 'Create account' : 'Sign in'}
                 </button>

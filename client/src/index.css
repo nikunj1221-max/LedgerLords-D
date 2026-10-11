@@ -3,12 +3,12 @@
 @tailwind utilities;
 
 :root {
-  /* Evolved Soft UI (Neumorphism 2.0) - Improved Contrast Pastels */
-  --bg-color: #e8ebf3;
-  --canvas-color: #e1e5f0;
-  --card-color: #f1f4fa;
-  --card-hover-color: #f7f9fd;
-  --border-color: #cfd6e6;
+  /* Clean White Background & Evolved Soft UI */
+  --bg-color: #ffffff;
+  --canvas-color: #f4f6fb;
+  --card-color: #ffffff;
+  --card-hover-color: #f8f9fe;
+  --border-color: #e2e8f0;
   --text-primary: #121624;
   --text-secondary: #3f4761;
   --text-muted: #5e6884;
@@ -59,7 +59,7 @@ html:not(.dark) .bg-card {
   background-color: var(--card-color) !important;
   border-radius: 12px !important;
   border: 1px solid rgba(255, 255, 255, 0.75) !important;
-  box-shadow: 
+  box-shadow:
     5px 6px 16px rgba(160, 172, 198, 0.38),
     -4px -4px 14px rgba(255, 255, 255, 0.95),
     inset 0 1px 1px rgba(255, 255, 255, 0.8),
@@ -67,7 +67,7 @@ html:not(.dark) .bg-card {
 }
 
 html:not(.dark) .bg-card:hover {
-  box-shadow: 
+  box-shadow:
     7px 8px 20px rgba(150, 164, 192, 0.44),
     -5px -5px 16px rgba(255, 255, 255, 0.98),
     inset 0 1px 1px rgba(255, 255, 255, 0.9) !important;
@@ -79,7 +79,7 @@ html:not(.dark) .rounded-full.bg-card {
   background-color: #f0f3f9 !important;
   border-radius: 10px !important;
   border: 1px solid rgba(255, 255, 255, 0.7) !important;
-  box-shadow: 
+  box-shadow:
     2px 3px 8px rgba(162, 174, 200, 0.32),
     -2px -2px 7px rgba(255, 255, 255, 0.92) !important;
   color: #121624 !important;
@@ -87,13 +87,13 @@ html:not(.dark) .rounded-full.bg-card {
 
 html:not(.dark) button.bg-card:hover {
   background-color: #f7f9fe !important;
-  box-shadow: 
+  box-shadow:
     3px 4px 10px rgba(150, 164, 192, 0.38),
     -3px -3px 8px rgba(255, 255, 255, 0.98) !important;
 }
 
 html:not(.dark) button.bg-card:active {
-  box-shadow: 
+  box-shadow:
     inset 2px 2px 4px rgba(160, 172, 198, 0.4),
     inset -2px -2px 4px rgba(255, 255, 255, 0.85) !important;
 }
@@ -103,25 +103,45 @@ html:not(.dark) .bg-canvas {
   background-color: var(--canvas-color) !important;
   border-radius: 10px !important;
   border: 1px solid rgba(205, 214, 233, 0.75) !important;
-  box-shadow: 
+  box-shadow:
     inset 2px 2px 5px rgba(160, 172, 198, 0.3),
     inset -2px -2px 5px rgba(255, 255, 255, 0.9) !important;
 }
 
-/* Primary Action Buttons: Accessible Violet Gradient + Soft Elevation */
-html:not(.dark) .bg-primary {
-  background-color: #7c3aed !important;
+/* Primary Action Buttons: Project Gradient + Soft Elevation */
+.bg-primary,
+html:not(.dark) .bg-primary,
+html.dark .bg-primary {
+  background: linear-gradient(135deg, #471ca8 0%, #884ab2 50%, #ff8008 100%) !important;
   color: #ffffff !important;
   border-radius: 10px !important;
-  box-shadow: 
-    3px 4px 12px rgba(124, 58, 237, 0.32),
+  box-shadow:
+    3px 4px 12px rgba(71, 28, 168, 0.35),
     -2px -2px 8px rgba(255, 255, 255, 0.8),
     inset 0 1px 1px rgba(255, 255, 255, 0.3) !important;
+}
+
+/* Global Project Gradient Classes */
+.bg-project-gradient,
+.project-gradient,
+.bg-primary-gradient,
+[class*="from-primary"][class*="to-teal"] {
+  background: linear-gradient(135deg, #471ca8 0%, #884ab2 50%, #ff8008 100%) !important;
 }
 
 /* High Contrast WCAG AAA Typography Overrides for Light Mode */
 html:not(.dark) .text-white {
   color: #121624 !important;
+}
+
+/* Ensure buttons and surfaces with dark backgrounds maintain white text in light mode */
+html:not(.dark) .bg-slate-900,
+html:not(.dark) .bg-slate-900 *,
+html:not(.dark) .bg-black,
+html:not(.dark) .bg-black *,
+html:not(.dark) .bg-slate-800,
+html:not(.dark) .bg-slate-800 * {
+  color: #ffffff !important;
 }
 
 html:not(.dark) .text-gray-100 {
@@ -146,7 +166,7 @@ html:not(.dark) .text-gray-500 {
 
 /* Light Mode Accent Badges (WCAG compliant) */
 html:not(.dark) .text-primary {
-  color: #6d28d9 !important;
+  color: #471ca8 !important;
 }
 
 html:not(.dark) .text-coral {
@@ -217,12 +237,12 @@ html:not(.dark) thead tr {
 }
 
 /* Recharts Tooltip in Evolved Soft UI */
-html:not(.dark) .recharts-tooltip-wrapper > div,
+html:not(.dark) .recharts-tooltip-wrapper>div,
 html:not(.dark) .recharts-default-tooltip {
   background-color: #f7f9fd !important;
   border-radius: 10px !important;
   border: 1px solid rgba(255, 255, 255, 0.8) !important;
-  box-shadow: 
+  box-shadow:
     4px 5px 14px rgba(150, 164, 190, 0.35),
     -3px -3px 10px rgba(255, 255, 255, 0.95) !important;
 }
@@ -247,9 +267,12 @@ html:not(.dark) .recharts-default-tooltip {
 }
 
 @keyframes pulseGlow {
-  0%, 100% {
+
+  0%,
+  100% {
     box-shadow: 0 0 15px rgba(139, 92, 246, 0.25);
   }
+
   50% {
     box-shadow: 0 0 25px rgba(139, 92, 246, 0.45);
   }
