@@ -15,18 +15,14 @@ import { DataOnboardingScreen } from './components/auth/DataOnboardingScreen';
 import { useAuthStore } from './store/authStore';
 
 export const App: React.FC = () => {
-<<<<<<< HEAD
+  const [showDataUpload, setShowDataUpload] = useState(false);
   const {
     status: authStatus,
-    user: authUser,
+    user,
     checkSession,
     showAuthSuccessAnimation,
     dismissAuthSuccessAnimation,
   } = useAuthStore();
-=======
-  const [showDataUpload, setShowDataUpload] = useState(false);
-  const { status: authStatus, user, checkSession } = useAuthStore();
->>>>>>> origin/saniya
   const {
     currentPlan,
     isAdapting,
@@ -71,7 +67,6 @@ export const App: React.FC = () => {
     return <AuthScreen unavailable={authStatus === 'unavailable'} onRetry={() => void checkSession()} />;
   }
 
-<<<<<<< HEAD
   if (showAuthSuccessAnimation) {
     return (
       <main
@@ -85,12 +80,14 @@ export const App: React.FC = () => {
           className="h-56 w-56"
         />
         <p className="mt-2 text-sm font-medium text-[var(--text-secondary)]">
-          {authUser?.name
-            ? `Welcome, ${authUser.name}!`
+          {user?.name
+            ? `Welcome, ${user.name}!`
             : 'You’re signed in!'}
         </p>
       </main>
-=======
+    );
+  }
+
   if (!user?.onboardingComplete) {
     return (
       <DataOnboardingScreen
@@ -111,7 +108,7 @@ export const App: React.FC = () => {
         }}
         onCancel={() => setShowDataUpload(false)}
       />
->>>>>>> origin/saniya
+
     );
   }
 
