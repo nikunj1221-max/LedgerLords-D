@@ -47,7 +47,11 @@ export const COMPONENT_REGISTRY: Record<ComponentType, React.FC<{ spec: Componen
   FilterBar: () => <div className="text-xs text-gray-400">Filter Bar</div>,
   SearchPanel: () => <div className="text-xs text-gray-400">Search Panel</div>,
   DataTable: OverdueTasksTable,
-  EmptyState: () => <div className="text-xs text-gray-400">No data available</div>,
+  EmptyState: ({ spec }) => (
+    <div className="py-10 text-center text-sm text-[var(--text-secondary)]">
+      {spec.config?.message || 'No data available'}
+    </div>
+  ),
   LoadingState: () => <div className="text-xs text-gray-400 animate-pulse">Loading component...</div>,
   WorkspaceExplanationPanel,
   IntentHistorySwitcher: () => null,
