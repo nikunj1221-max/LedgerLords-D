@@ -1,114 +1,114 @@
-# Final Report — AI Planner Layer
+# Final Report — Adaptive AI Workspace
 
-## 1. Files Changed
+**Updated:** 2026-10-11
 
-| File | Change |
-|------|--------|
-| [`aiPlanner.ts`](file:///c:/Users/NIKUNJ/OneDrive/Desktop/Nikks%20%20Workspace/ledgerLords1010/adaptive-ai-workspace/adaptive-ai-workspace/server/src/services/ai/aiPlanner.ts) | Task 2: Groq 400 salvage, retry w/o JSON mode, `{…}` extraction, `AI_MAX_TOKENS`, `AI_JSON_MODE`, `finish_reason` warning |
-| [`planValidator.ts`](file:///c:/Users/NIKUNJ/OneDrive/Desktop/Nikks%20%20Workspace/ledgerLords1010/adaptive-ai-workspace/adaptive-ai-workspace/server/src/services/ai/planValidator.ts) | Task 3: reject duplicate type\|dataSource. Task 4: strip/normalize config+filter keys via contract |
-| [`plannerPrompt.ts`](file:///c:/Users/NIKUNJ/OneDrive/Desktop/Nikks%20%20Workspace/ledgerLords1010/adaptive-ai-workspace/adaptive-ai-workspace/server/src/services/ai/plannerPrompt.ts) | Task 3: added rule 10 (no duplicate type+dataSource). Task 4: GUIDE generated from contract; KNOWN_ENTITIES expanded to all 12 clients, 5+ meetings, 8 projects |
-| [`componentContract.ts`](file:///c:/Users/NIKUNJ/OneDrive/Desktop/Nikks%20%20Workspace/ledgerLords1010/adaptive-ai-workspace/adaptive-ai-workspace/server/src/services/ai/componentContract.ts) | **NEW** — single source of truth: per-type dataSources, config/filter keys, entity ID requirements, usage hints |
-| [`aiPlanner.test.ts`](file:///c:/Users/NIKUNJ/OneDrive/Desktop/Nikks%20%20Workspace/ledgerLords1010/adaptive-ai-workspace/adaptive-ai-workspace/server/src/services/ai/aiPlanner.test.ts) | 3 new tests: salvage from failed_generation, retry w/o JSON mode, JSON extraction from noisy output |
-| [`planValidator.test.ts`](file:///c:/Users/NIKUNJ/OneDrive/Desktop/Nikks%20%20Workspace/ledgerLords1010/adaptive-ai-workspace/adaptive-ai-workspace/server/src/services/ai/planValidator.test.ts) | 4 new tests: duplicate type\|dataSource rejected, same type diff dataSource allowed, unknown config stripped, alias normalized |
+## 1. Executive Summary
 
-> No changes to `fallbackPlanner.ts`, client UI, or any other teammate files.
+The workspace now starts empty rather than displaying a generic, pre-populated demo dashboard. A user can enter a goal or choose one of three starter suggestions, and the application asks the planner to create a task-specific workspace. The three required workflows are:
 
-## 2. Test & TSC Results
+1. Prepare for a client meeting.
+2. Investigate a drop in product usage.
+3. Review overdue project work.
+
+The backend's Groq-compatible LLM planner was already implemented and configured through `server/.env`. It has now been verified with uncached, live Groq requests. The first client-meeting response revealed that the model could select an irrelevant project-work component; workflow-specific selection and relevance-writing guidance was added to the planner prompt, and a subsequent uncached request returned meeting-focused components with non-empty explanations.
+
+The workspace still uses the project's supplied/demo data. The planner interprets goals and selects/reasons about interface components; it does not make the underlying seeded data live or independently verify factual claims in it.
+
+## 2. Current User-Facing Behavior
+
+- **Empty first visit:** no workspace plan or dummy workspace sections appear in the dashboard or sidebar until a goal is submitted.
+- **Starter suggestions remain available:** the initial screen offers the three required workflows as clickable suggestions.
+- **Centered initial search:** the command bar is enlarged and centered initially; after a workspace is created, it returns to its regular layout and size.
+- **Loading feedback:** a replaceable SVG at `client/public/loaders/workspace-loading.svg` is shown while adapting. The workspace store enforces a minimum 700 ms loading display; longer backend requests continue to wait for their response. The SVG fill is `#0FC2E8`.
+- **Relevant navigation:** while a plan is active, the sidebar lists that plan's visible component sections and provides controls to scroll to each section.
+- **Previous results:** subsequent goals are stored in the in-memory workspace history and can be restored from the sidebar. This history is session-only and is cleared by Clear workspace.
+- **Follow-up actions:** `run_prompt` actions are sent through the normal goal-submission flow so a suggestion generates a new/refined workspace, instead of receiving only the generic mock-action response.
+- **Per-component rationale:** the component wrapper exposes each planner-generated explanation under “Selection Rationale”; the workspace explanation panel displays the plan-level rationale.
+
+## 3. Project Structure and Request Flow
+
+| Area | Location | Responsibility |
+|------|----------|----------------|
+| Client entry and workspace composition | `client/src/App.tsx` | Renders the empty/adapting/active workspace states and selected components. |
+| Client state and network requests | `client/src/store/workspaceStore.ts` | Submits goals/refinements, manages plans, loading, history, restoration, and clearing. |
+| Search input and starter goals | `client/src/components/common/CommandBar.tsx` | Initial search UX and shortcuts for the three required workflows. |
+| Workspace navigation and history | `client/src/components/common/Sidebar.tsx` | Shows relevant sections and previously generated results. |
+| Component rendering | `client/src/components/registry.tsx` and `client/src/components/` | Maps approved plan component types to client-rendered components. |
+| Explanation UI | `client/src/components/common/ComponentWrapper.tsx`, `client/src/components/general/WorkspaceExplanationPanel.tsx` | Shows individual component rationale and overall plan context. |
+| Backend route | `server/src/routes/workspace.ts` | Exposes `/api/workspace/generate` and `/api/workspace/refine`; both invoke the AI planner. |
+| LLM planner and prompt | `server/src/services/ai/aiPlanner.ts`, `server/src/services/ai/plannerPrompt.ts` | Calls the configured OpenAI-compatible endpoint (Groq in the current environment), builds task instructions, parses responses, and falls back if needed. |
+| Plan validation and component contract | `server/src/services/ai/planValidator.ts`, `server/src/services/ai/componentContract.ts`, `server/src/schemas/uiPlan.ts` | Restricts planner output to the defined intent, data-source, component, configuration, and plan schemas. |
+| Deterministic fallback | `server/src/services/ai/fallbackPlanner.ts` | Produces task-specific plans when the LLM cannot be used or its response is rejected. |
+| Data routes and seed data | `server/src/routes/data.ts`, `server/src/data/`, `server/src/scripts/seed.ts` | Serve the project's supplied data to components; this data is demo/seed data, not a live production feed. |
+
+**Typical request path:** user goal → `workspaceStore.submitPrompt` → `POST /api/workspace/generate` → `aiPlanner.generatePlan` → provider response and plan validation → client stores the plan/history → component registry renders the selected components. Follow-up prompts use the same goal-generation flow.
+
+## 4. Detailed Change Record
+
+### Client and workspace UX
+
+- Removed automatic creation of a generic initial workspace. A new session begins with no plan, and the sidebar does not display a prefilled set of workspace sections.
+- Kept the task suggestions and used them as direct shortcuts to the required client-meeting, product-usage, and overdue-work workflows.
+- Added the centered, larger initial command-bar treatment and restored normal sizing after a plan exists.
+- Added the replaceable cyan SVG loader and the 700 ms minimum loading duration.
+- Reworked the sidebar around the current plan's components and added a “Previous results” section with prompt context, intent, time, and restore controls.
+- Added workspace clearing, including clearing the current/previous plan, history, pinned/hidden component state, and transient errors/notifications.
+- Removed static demo profile/notification/reset elements from the header as part of removing misleading generic demo content.
+- Corrected follow-up suggestion execution so `run_prompt` actions call the workspace goal-generation flow.
+
+### Planner and Groq integration
+
+- Reused the existing Groq-compatible planner instead of adding a second LLM path. The server reads provider configuration from its environment; the secret value is not included in this report.
+- Kept the existing response validation and deterministic fallback behavior. LLM responses must conform to the plan schema and approved component contract before use.
+- Strengthened `plannerPrompt.ts` to:
+  - Explicitly identify `explanation` as user-facing “Selection Rationale” text, tied to the user's specific request and not unsupported facts.
+  - Require components to directly support the task rather than selecting them just because they are available.
+  - Prioritize the appropriate components for each of the three core workflows and discourage components from unrelated workflows.
+- Added a regression test in `aiPlanner.test.ts` to assert the user-facing explanation guidance and all three workflow-specific component-selection rules.
+
+### Repository hygiene
+
+- Added a root `.gitignore` covering dependency folders, generated build output, environment files/secrets while retaining `.env.example`, logs, and the server's planner cache.
+- The backend and frontend are run independently from `server/` and `client/` with `npm run dev`; the root development script previously could not start because the root `concurrently` dependency was unavailable.
+
+## 5. Live LLM Verification
+
+The verification used a single uncached planner request at a time (`AI_CACHE=0`) so the result would establish a live provider call rather than a cache hit. The output was limited to safe result metadata; the API key was neither displayed nor included here.
 
 | Check | Result |
 |-------|--------|
-| `npx tsc --noEmit` | ✅ **Clean** (exit 0, no errors) |
-| `npx tsx --test src/services/ai/*.test.ts` | ✅ **28 pass, 0 fail** (was 21 before; +7 new tests) |
+| First uncached client-meeting request | `provider: llm`, one attempt, no fallback. It produced non-empty overall and component rationale, but selected an unrelated overdue-work component and omitted the agenda. |
+| Prompt adjustment | Added workflow-specific component priorities and explicit request relevance guidance; added a targeted prompt regression test. |
+| Second uncached client-meeting request | `provider: llm`, one attempt, no fallback; intent was `client_meeting_prep`. It selected `ClientProfileCard`, `MeetingAgendaPanel`, `CommunicationTimeline`, `OpenIssuesList`, and `MeetingNotesPanel`. Each had non-empty component rationale, and the overall rationale was non-empty. |
 
-## 3. Audit Findings (1a–1d)
+This confirms the configured Groq request path is working and the planner returns accepted, schema-valid plans with relevance text for this tested request. It does not establish that every possible prompt or provider response will be correct; the deterministic fallback remains in place for failures and invalid responses.
 
-### 1a: How `routes/intent.ts` calls the planner
+## 6. Validation
 
-`POST /api/intent` calls `aiPlanner.generatePlan({ prompt, previousPlan, pinnedComponentIds, clarificationResponse })`.
+| Validation | Result |
+|------------|--------|
+| Targeted backend AI planner tests: `node -r ts-node/register --test src/services/ai/aiPlanner.test.ts` (from `server/`) | ✅ 16 passed, 0 failed. |
+| Backend TypeScript build: `npm run build` (from `server/`) | ✅ Passed. |
+| Uncached live Groq request after the prompt update | ✅ Accepted LLM plan, relevant client-meeting component set, non-empty component and overall rationale. |
+| Frontend builds and browser interaction checks performed during prior workspace changes | ✅ Reported passing: empty state, starter prompts, plan-specific dashboard/sidebar, 700 ms loader, follow-up generation, history restore, and clear behavior. |
 
-**Critical finding:** the response only returns `intent`, `intentLabel`, `entities`, `clarificationRequired`, `clarificationQuestion`, and `provider`. **It does NOT return the full `plan`** (no `components`, `title`, `layout`, `actions`, `changeSummary`). The frontend must be getting the plan from a different route (likely `/api/workspace`) or this is a bug. If the client relies on `/api/intent` for the workspace layout, the LLM plan will never render.
+## 7. Current Limitations and Follow-up Considerations
 
-### 1b: How `computeWorkspaceDiff` matches
+1. **Data remains demo/seeded.** The LLM changes the interpretation and composition of the workspace, not the source or freshness of the underlying business data. The interface should not be presented as connected to production data without integrating and validating production sources.
+2. **Rationale is generated text.** Schema validation ensures that rationale fields are present and bounded, but it does not independently prove that every explanation is factually grounded. The prompt instructs the model not to invent data facts.
+3. **History is in memory.** Previous results can be restored while the current client session remains active, but the history is not persisted across a page reload or browser session.
+4. **Known entities are maintained in the planner prompt.** `KNOWN_ENTITIES` currently lists the project's clients, selected meetings, and projects. The source comment notes that this should eventually be generated from repository data to avoid drift.
+5. **The full task space was not re-live-tested.** The live post-change verification used a client-meeting request. The three workflow instructions are covered by a unit test, and deterministic plans exist, but the latest uncached live call did not separately exercise product-usage investigation and overdue-work review.
+6. **A previous component audit noted static content in some components** (including meeting notes and evidence-based insights). These should be reviewed before treating their rendered content as user-specific or production-grounded.
+7. **Bundle size warning was observed in earlier client builds.** The client build passed, but the generated JavaScript bundle was reported as larger than 500 kB; this is a performance follow-up, not a blocker for the planner change.
 
-Matches by **id first** (`prevCompMap.get(newComp.id)`), then falls back to checking if the **type** existed (`prevTypes.has(newComp.type)`) to classify as "updated" vs "added". Removed components are those whose id is missing from the new plan AND whose type is also missing. This means two components of the same type but different IDs won't show as "removed".
+## 8. Files Relevant to the Latest Planner Change
 
-### 1c: Data Sources & Known Entities
-
-| | `planValidator` / `plannerPrompt` (before) | Actual data (`repository.ts` / `data/`) |
-|---|---|---|
-| **DATA_SOURCES** | 13 sources | ✅ Matches exactly — 13 JSON files in `data/` |
-| **Clients** | 2 (Acme Corp, Acme Labs) | **12 clients** — missing 10 (Strata, Apex, Lumina, Omni, Zenith, Hyperion, Pulsar, AeroFleet, Novus, Vanguard) |
-| **Meetings** | 2 (meet-1, meet-3) | **20 meetings** — missing 18 |
-| **Projects** | 1 (proj-nexus-3) | **8 projects** — missing 7 |
-
-> **Fixed in plannerPrompt.ts**: KNOWN_ENTITIES now lists all 12 clients, 5 key meetings, all 8 projects.
-
-### 1d: Component Types — React Existence & Config Keys
-
-| # | Type | React Component | config keys read | Notes |
-|---|------|----------------|-----------------|-------|
-| 1 | MetricCard | ✅ `general/MetricCard.tsx` | `value`, `change`, `trend`, `subtitle` | BANNED for LLM |
-| 2 | TrendIndicator | ⚡ alias → MetricCard | same | BANNED |
-| 3 | ActivityTimeline | ✅ `general/ActivityTimeline.tsx` | none | fetches from `/api/data/activities` |
-| 4 | RecommendationCard | ✅ `general/RecommendationCard.tsx` | none | fetches from `/api/data/recommendations` |
-| 5 | InsightPanel | ⚡ alias → EvidenceBasedInsightList | none | |
-| 6 | FilterBar | ⚡ placeholder `<div>` | none | |
-| 7 | SearchPanel | ⚡ placeholder `<div>` | none | |
-| 8 | DataTable | ⚡ alias → OverdueTasksTable | `filterPriority` | |
-| 9 | EmptyState | ⚡ placeholder `<div>` | none | |
-| 10 | LoadingState | ⚡ placeholder `<div>` | none | BANNED |
-| 11 | WorkspaceExplanationPanel | ✅ `general/WorkspaceExplanationPanel.tsx` | none (reads from store) | |
-| 12 | IntentHistorySwitcher | ⚡ `() => null` | none | BANNED |
-| 13 | WorkspaceChangeSummary | ✅ `general/WorkspaceChangeSummary.tsx` | none (reads from store) | BANNED |
-| 14 | ClientProfileCard | ✅ `clients/ClientProfileCard.tsx` | `clientId` | needs client id |
-| 15 | ClientHealthCard | ⚡ alias → ClientProfileCard | `clientId` | needs client id |
-| 16 | CommunicationTimeline | ✅ `clients/CommunicationTimeline.tsx` | `clientId` | needs client id |
-| 17 | OpenIssuesList | ✅ `clients/OpenIssuesList.tsx` | `clientId`, `filterStatus` | `"unresolved"` maps to Investigating |
-| 18 | MeetingNotesPanel | ✅ `clients/MeetingNotesPanel.tsx` | none (hardcoded) | ignores clientId; static content |
-| 19 | MeetingAgendaPanel | ✅ `clients/MeetingAgendaPanel.tsx` | `meetingId` | needs meeting id |
-| 20 | UsageTrendChart | ✅ `analytics/UsageTrendChart.tsx` | none | fetches 90-day data |
-| 21 | FeatureAdoptionChart | ✅ `analytics/FeatureAdoptionChart.tsx` | none | |
-| 22 | PeriodComparisonCard | ⚡ alias → UsageTrendChart | none | |
-| 23 | ReleaseTimeline | ✅ `analytics/ReleaseTimeline.tsx` | none | |
-| 24 | SupportIncidentList | ✅ `analytics/SupportIncidentList.tsx` | none | internal filter, not from config |
-| 25 | EvidenceBasedInsightList | ✅ `analytics/EvidenceBasedInsightList.tsx` | none (hardcoded insights) | |
-| 26 | ProjectProgressCard | ✅ `projects/ProjectProgressCard.tsx` | `projectId` | needs project id |
-| 27 | OverdueTasksTable | ✅ `projects/OverdueTasksTable.tsx` | `filterPriority` | `"all"` or `"Critical,High"` |
-| 28 | PriorityDistributionChart | ✅ `projects/PriorityDistributionChart.tsx` | none | |
-| 29 | TeamWorkloadPanel | ✅ `projects/TeamWorkloadPanel.tsx` | none | |
-| 30 | TaskDetailDrawer | ⚡ alias → OverdueTasksTable | `filterPriority` | |
-| 31 | DependencyIndicator | ✅ `projects/DependencyIndicator.tsx` | none | |
-| 32 | MeetingScheduler | ✅ `scheduling/MeetingScheduler.tsx` | `defaultTitle`, `defaultDate`, `defaultDuration`, `relatedProject` | |
-| 33 | DatePicker | ⚡ alias → MeetingScheduler | same | |
-| 34 | TimeSlotSelector | ⚡ alias → AvailabilityPanel | none | |
-| 35 | AttendeeSelector | ✅ `scheduling/AttendeeSelector.tsx` | `preselectedIds` | array of employee ids |
-| 36 | AgendaEditor | ✅ `scheduling/AgendaEditor.tsx` | `items` | `[{time, item}]` |
-| 37 | MeetingConfirmationCard | ⚡ alias → MeetingScheduler | same | |
-
-**37 types total** — all present in `COMPONENT_REGISTRY`. 20 have dedicated components, 17 are aliases/placeholders.
-
-## 4. What I Could Not Verify
-
-| Item | Command to Run |
-|------|---------------|
-| Live LLM smoke test | `cd server && npx tsx src/scripts/liveSmoke.ts` (requires `AI_API_KEY` in `.env`; ~2 min on Groq free tier) |
-| `.gitignore` for `.env` | **No `.gitignore` found** at project root or `server/`. You should create one: `echo ".env" > .gitignore` |
-| Full client integration | Start client (`npm run dev` in `client/`) and test whether `/api/workspace` endpoint returns the full plan |
-
-## 5. Remaining Risks for Demo (ranked)
-
-1. **`/api/intent` doesn't return the plan** — the route only returns intent/entities/clarification, not the workspace. If the client relies on a separate `/api/workspace` route, that route needs to call `aiPlanner.generatePlan` too. *Impact: LLM plans may never render in the UI.*
-
-2. **No `.gitignore`** — `.env` with `AI_API_KEY` is not gitignored. Risk of accidental key commit.
-
-3. **`preservePinnedComponents` matches by type too** (teammate bug, noted). `components.some(c => c.id === pinnedId || c.type === prevComp.type)` — the `|| c.type === prevComp.type` clause means pinned components silently disappear if the new plan has a different component of the same type. **Fix:** change to `c.id === pinnedId` only.
-
-4. **"Schedule a meeting tomorrow about overdue project work"** hits the scheduling branch (line 60–65 of `fallbackPlanner.ts`) instead of overdue tasks. The `promptLower.includes('schedule')` check fires first. Known bug; no fix here per rules.
-
-5. **MeetingNotesPanel is hardcoded** — ignores `clientId`; always shows Acme Corp Sept 24 notes. Will look wrong for non-Acme meeting prep.
-
-6. **EvidenceBasedInsightList is hardcoded** — always shows the same 3 insights regardless of data source or context.
-
-7. **`KNOWN_ENTITIES` is static** — if seed data changes, the prompt will drift. A `repository.getEntitySummary()` call at startup would fix this, but adds a boot-time dependency.
-
-8. **Groq free tier rate limits** — 8000 tokens/min. Complex prompts + repairs can exhaust the budget in 2 calls. The `pause()` in liveSmoke helps, but production will need a paid tier or queuing.
+| File | Current role/change |
+|------|---------------------|
+| [`server/src/services/ai/plannerPrompt.ts`](./server/src/services/ai/plannerPrompt.ts) | Workflow-specific selection rules and clearer, request-grounded component explanation instructions. |
+| [`server/src/services/ai/aiPlanner.test.ts`](./server/src/services/ai/aiPlanner.test.ts) | Regression assertions for the relevance-text instruction and the three workflow priorities. |
+| [`server/src/services/ai/aiPlanner.ts`](./server/src/services/ai/aiPlanner.ts) | Existing Groq-compatible LLM integration, cache handling, response validation flow, and deterministic fallback. |
+| [`server/src/services/ai/planValidator.ts`](./server/src/services/ai/planValidator.ts) | Validates planner output and preserves component explanations in the accepted plan. |
+| [`client/src/components/common/ComponentWrapper.tsx`](./client/src/components/common/ComponentWrapper.tsx) | Renders component-specific “Selection Rationale” text. |
+| [`client/src/components/general/WorkspaceExplanationPanel.tsx`](./client/src/components/general/WorkspaceExplanationPanel.tsx) | Renders overall workspace rationale. |

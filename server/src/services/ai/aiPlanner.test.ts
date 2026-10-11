@@ -69,6 +69,13 @@ test('prompt documents every component type', () => {
     assert.ok(p.includes(t), `prompt missing ${t}`);
   }
 });
+test('prompt anchors component selection and explanations to the requested workflow', () => {
+  const p = buildSystemPrompt();
+  assert.match(p, /"explanation" is user-facing relevance text/);
+  assert.match(p, /For client meeting preparation, prioritize ClientProfileCard, MeetingAgendaPanel, and CommunicationTimeline/);
+  assert.match(p, /For product-usage investigations, prioritize UsageTrendChart, FeatureAdoptionChart, ReleaseTimeline, and SupportIncidentList/);
+  assert.match(p, /For overdue-work reviews, prioritize OverdueTasksTable, PriorityDistributionChart, TeamWorkloadPanel, and DependencyIndicator/);
+});
 const rate = (retryAfter: string) =>
   Object.assign(new Error('429'), { isAxiosError: true, response: { status: 429, headers: { 'retry-after': retryAfter } } });
 

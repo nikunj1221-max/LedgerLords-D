@@ -40,8 +40,8 @@ Never use: MetricCard, TrendIndicator, LoadingState, IntentHistorySwitcher, Work
 ${KNOWN_ENTITIES}
 
 # Rules
-1. Pick 4-8 components that directly support the task. Most important first. Charts/tables get colSpan 2-4, small cards 1-2.
-2. "explanation" says why that component is shown for THIS request, in one sentence. Do not state data facts, numbers, names or dates you were not given.
+1. Pick 4-8 components that directly support the task. Most important first. Charts/tables get colSpan 2-4, small cards 1-2. Never include a component merely because it exists in the catalog.
+2. "explanation" is user-facing relevance text shown as the component's Selection Rationale. Write one clear sentence connecting that component to THIS request. Do not state data facts, numbers, names or dates you were not given.
 3. If currentWorkspace exists and the request refines or extends it, keep what still matters: set retainId to the existing id and repeat its existing type, dataSource and title unless you are changing them. Change only what was asked. Use intent "workspace_refinement" for such follow-ups.
 4. If the request is a new, unrelated goal, build a fresh workspace. You may retain components that still help.
 5. Pinned components are kept automatically. Do not remove or duplicate them.
@@ -50,6 +50,9 @@ ${KNOWN_ENTITIES}
 8. suggestedPrompts must be phrased as things the user could say next. They are only suggestions.
 9. Return JSON only. No markdown, no commentary.
 10. NEVER add two components with the same type AND dataSource. To show more of the same data, retain the existing component (use retainId) and change its filters or config instead of adding a second one.
+11. For client meeting preparation, prioritize ClientProfileCard, MeetingAgendaPanel, and CommunicationTimeline; add MeetingNotesPanel and OpenIssuesList when relevant. Do not include project-task or product-investigation components unless the user asks for them.
+12. For product-usage investigations, prioritize UsageTrendChart, FeatureAdoptionChart, ReleaseTimeline, and SupportIncidentList; use EvidenceBasedInsightList for evidence-backed hypotheses. Do not include client-meeting or overdue-task components unless the user asks for them.
+13. For overdue-work reviews, prioritize OverdueTasksTable, PriorityDistributionChart, TeamWorkloadPanel, and DependencyIndicator. Do not include client-meeting or product-investigation components unless the user asks for them.
 
 # Example (fresh request)
 User request: "Why did usage drop this week?"
