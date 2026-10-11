@@ -1,5 +1,5 @@
 import React from 'react';
-import { Sparkles, Menu, Sun, Moon, Trash2, LogOut, Upload } from 'lucide-react';
+import { Sparkles, Menu, Sun, Moon, Trash2, LogOut, Upload, Undo2, Redo2 } from 'lucide-react';
 import { useWorkspaceStore } from '../../store/workspaceStore';
 import { useAuthStore } from '../../store/authStore';
 
@@ -15,7 +15,12 @@ export const Header: React.FC<HeaderProps> = ({ onUploadData }) => {
     currentPlan,
     clearWorkspace,
     theme,
-    toggleTheme
+    toggleTheme,
+    undo,
+    redo,
+    undoStack,
+    redoStack,
+    isHistoryActionPending
   } = useWorkspaceStore();
   const { user, error: authError, signOut } = useAuthStore();
 
@@ -59,6 +64,30 @@ export const Header: React.FC<HeaderProps> = ({ onUploadData }) => {
           <Upload className="w-3.5 h-3.5 text-primary" />
           <span className="hidden sm:inline">Upload data</span>
         </button>
+        {(undoStack.length > 0 || redoStack.length > 0) && (
+          <div className="flex items-center gap-1">
+            <button
+              type="button"
+              onClick={() => void undo()}
+              disabled={!undoStack.length || isHistoryActionPending}
+              aria-label="Undo last change"
+              title="Undo last change"
+              className="p-2 rounded-lg text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-black/5 dark:hover:bg-white/5 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+            >
+              <Undo2 className="w-4 h-4" />
+            </button>
+            <button
+              type="button"
+              onClick={() => void redo()}
+              disabled={!redoStack.length || isHistoryActionPending}
+              aria-label="Redo last change"
+              title="Redo last change"
+              className="p-2 rounded-lg text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-black/5 dark:hover:bg-white/5 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+            >
+              <Redo2 className="w-4 h-4" />
+            </button>
+          </div>
+        )}
         {authError && (
           <span role="alert" className="max-w-48 text-[11px] text-coral">
             {authError}

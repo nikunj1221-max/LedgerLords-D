@@ -20,7 +20,7 @@ interface Incident {
 
 export const OpenIssuesList: React.FC<{ spec: ComponentSpec }> = ({ spec }) => {
   const [incidents, setIncidents] = useState<Incident[]>([]);
-  const { executeMockAction } = useWorkspaceStore();
+  const { incidentStatusById, setIncidentStatus } = useWorkspaceStore();
 
   const clientId = spec.config?.clientId;
   const filterStatus = spec.config?.filterStatus;
@@ -44,10 +44,14 @@ export const OpenIssuesList: React.FC<{ spec: ComponentSpec }> = ({ spec }) => {
       .catch(console.error);
   }, [clientId, filterStatus]);
 
-  const handleResolve = async (incidentId: string) => {
-    await executeMockAction('resolve_incident', { incidentId });
-    setIncidents(prev =>
-      prev.map(i => (i.id === incidentId || i.ticketNumber === incidentId ? { ...i, status: 'Resolved' } : i))
+  const handleStatusChange = async (incident: Incident) => {
+    const currentStatus = incidentStatusById[incident.id]
+      ?? incidentStatusById[incident.ticketNumber]
+      ?? incident.status;
+    await setIncidentStatus(
+      incident.id,
+      currentStatus,
+      currentStatus.toLowerCase() === 'resolved' ? 'Investigating' : 'Resolved'
     );
   };
 
@@ -58,7 +62,8 @@ export const OpenIssuesList: React.FC<{ spec: ComponentSpec }> = ({ spec }) => {
   return (
     <div className="space-y-2.5">
       {incidents.map(inc => {
-        const isResolved = inc.status === 'Resolved';
+        const status = incidentStatusById[inc.id] ?? incidentStatusById[inc.ticketNumber] ?? inc.status;
+        const isResolved = status.toLowerCase() === 'resolved';
         const isCritical = inc.priority === 'Critical';
 
         return (
@@ -100,15 +105,14 @@ export const OpenIssuesList: React.FC<{ spec: ComponentSpec }> = ({ spec }) => {
                   <CheckCircle className="w-3.5 h-3.5" />
                   Resolved
                 </span>
-              ) : (
-                <button
-                  onClick={() => handleResolve(inc.id)}
-                  className="px-2.5 py-1 rounded bg-white/10 hover:bg-mint hover:text-gray-900 text-gray-200 text-xs font-medium transition-colors flex items-center gap-1"
-                >
-                  <CheckCircle className="w-3 h-3" />
-                  Mark Resolved
-                </button>
-              )}
+              ) : null}
+              <button
+                onClick={() => void handleStatusChange(inc)}
+                className="px-2.5 py-1 rounded bg-white/10 hover:bg-mint hover:text-gray-900 text-gray-200 text-xs font-medium transition-colors flex items-center gap-1"
+              >
+                <CheckCircle className="w-3 h-3" />
+                {isResolved ? 'Reopen' : 'Mark Resolved'}
+              </button>
             </div>
           </div>
         );
