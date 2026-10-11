@@ -15,7 +15,13 @@ import { AuthScreen } from './components/auth/AuthScreen';
 import { useAuthStore } from './store/authStore';
 
 export const App: React.FC = () => {
-  const { status: authStatus, checkSession } = useAuthStore();
+  const {
+    status: authStatus,
+    user: authUser,
+    checkSession,
+    showAuthSuccessAnimation,
+    dismissAuthSuccessAnimation,
+  } = useAuthStore();
   const {
     currentPlan,
     isAdapting,
@@ -38,6 +44,12 @@ export const App: React.FC = () => {
     void checkSession();
   }, [checkSession]);
 
+  useEffect(() => {
+    if (!showAuthSuccessAnimation) return;
+    const timeout = window.setTimeout(dismissAuthSuccessAnimation, 2500);
+    return () => window.clearTimeout(timeout);
+  }, [showAuthSuccessAnimation, dismissAuthSuccessAnimation]);
+
   if (authStatus === 'checking') {
     return (
       <main className="min-h-screen bg-[var(--bg-color)] text-[var(--text-secondary)] flex items-center justify-center">
@@ -51,6 +63,27 @@ export const App: React.FC = () => {
 
   if (authStatus === 'unauthenticated' || authStatus === 'unavailable') {
     return <AuthScreen unavailable={authStatus === 'unavailable'} onRetry={() => void checkSession()} />;
+  }
+
+  if (showAuthSuccessAnimation) {
+    return (
+      <main
+        role="status"
+        aria-live="polite"
+        className="min-h-screen bg-[var(--bg-color)] text-[var(--text-primary)] flex flex-col items-center justify-center p-6"
+      >
+        <img
+          src="/loaders/successful_login.svg"
+          alt=""
+          className="h-56 w-56"
+        />
+        <p className="mt-2 text-sm font-medium text-[var(--text-secondary)]">
+          {authUser?.name
+            ? `Welcome, ${authUser.name}!`
+            : 'You’re signed in!'}
+        </p>
+      </main>
+    );
   }
 
   const visibleComponents = (isAdapting ? [] : currentPlan?.components || []).filter(

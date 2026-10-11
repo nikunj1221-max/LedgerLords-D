@@ -1,6 +1,7 @@
 import React, { FormEvent, useState } from 'react';
-import { LockKeyhole, Mail, Sparkles, UserRound } from 'lucide-react';
+import { LockKeyhole, Mail, Moon, Sparkles, Sun, UserRound } from 'lucide-react';
 import { useAuthStore } from '../../store/authStore';
+import { useWorkspaceStore } from '../../store/workspaceStore';
 
 interface AuthScreenProps {
   unavailable?: boolean;
@@ -14,6 +15,7 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({ unavailable = false, onR
   const [password, setPassword] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { error, signIn, signUp } = useAuthStore();
+  const { theme, toggleTheme } = useWorkspaceStore();
 
   const submit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -32,6 +34,28 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({ unavailable = false, onR
   return (
     <main className="min-h-screen bg-[var(--bg-color)] text-[var(--text-primary)] flex items-center justify-center p-5">
       <section className="w-full max-w-md">
+        <div className="mb-4 flex justify-end">
+          <button
+            type="button"
+            onClick={toggleTheme}
+            aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} theme`}
+            title={`Switch to ${theme === 'dark' ? 'Light Canvas' : 'Dark Plum'} Theme`}
+            className="flex items-center gap-1.5 rounded-lg border border-[var(--border-color)] bg-card px-3 py-1.5 text-xs font-medium text-[var(--text-primary)] transition-all hover:bg-card-hover"
+          >
+            {theme === 'dark' ? (
+              <>
+                <Sun className="h-3.5 w-3.5 text-amber-400" />
+                <span>Light</span>
+              </>
+            ) : (
+              <>
+                <Moon className="h-3.5 w-3.5 text-primary" />
+                <span>Dark</span>
+              </>
+            )}
+          </button>
+        </div>
+
         <div className="text-center mb-8">
           <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-primary to-teal-400 flex items-center justify-center shadow-lg mx-auto mb-4">
             <Sparkles className="w-6 h-6 text-white" />
@@ -64,6 +88,15 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({ unavailable = false, onR
               <p className="mt-1 text-sm text-[var(--text-secondary)]">
                 {isSignUp ? 'Sign up to access your workspace.' : 'Sign in to continue to your workspace.'}
               </p>
+
+              <div className="mt-4 flex h-40 w-full items-center justify-center sm:h-44">
+                <img
+                  src={isSignUp ? '/loaders/signup.svg' : '/loaders/login.svg'}
+                  alt=""
+                  aria-hidden="true"
+                  className="h-full max-h-full w-full max-w-full object-contain"
+                />
+              </div>
 
               <form className="mt-6 space-y-4" onSubmit={submit}>
                 {isSignUp && (

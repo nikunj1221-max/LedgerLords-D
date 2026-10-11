@@ -15,10 +15,12 @@ interface AuthState {
   status: AuthStatus;
   user: AuthUser | null;
   error: string | null;
+  showAuthSuccessAnimation: boolean;
   checkSession: () => Promise<void>;
   signIn: (email: string, password: string) => Promise<void>;
   signUp: (name: string, email: string, password: string) => Promise<void>;
   signOut: () => Promise<boolean>;
+  dismissAuthSuccessAnimation: () => void;
 }
 
 function getApiError(error: unknown): string {
@@ -32,6 +34,7 @@ export const useAuthStore = create<AuthState>(set => ({
   status: 'checking',
   user: null,
   error: null,
+  showAuthSuccessAnimation: false,
 
   checkSession: async () => {
     try {
@@ -50,7 +53,12 @@ export const useAuthStore = create<AuthState>(set => ({
     set({ error: null });
     try {
       const response = await axios.post('/api/auth/login', { email, password });
-      set({ status: 'authenticated', user: response.data.user, error: null });
+      set({
+        status: 'authenticated',
+        user: response.data.user,
+        error: null,
+        showAuthSuccessAnimation: true,
+      });
     } catch (error) {
       const message = getApiError(error);
       set({ error: message });
@@ -62,7 +70,12 @@ export const useAuthStore = create<AuthState>(set => ({
     set({ error: null });
     try {
       const response = await axios.post('/api/auth/signup', { name, email, password });
-      set({ status: 'authenticated', user: response.data.user, error: null });
+      set({
+        status: 'authenticated',
+        user: response.data.user,
+        error: null,
+        showAuthSuccessAnimation: true,
+      });
     } catch (error) {
       const message = getApiError(error);
       set({ error: message });
@@ -82,4 +95,6 @@ export const useAuthStore = create<AuthState>(set => ({
       return false;
     }
   },
+
+  dismissAuthSuccessAnimation: () => set({ showAuthSuccessAnimation: false }),
 }));
