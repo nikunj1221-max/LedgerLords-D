@@ -88,6 +88,7 @@ export const App: React.FC = () => {
     );
   }
 
+  
   if (!user?.onboardingComplete) {
     return (
       <DataOnboardingScreen
@@ -108,9 +109,9 @@ export const App: React.FC = () => {
         }}
         onCancel={() => setShowDataUpload(false)}
       />
-
     );
   }
+
 
   const visibleComponents = (isAdapting ? [] : currentPlan?.components || []).filter(
     c => !hiddenComponentIds.includes(c.id)
@@ -119,7 +120,7 @@ export const App: React.FC = () => {
   return (
     <div className="h-screen bg-[var(--bg-color)] text-[var(--text-primary)] flex flex-col font-sans transition-colors duration-200 overflow-hidden">
       {/* Top Application Bar */}
-      <Header onUploadData={() => setShowDataUpload(true)} />
+      <Header /* onUploadData={() => setShowDataUpload(true)} */ />
 
       {/* Main Layout */}
       <div className="flex-1 flex overflow-hidden">

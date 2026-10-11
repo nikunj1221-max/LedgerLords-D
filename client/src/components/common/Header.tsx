@@ -68,7 +68,7 @@ export const Header: React.FC<HeaderProps> = ({ onUploadData }) => {
   };
 
   return (
-    <header className="h-16 mt-4 px-4 md:px-6 border-b border-[var(--border-color)] bg-[var(--bg-color)]/90 backdrop-blur-md sticky top-0 z-40 transition-colors flex items-center justify-between shrink-0">
+    <header className="h-16 mt-4 px-4  md:px-6 border-b border-[var(--border-color)] bg-[var(--bg-color)]/90 backdrop-blur-md sticky top-0 z-40 transition-colors flex items-center justify-between shrink-0">
       {/* Left side: Brand */}
       <div className="flex items-center gap-2.5 sm:gap-3 shrink-0">
         <div className="flex items-center gap-2">
@@ -364,7 +364,7 @@ export const Header: React.FC<HeaderProps> = ({ onUploadData }) => {
 
       {/* Right controls: Theme quick-toggle & User avatar indicator */}
       <div className="flex items-center gap-2 shrink-0">
-        {onUploadData && (
+        {/* {onUploadData && (
           <button
             type="button"
             onClick={onUploadData}
@@ -374,7 +374,7 @@ export const Header: React.FC<HeaderProps> = ({ onUploadData }) => {
             <Upload className="w-3.5 h-3.5 text-primary" />
             <span className="hidden sm:inline">Upload data</span>
           </button>
-        )}
+        )} */}
 
         <button
           onClick={toggleTheme}
