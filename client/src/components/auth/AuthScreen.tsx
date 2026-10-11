@@ -1,5 +1,5 @@
 import React, { FormEvent, useState } from 'react';
-import { LockKeyhole, Mail, Moon, Sparkles, Sun, UserRound } from 'lucide-react';
+import { LockKeyhole, Mail, Moon, Sun, UserRound } from 'lucide-react';
 import { useAuthStore } from '../../store/authStore';
 import { useWorkspaceStore } from '../../store/workspaceStore';
 
@@ -57,13 +57,13 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({ unavailable = false, onR
         </div>
 
         <div className="text-center mb-8">
-          <div
-            style={{ background: 'linear-gradient(135deg, #fc5602 0%, #ffb703 100%)' }}
-            className="w-12 h-12 rounded-2xl flex items-center justify-center shadow-lg shadow-[#fc5602]/25 mx-auto mb-4"
-          >
-            <Sparkles className="w-6 h-6 text-white" />
+          <div className="mx-auto mb-4 flex justify-center">
+            <img
+              src="/saarthai-logo.jpg"
+              alt="SaarthAI"
+              className="h-auto w-56 max-w-full"
+            />
           </div>
-          <h1 className="text-2xl font-bold tracking-tight">NexusFlow</h1>
           <p className="mt-1 text-sm text-[var(--text-secondary)]">Adaptive AI Workspace</p>
         </div>
 
@@ -169,7 +169,7 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({ unavailable = false, onR
               </form>
 
               <p className="mt-6 text-center text-sm text-[var(--text-secondary)]">
-                {isSignUp ? 'Already have an account?' : 'New to NexusFlow?'}{' '}
+                {isSignUp ? 'Already have an account?' : 'New to SaarthAI?'}{' '}
                 <button
                   type="button"
                   onClick={() => setIsSignUp(!isSignUp)}
