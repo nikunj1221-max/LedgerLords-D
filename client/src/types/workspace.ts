@@ -13,6 +13,7 @@ export type ComponentType =
   | 'WorkspaceExplanationPanel'
   | 'IntentHistorySwitcher'
   | 'WorkspaceChangeSummary'
+  | 'UserDatasetTable'
   // Client & Comm
   | 'ClientProfileCard'
   | 'ClientHealthCard'

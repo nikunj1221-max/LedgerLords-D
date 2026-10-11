@@ -76,6 +76,27 @@ npm run dev # Starts Vite UI at http://localhost:5173
 
 Visit **`http://localhost:5173`** in your browser.
 
+### Personal data uploads
+
+After signing up (or signing in to an account that has not completed setup), upload a CSV with a header row or a JSON array of objects, or skip to the prompt workspace. Uploads are stored as private JSONB datasets associated with the signed-in user; they do not replace the shared demo datasets.
+
+On upload, the server groups rows by `source_file` when present and asks the configured AI provider to map each group to an existing business schema (such as `Client`, `Meeting`, or `UsageMetric`). The classifier receives at most two sample rows per group, with up to 30 non-empty fields per row and string values truncated to 120 characters. If no AI key is configured or classification fails, deterministic file-name and field-name mapping is used; unrecognized data remains available in the raw dataset table.
+
+When a schema is recognized, prompts such as product-usage investigation, client meeting preparation, and task review use the matching existing dashboard components. Their `/api/data/*` requests return only records from the signed-in user's uploads mapped to that schema; they do not read or mix in the shared demo rows. Accounts with no uploads receive an empty-data workspace and zero-valued overview metrics rather than demo content. Workspace planning receives dataset names, columns, counts, and recognized categories, but not record contents. All upload and data APIs remain authenticated and account-scoped.
+
+Use `server/data/all-demo-data-upload.json` to upload one combined JSON array containing all 356 records from the 13 business-data JSON files in `server/data/`. Each record includes `source_file` so you can tell which file it came from. Signed-in users can reopen the upload screen with the **Upload data** button in the app header.
+
+Sample row values may contain personal or confidential information. If configured, those bounded samples are transmitted to the AI provider (for example, Groq) solely to classify each group. The complete dataset is stored in the user's private JSONB dataset and is not sent to the AI planner when generating the dashboard.
+
+Before using the upload feature against Supabase, apply the Prisma schema:
+
+```bash
+npm run db:generate --workspace=server
+npm run db:push --workspace=server
+```
+
+Authenticated dataset endpoints are `GET /api/user-data` (list the signed-in user's datasets), `GET /api/user-data/:datasetId` (retrieve one dataset), and `POST /api/user-data` (save a CSV or JSON dataset). `POST /api/user-data/complete` records that the user skipped setup. Dataset IDs are always scoped to the current user.
+
 ---
 
 ## 🎯 Verification of All 10 Acceptance Tests

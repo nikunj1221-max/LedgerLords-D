@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { AlertCircle, CheckCircle, Search, Filter } from 'lucide-react';
+import { AlertCircle, Search, Filter } from 'lucide-react';
 import { ComponentSpec } from '../../types/workspace';
 import { useWorkspaceStore } from '../../store/workspaceStore';
 
@@ -23,7 +23,7 @@ export const SupportIncidentList: React.FC<{ spec: ComponentSpec }> = () => {
   const [incidents, setIncidents] = useState<SupportIncident[]>([]);
   const [priorityFilter, setPriorityFilter] = useState<string>('all');
   const [search, setSearch] = useState<string>('');
-  const { executeMockAction } = useWorkspaceStore();
+  const { incidentStatusById, setIncidentStatus } = useWorkspaceStore();
 
   useEffect(() => {
     axios
@@ -32,10 +32,14 @@ export const SupportIncidentList: React.FC<{ spec: ComponentSpec }> = () => {
       .catch(console.error);
   }, []);
 
-  const handleResolve = async (id: string) => {
-    await executeMockAction('resolve_incident', { incidentId: id });
-    setIncidents(prev =>
-      prev.map(i => (i.id === id || i.ticketNumber === id ? { ...i, status: 'Resolved' } : i))
+  const handleStatusChange = async (incident: SupportIncident) => {
+    const currentStatus = incidentStatusById[incident.id]
+      ?? incidentStatusById[incident.ticketNumber]
+      ?? incident.status;
+    await setIncidentStatus(
+      incident.id,
+      currentStatus,
+      currentStatus.toLowerCase() === 'resolved' ? 'Investigating' : 'Resolved'
     );
   };
 
@@ -105,7 +109,10 @@ export const SupportIncidentList: React.FC<{ spec: ComponentSpec }> = () => {
           </thead>
           <tbody className="divide-y divide-border/40 bg-card/60">
             {filtered.slice(0, 7).map(item => {
-              const isResolved = item.status === 'Resolved';
+              const status = incidentStatusById[item.id]
+                ?? incidentStatusById[item.ticketNumber]
+                ?? item.status;
+              const isResolved = status.toLowerCase() === 'resolved';
               return (
                 <tr key={item.id} className="hover:bg-plum-800/30 transition-colors">
                   <td className="py-2.5 px-3 font-mono font-bold text-gray-200">{item.ticketNumber}</td>
@@ -133,22 +140,16 @@ export const SupportIncidentList: React.FC<{ spec: ComponentSpec }> = () => {
                         isResolved ? 'text-mint' : 'text-gray-300'
                       }`}
                     >
-                      {item.status}
+                      {status}
                     </span>
                   </td>
                   <td className="py-2.5 px-3 text-right whitespace-nowrap">
-                    {isResolved ? (
-                      <span className="text-mint text-[11px] flex items-center justify-end gap-1">
-                        <CheckCircle className="w-3 h-3" /> Resolved
-                      </span>
-                    ) : (
-                      <button
-                        onClick={() => handleResolve(item.id)}
-                        className="px-2 py-1 rounded bg-white/10 hover:bg-mint hover:text-gray-900 text-gray-200 text-[11px] transition-colors"
-                      >
-                        Resolve
-                      </button>
-                    )}
+                    <button
+                      onClick={() => void handleStatusChange(item)}
+                      className="px-2 py-1 rounded bg-white/10 hover:bg-mint hover:text-gray-900 text-gray-200 text-[11px] transition-colors"
+                    >
+                      {isResolved ? 'Reopen' : 'Resolve'}
+                    </button>
                   </td>
                 </tr>
               );

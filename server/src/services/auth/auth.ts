@@ -12,11 +12,18 @@ export interface PublicUser {
   id: string;
   email: string;
   name: string;
+  onboardingComplete: boolean;
   createdAt: Date;
 }
 
 function toPublicUser(user: PublicUser): PublicUser {
-  return { id: user.id, email: user.email, name: user.name, createdAt: user.createdAt };
+  return {
+    id: user.id,
+    email: user.email,
+    name: user.name,
+    onboardingComplete: user.onboardingComplete,
+    createdAt: user.createdAt,
+  };
 }
 
 function getCookie(req: Request, name: string): string | undefined {

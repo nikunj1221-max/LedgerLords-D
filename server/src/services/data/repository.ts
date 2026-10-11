@@ -68,7 +68,7 @@ export interface SupportIncident {
   clientName: string;
   title: string;
   priority: 'Critical' | 'High' | 'Medium' | 'Low';
-  status: 'Investigating' | 'In Progress' | 'Resolved';
+  status: string;
   createdAt: string;
   resolvedAt: string | null;
   featureImpacted: string;
@@ -190,20 +190,26 @@ class DataRepository {
   }
 
   public async resolveIncident(id: string): Promise<SupportIncident | null> {
+    return this.setIncidentStatus(id, 'Resolved');
+  }
+
+  public async setIncidentStatus(id: string, status: string): Promise<SupportIncident | null> {
     const rows = await this.prisma.supportIncident.findMany();
     const match = rows
       .map(row => ({ row, incident: asRecord<SupportIncident>(row) }))
       .find(({ row, incident }) => row.id === id || incident.ticketNumber === id);
     if (!match) return null;
 
-    const resolved: SupportIncident = {
+    const updatedIncident: SupportIncident = {
       ...match.incident,
-      status: 'Resolved',
-      resolvedAt: new Date().toISOString(),
+      status,
+      resolvedAt: status.toLowerCase() === 'resolved'
+        ? match.incident.resolvedAt ?? new Date().toISOString()
+        : null,
     };
     const updated = await this.prisma.supportIncident.update({
       where: { id: match.row.id },
-      data: { payload: asPayload(resolved) },
+      data: { payload: asPayload(updatedIncident) },
     });
     return asRecord<SupportIncident>(updated);
   }
