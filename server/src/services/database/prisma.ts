@@ -8,7 +8,7 @@ if (!databaseUrl) {
 
 const connectionUrl = new URL(databaseUrl);
 if (!connectionUrl.searchParams.has('connection_limit')) {
-  connectionUrl.searchParams.set('connection_limit', '1');
+  connectionUrl.searchParams.set('connection_limit', '5');
 }
 
 export const prisma = new PrismaClient({

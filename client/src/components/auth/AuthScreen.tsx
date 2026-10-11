@@ -1,5 +1,5 @@
 import React, { FormEvent, useState } from 'react';
-import { LockKeyhole, Mail, Moon, Sparkles, Sun, UserRound } from 'lucide-react';
+import { LockKeyhole, Mail, Moon, Sun, UserRound } from 'lucide-react';
 import { useAuthStore } from '../../store/authStore';
 import { useWorkspaceStore } from '../../store/workspaceStore';
 
@@ -34,37 +34,24 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({ unavailable = false, onR
   return (
     <main className="min-h-screen bg-[var(--bg-color)] text-[var(--text-primary)] flex items-center justify-center p-5">
       <section className="w-full max-w-md">
-        <div className="mb-4 flex justify-end">
-          <button
-            type="button"
-            onClick={toggleTheme}
-            aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} theme`}
-            title={`Switch to ${theme === 'dark' ? 'Light Canvas' : 'Dark Plum'} Theme`}
-            className="flex items-center gap-1.5 rounded-lg border border-[var(--border-color)] bg-card px-3 py-1.5 text-xs font-medium text-[var(--text-primary)] transition-all hover:bg-card-hover"
-          >
-            {theme === 'dark' ? (
-              <>
-                <Sun className="h-3.5 w-3.5 text-amber-400" />
-                <span>Light</span>
-              </>
-            ) : (
-              <>
-                <Moon className="h-3.5 w-3.5 text-primary" />
-                <span>Dark</span>
-              </>
-            )}
-          </button>
-        </div>
+        
 
-        <div className="text-center mb-8">
-          <div
-            style={{ background: 'linear-gradient(135deg, #fc5602 0%, #ffb703 100%)' }}
-            className="w-12 h-12 rounded-2xl flex items-center justify-center shadow-lg shadow-[#fc5602]/25 mx-auto mb-4"
-          >
-            <Sparkles className="w-6 h-6 text-white" />
+        <div className="text-center mb-8 flex flex-col items-center">
+          <div className="inline-flex items-center justify-center px-4 py-2.5 rounded-2xl bg-white shadow-lg shadow-black/5 dark:shadow-[0_10px_30px_-5px_rgba(0,0,0,0.6)] transition-all hover:scale-[1.02]">
+            <img
+              src="/saarthai-logo.jpg"
+              alt="SaarthAI"
+              className="h-10 sm:h-12 w-auto object-contain"
+            />
           </div>
-          <h1 className="text-2xl font-bold tracking-tight">NexusFlow</h1>
-          <p className="mt-1 text-sm text-[var(--text-secondary)]">Adaptive AI Workspace</p>
+          <div className="flex items-center gap-2 mt-2">
+            <span className="text-[10px] sm:text-[11px] uppercase font-mono font-semibold px-2 py-0.5 rounded-full bg-black text-white dark:bg-white dark:text-black border border-primary/30 shadow-sm shrink-0">
+              v2.0
+            </span>
+            <p className="text-xs sm:text-sm font-medium text-[var(--text-secondary)]">
+              Adaptive AI Workspace
+            </p>
+          </div>
         </div>
 
         <div className="rounded-2xl border border-[var(--border-color)] bg-card p-6 md:p-8 shadow-xl">
@@ -169,7 +156,7 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({ unavailable = false, onR
               </form>
 
               <p className="mt-6 text-center text-sm text-[var(--text-secondary)]">
-                {isSignUp ? 'Already have an account?' : 'New to NexusFlow?'}{' '}
+                {isSignUp ? 'Already have an account?' : 'New to SaarthAI?'}{' '}
                 <button
                   type="button"
                   onClick={() => setIsSignUp(!isSignUp)}

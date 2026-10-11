@@ -24,7 +24,8 @@ The frontend, backend, LLM provider, and database configuration are supplied thr
 - **Loading feedback:** a replaceable SVG at `client/public/loaders/workspace-loading.svg` is shown while adapting. The workspace store enforces a minimum 700 ms loading display; longer backend requests continue to wait for their response. The SVG fill is `#0FC2E8`.
 - **Relevant navigation:** while a plan is active, the sidebar lists that plan's visible component sections and provides controls to scroll to each section.
 - **Previous results:** subsequent goals are stored in the in-memory workspace history and can be restored from the sidebar. This history is session-only and is cleared by Clear workspace.
-- **Follow-up actions:** `run_prompt` actions are sent through the normal goal-submission flow so a suggestion generates a new/refined workspace, instead of receiving only the generic mock-action response.
+- **Follow-up suggestions:** the active workspace shows up to three planner-provided follow-up prompts, supplemented with workflow-specific demo prompts if the planner returns fewer. Clicking one submits it through the regular workspace generation flow.
+- **Account data upload:** authenticated users can open the upload form from the navigation bar's Settings menu to upload a CSV (with headers) or JSON array for their account.
 - **Per-component rationale:** the component wrapper exposes each planner-generated explanation under “Selection Rationale”; the workspace explanation panel displays the plan-level rationale.
 
 ## 3. Project Structure and Request Flow
@@ -57,7 +58,9 @@ The frontend, backend, LLM provider, and database configuration are supplied thr
 - Reworked the sidebar around the current plan's components and added a “Previous results” section with prompt context, intent, time, and restore controls.
 - Added workspace clearing, including clearing the current/previous plan, history, pinned/hidden component state, and transient errors/notifications.
 - Removed static demo profile/notification/reset elements from the header as part of removing misleading generic demo content.
-- Corrected follow-up suggestion execution so `run_prompt` actions call the workspace goal-generation flow.
+- Added a Settings-menu action to open the existing authenticated CSV/JSON upload flow; completed uploads refresh the workspace state, and users can return without uploading.
+- Added up to three visible, clickable follow-up suggestions below the active workspace header. Planner-provided prompts are retained and missing suggestions are filled with relevant client-meeting, product-usage, overdue-work, or general prompts; refinement plans reuse the preceding workflow context.
+- Routed follow-up suggestion clicks directly through the workspace goal-generation flow.
 
 ### Planner and Groq integration
 
@@ -81,7 +84,7 @@ The frontend, backend, LLM provider, and database configuration are supplied thr
 - Added `prisma/seed.ts` to validate the local seed records and insert them into the corresponding Supabase tables. The seed was run by the user; it skips existing primary keys on repeated runs.
 - Replaced the JSON-file data repository with async Prisma-backed reads and writes. The existing `/api/data/*` response shapes and query filters are retained; task/incident updates and meeting creation now persist in PostgreSQL.
 - Updated data and action routes to await the repository and return explicit server errors if database operations fail. Deterministic fallback calculations for overview KPIs and overdue tasks now query the same database repository.
-- Configured the app's Prisma client to default its connection pool to one connection when `DATABASE_URL` has no `connection_limit`, avoiding exhausting the Supabase shared session-pooler connection limit during concurrent dashboard requests.
+- Configured the app's Prisma client to default its connection pool to five connections when `DATABASE_URL` has no `connection_limit`. This lets concurrent authenticated dashboard requests make progress while staying below the previously observed Supabase session-pooler cap of 15 connections; an explicit URL pool limit is preserved.
 - The raw files under `server/data/` remain the local source for seeding/re-seeding; runtime API reads no longer use them.
 
 ### Signup, login, and sessions

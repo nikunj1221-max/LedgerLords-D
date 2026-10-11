@@ -1,5 +1,5 @@
 import React, { FormEvent, useState } from 'react';
-import { Database, FileJson2, FileSpreadsheet, Loader2, Upload } from 'lucide-react';
+import { Database, FileJson2, FileSpreadsheet, Loader2, LogOut, Upload } from 'lucide-react';
 import { useAuthStore } from '../../store/authStore';
 
 interface DataOnboardingScreenProps {
@@ -8,7 +8,7 @@ interface DataOnboardingScreenProps {
 }
 
 export const DataOnboardingScreen: React.FC<DataOnboardingScreenProps> = ({ onComplete, onCancel }) => {
-  const { user, uploadDataset, completeOnboarding } = useAuthStore();
+  const { user, uploadDataset, completeOnboarding, signOut } = useAuthStore();
   const [file, setFile] = useState<File | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -47,10 +47,19 @@ export const DataOnboardingScreen: React.FC<DataOnboardingScreenProps> = ({ onCo
   return (
     <main className="min-h-screen bg-[var(--bg-color)] text-[var(--text-primary)] flex items-center justify-center p-5">
       <section className="w-full max-w-xl rounded-2xl border border-[var(--border-color)] bg-card p-6 shadow-xl md:p-9">
-        <div className="mb-6 flex h-12 w-12 items-center justify-center rounded-2xl bg-primary/15 text-primary">
-          <Database className="h-6 w-6" />
+        <div className="mb-6 flex items-center justify-between">
+          <div className="inline-flex items-center justify-center px-3.5 py-2 rounded-xl bg-white shadow-sm border border-slate-200/80 dark:border-white/10">
+            <img
+              src="/saarthai-logo.jpg"
+              alt="SaarthAI"
+              className="h-8 w-auto object-contain"
+            />
+          </div>
+          <span className="text-[10px] sm:text-[11px] uppercase font-mono font-semibold px-2 py-0.5 rounded-full bg-black text-white dark:bg-white dark:text-black border border-primary/30 shadow-sm shrink-0">
+            v2.0
+          </span>
         </div>
-        <p className="text-xs font-semibold uppercase tracking-[0.16em] text-primary">NexusFlow setup</p>
+        <p className="text-xs font-semibold uppercase tracking-[0.16em] text-primary">SaarthAI Workspace Setup</p>
         <h1 className="mt-2 text-2xl font-bold">Bring your data into your workspace</h1>
         <p className="mt-2 text-sm leading-6 text-[var(--text-secondary)]">
           Upload a CSV or JSON file to save a private dataset to your account. You can skip this and start with the prompt page instead.
@@ -101,6 +110,17 @@ export const DataOnboardingScreen: React.FC<DataOnboardingScreenProps> = ({ onCo
         >
           {onCancel ? 'Return to workspace' : 'Skip for now and go to prompts'}
         </button>
+
+        <div className="mt-4 flex items-center justify-center">
+          <button
+            type="button"
+            onClick={() => void signOut()}
+            className="flex items-center gap-1.5 text-xs text-[var(--text-muted)] hover:text-coral transition-colors font-medium"
+          >
+            <LogOut className="h-3.5 w-3.5" />
+            Sign out / Back to login
+          </button>
+        </div>
       </section>
     </main>
   );
