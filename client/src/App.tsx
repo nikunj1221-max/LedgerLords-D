@@ -123,9 +123,6 @@ export const App: React.FC = () => {
                     <h1 className="text-xl md:text-2xl font-bold tracking-tight text-[var(--text-primary)]">
                       {currentPlan.title}
                     </h1>
-                    <span className="text-xs font-mono font-semibold px-2.5 py-0.5 rounded-full bg-primary/15 text-primary border border-primary/30">
-                      {currentPlan.intentLabel}
-                    </span>
                   </div>
                   <p className="text-xs text-[var(--text-secondary)] mt-1.5 max-w-2xl leading-relaxed">
                     {currentPlan.subtitle}
@@ -133,23 +130,25 @@ export const App: React.FC = () => {
                 </div>
 
                 {/* Plan-specific Top Actions */}
-                {currentPlan.actions && currentPlan.actions.length > 0 && (
+                {currentPlan.actions && currentPlan.actions.filter(a => a.actionType !== 'inspect_ticket' && !a.label.includes('INC-1042')).length > 0 && (
                   <div className="flex items-center gap-2 flex-wrap">
-                    {currentPlan.actions.map(action => (
-                      <button
-                        key={action.id}
-                        onClick={() => executeMockAction(action.actionType, action.payload)}
-                        className={`px-3.5 py-2 rounded-xl text-xs font-semibold shadow-sm transition-all flex items-center gap-1.5 ${action.variant === 'primary'
-                            ? 'bg-primary hover:bg-primary-hover text-white shadow-glow-violet/30'
-                            : action.variant === 'secondary'
-                              ? 'bg-card hover:bg-plum-800 text-teal-600 dark:text-teal-300 border border-teal-500/30'
-                              : 'bg-card hover:bg-plum-800 text-[var(--text-primary)] border border-[var(--border-color)]'
-                          }`}
-                      >
-                        <Sparkles className="w-3.5 h-3.5 text-primary" />
-                        {action.label}
-                      </button>
-                    ))}
+                    {currentPlan.actions
+                      .filter(a => a.actionType !== 'inspect_ticket' && !a.label.includes('INC-1042'))
+                      .map(action => (
+                        <button
+                          key={action.id}
+                          onClick={() => executeMockAction(action.actionType, action.payload)}
+                          className={`px-3.5 py-2 rounded-xl text-xs font-semibold shadow-sm transition-all flex items-center gap-1.5 ${action.variant === 'primary'
+                              ? 'bg-primary hover:bg-primary-hover text-white shadow-glow-violet/30'
+                              : action.variant === 'secondary'
+                                ? 'bg-card hover:bg-plum-800 text-teal-600 dark:text-teal-300 border border-teal-500/30'
+                                : 'bg-card hover:bg-plum-800 text-[var(--text-primary)] border border-[var(--border-color)]'
+                            }`}
+                        >
+                          <Sparkles className="w-3.5 h-3.5 text-primary" />
+                          {action.label}
+                        </button>
+                      ))}
                   </div>
                 )}
               </div>

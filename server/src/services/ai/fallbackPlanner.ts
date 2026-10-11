@@ -277,8 +277,7 @@ export class FallbackPlanner {
       filters: { clientId: 'client-acme-corp' },
       actions: [
         { id: 'act-confirm-agenda', label: 'Confirm Meeting Agenda', variant: 'primary', actionType: 'confirm_agenda', payload: { meetingId: 'meet-1' } },
-        { id: 'act-copy-briefing', label: 'Copy Executive Briefing', variant: 'secondary', actionType: 'copy_briefing', payload: { client: 'Acme Corp' } },
-        { id: 'act-view-incidents', label: 'Inspect INC-1042 Ticket', variant: 'outline', actionType: 'inspect_ticket', payload: { ticketId: 'inc-1042' } }
+        { id: 'act-copy-briefing', label: 'Copy Executive Briefing', variant: 'secondary', actionType: 'copy_briefing', payload: { client: 'Acme Corp' } }
       ],
       explanations: {
         overallRationale: 'Assembled targeted client dossier, scheduled meeting agenda, previous executive agreements, and open support tickets for Sarah Jenkins.',

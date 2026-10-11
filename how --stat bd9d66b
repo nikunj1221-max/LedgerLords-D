@@ -1,0 +1,31 @@
+[33mcommit 590d404d2861857a3ad11257c1df79e7a591e674[m
+Author: Shreyash Banzal <shreyashbanzal@gmail.com>
+Date:   Sun Oct 11 10:26:39 2026 +0530
+
+    Add Supabase-backed authentication
+    
+    Co-authored-by: Copilot <223556219+Copilot@users.noreply.github.com>
+
+ .gitignore                                |   8 [32m+[m[31m-[m
+ client/src/App.tsx                        |  24 [32m+[m[31m-[m
+ client/src/components/auth/AuthScreen.tsx | 154 [32m+++++++++++[m
+ client/src/components/common/Header.tsx   |  22 [32m+[m[31m-[m
+ client/src/store/authStore.ts             |  85 [32m++++++[m
+ final_report.md                           |  76 [32m+++++[m[31m-[m
+ package-lock.json                         | 437 [32m+++++++++++++++++++++++++++++[m[31m-[m
+ server/data/ai-plan-cache.json            |   1 [31m-[m
+ server/package.json                       |  14 [32m+[m[31m-[m
+ server/prisma/schema.prisma               |  97 [32m+++++++[m
+ server/prisma/seed.ts                     |  93 [32m+++++++[m
+ server/src/app.ts                         |   4 [32m+[m
+ server/src/routes/actions.ts              |  12 [32m+[m[31m-[m
+ server/src/routes/auth.ts                 | 123 [32m+++++++++[m
+ server/src/routes/data.ts                 |  37 [32m+[m[31m--[m
+ server/src/services/ai/aiPlanner.test.ts  |   2 [32m+[m
+ server/src/services/ai/aiPlanner.ts       |   4 [32m+[m[31m-[m
+ server/src/services/ai/fallbackPlanner.ts |  10 [32m+[m[31m-[m
+ server/src/services/auth/auth.test.ts     |  27 [32m++[m
+ server/src/services/auth/auth.ts          | 130 [32m+++++++++[m
+ server/src/services/data/repository.ts    | 313 [32m+++++++++++[m[31m----------[m
+ server/src/services/database/prisma.ts    |  16 [32m++[m
+ 22 files changed, 1499 insertions(+), 190 deletions(-)
