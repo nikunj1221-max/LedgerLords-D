@@ -1,5 +1,6 @@
-import fs from 'fs';
-import path from 'path';
+import 'dotenv/config';
+import { Prisma } from '@prisma/client';
+import { prisma } from '../database/prisma';
 
 export interface Client {
   id: string;
@@ -76,204 +77,240 @@ export interface SupportIncident {
   description: string;
 }
 
+type StoredRecord = { id: string; payload: Prisma.JsonValue };
+
+function asRecord<T>(row: StoredRecord): T {
+  return JSON.parse(JSON.stringify(row.payload)) as T;
+}
+
+function asPayload(value: object): Prisma.InputJsonValue {
+  return JSON.parse(JSON.stringify(value)) as Prisma.InputJsonValue;
+}
+
 class DataRepository {
-  private baseDir: string;
-  private cache: Map<string, any> = new Map();
+  private readonly prisma = prisma;
 
-  constructor() {
-    const candidate1 = path.resolve(__dirname, '../../../data');
-    const candidate2 = path.resolve(__dirname, '../../../../data');
-    const candidate3 = path.resolve(process.cwd(), 'data');
-    const candidate4 = path.resolve(process.cwd(), 'server/data');
-
-    if (fs.existsSync(candidate1)) this.baseDir = candidate1;
-    else if (fs.existsSync(candidate4)) this.baseDir = candidate4;
-    else if (fs.existsSync(candidate2)) this.baseDir = candidate2;
-    else if (fs.existsSync(candidate3)) this.baseDir = candidate3;
-    else this.baseDir = candidate1;
+  public async getClients(): Promise<Client[]> {
+    const rows = await this.prisma.client.findMany();
+    return rows.map(row => asRecord<Client>(row));
   }
 
-  private loadFile<T>(filename: string): T {
-    if (this.cache.has(filename)) {
-      return this.cache.get(filename);
-    }
-    const fullPath = path.join(this.baseDir, filename);
-    if (!fs.existsSync(fullPath)) {
-      console.warn(`File not found: ${fullPath}`);
-      return [] as unknown as T;
-    }
-    try {
-      const content = fs.readFileSync(fullPath, 'utf-8');
-      const data = JSON.parse(content);
-      this.cache.set(filename, data);
-      return data;
-    } catch (err) {
-      console.error(`Error loading ${filename}:`, err);
-      return [] as unknown as T;
-    }
-  }
-
-  public getClients(): Client[] {
-    return this.loadFile<Client[]>('clients.json');
-  }
-
-  public getClientById(id: string): Client | undefined {
-    return this.getClients().find(c => c.id.toLowerCase() === id.toLowerCase() || c.shortName.toLowerCase() === id.toLowerCase());
-  }
-
-  public findClientsByName(nameQuery: string): Client[] {
-    const q = nameQuery.toLowerCase().trim();
-    return this.getClients().filter(c => 
-      c.name.toLowerCase().includes(q) || 
-      c.shortName.toLowerCase().includes(q)
+  public async getClientById(id: string): Promise<Client | undefined> {
+    const normalizedId = id.toLowerCase();
+    return (await this.getClients()).find(client =>
+      client.id.toLowerCase() === normalizedId ||
+      client.shortName.toLowerCase() === normalizedId
     );
   }
 
-  public getCommunications(clientId?: string) {
-    const comms = this.loadFile<any[]>('communications.json');
-    if (clientId) {
-      return comms.filter(c => c.clientId === clientId || c.clientName?.toLowerCase().includes(clientId.toLowerCase()));
-    }
-    return comms;
+  public async findClientsByName(nameQuery: string): Promise<Client[]> {
+    const query = nameQuery.toLowerCase().trim();
+    return (await this.getClients()).filter(client =>
+      client.name.toLowerCase().includes(query) ||
+      client.shortName.toLowerCase().includes(query)
+    );
   }
 
-  public getMeetings(clientId?: string, dateFilter?: string): Meeting[] {
-    const meets = this.loadFile<Meeting[]>('meetings.json');
-    let res = meets;
+  public async getCommunications(clientId?: string): Promise<any[]> {
+    const rows = await this.prisma.communication.findMany();
+    const records = rows.map(row => asRecord<any>(row));
+    if (!clientId) return records;
+    const query = clientId.toLowerCase();
+    return records.filter(record =>
+      record.clientId === clientId ||
+      record.clientName?.toLowerCase().includes(query)
+    );
+  }
+
+  public async getMeetings(clientId?: string, dateFilter?: string): Promise<Meeting[]> {
+    const rows = await this.prisma.meeting.findMany();
+    let meetings = rows.map(row => asRecord<Meeting>(row));
     if (clientId) {
-      res = res.filter(m => m.clientId === clientId || m.clientName?.toLowerCase().includes(clientId.toLowerCase()));
+      const query = clientId.toLowerCase();
+      meetings = meetings.filter(meeting =>
+        meeting.clientId === clientId ||
+        meeting.clientName?.toLowerCase().includes(query)
+      );
     }
     if (dateFilter) {
-      res = res.filter(m => m.startTime.startsWith(dateFilter));
+      meetings = meetings.filter(meeting => meeting.startTime.startsWith(dateFilter));
     }
-    return res;
+    return meetings;
   }
 
-  public addMeeting(newMeeting: Meeting): Meeting {
-    const meets = this.loadFile<Meeting[]>('meetings.json');
-    meets.unshift(newMeeting);
-    this.cache.set('meetings.json', meets);
+  public async addMeeting(newMeeting: Meeting): Promise<Meeting> {
+    await this.prisma.meeting.create({
+      data: { id: newMeeting.id, payload: asPayload(newMeeting) },
+    });
     return newMeeting;
   }
 
-  public getUsageMetrics(days: number = 90) {
-    const metrics = this.loadFile<any[]>('usage-metrics.json');
-    if (days < metrics.length) {
-      return metrics.slice(-days);
-    }
+  public async getUsageMetrics(days = 90): Promise<any[]> {
+    const rows = await this.prisma.usageMetric.findMany({ orderBy: { id: 'asc' } });
+    const metrics = rows.map(row => asRecord<any>(row));
+    if (days < metrics.length) return metrics.slice(-days);
     return metrics;
   }
 
-  public getFeatureAdoption() {
-    return this.loadFile<any[]>('feature-adoption.json');
+  public async getFeatureAdoption(): Promise<any[]> {
+    const rows = await this.prisma.featureAdoption.findMany();
+    return rows.map(row => asRecord<any>(row));
   }
 
-  public getReleases() {
-    return this.loadFile<any[]>('releases.json');
+  public async getReleases(): Promise<any[]> {
+    const rows = await this.prisma.release.findMany();
+    return rows.map(row => asRecord<any>(row));
   }
 
-  public getSupportIncidents(clientId?: string, priority?: string, status?: string): SupportIncident[] {
-    let incidents = this.loadFile<SupportIncident[]>('support-incidents.json');
+  public async getSupportIncidents(
+    clientId?: string,
+    priority?: string,
+    status?: string
+  ): Promise<SupportIncident[]> {
+    const rows = await this.prisma.supportIncident.findMany();
+    let incidents = rows.map(row => asRecord<SupportIncident>(row));
     if (clientId) {
-      incidents = incidents.filter(i => i.clientId === clientId || i.clientName.toLowerCase().includes(clientId.toLowerCase()));
+      const query = clientId.toLowerCase();
+      incidents = incidents.filter(incident =>
+        incident.clientId === clientId ||
+        incident.clientName.toLowerCase().includes(query)
+      );
     }
     if (priority) {
-      incidents = incidents.filter(i => i.priority.toLowerCase() === priority.toLowerCase());
+      incidents = incidents.filter(incident =>
+        incident.priority.toLowerCase() === priority.toLowerCase()
+      );
     }
     if (status) {
-      incidents = incidents.filter(i => i.status.toLowerCase() === status.toLowerCase());
+      incidents = incidents.filter(incident =>
+        incident.status.toLowerCase() === status.toLowerCase()
+      );
     }
     return incidents;
   }
 
-  public resolveIncident(id: string): SupportIncident | null {
-    const incidents = this.loadFile<SupportIncident[]>('support-incidents.json');
-    const inc = incidents.find(i => i.id === id || i.ticketNumber === id);
-    if (inc) {
-      inc.status = 'Resolved';
-      inc.resolvedAt = new Date().toISOString();
-      this.cache.set('support-incidents.json', incidents);
-      return inc;
-    }
-    return null;
+  public async resolveIncident(id: string): Promise<SupportIncident | null> {
+    const rows = await this.prisma.supportIncident.findMany();
+    const match = rows
+      .map(row => ({ row, incident: asRecord<SupportIncident>(row) }))
+      .find(({ row, incident }) => row.id === id || incident.ticketNumber === id);
+    if (!match) return null;
+
+    const resolved: SupportIncident = {
+      ...match.incident,
+      status: 'Resolved',
+      resolvedAt: new Date().toISOString(),
+    };
+    const updated = await this.prisma.supportIncident.update({
+      where: { id: match.row.id },
+      data: { payload: asPayload(resolved) },
+    });
+    return asRecord<SupportIncident>(updated);
   }
 
-  public getProjects(clientId?: string) {
-    const projs = this.loadFile<any[]>('projects.json');
-    if (clientId) {
-      return projs.filter(p => p.clientId === clientId || p.clientName?.toLowerCase().includes(clientId.toLowerCase()));
-    }
-    return projs;
+  public async getProjects(clientId?: string): Promise<any[]> {
+    const rows = await this.prisma.project.findMany();
+    const projects = rows.map(row => asRecord<any>(row));
+    if (!clientId) return projects;
+    const query = clientId.toLowerCase();
+    return projects.filter(project =>
+      project.clientId === clientId ||
+      project.clientName?.toLowerCase().includes(query)
+    );
   }
 
-  public getTasks(filters?: { priority?: string; status?: string; projectId?: string; isOverdue?: boolean }): Task[] {
-    let tasks = this.loadFile<Task[]>('tasks.json');
+  public async getTasks(filters?: {
+    priority?: string;
+    status?: string;
+    projectId?: string;
+    isOverdue?: boolean;
+  }): Promise<Task[]> {
+    const rows = await this.prisma.task.findMany();
+    let tasks = rows.map(row => asRecord<Task>(row));
     if (!filters) return tasks;
 
     if (filters.priority) {
-      tasks = tasks.filter(t => t.priority.toLowerCase() === filters.priority?.toLowerCase());
+      tasks = tasks.filter(task =>
+        task.priority.toLowerCase() === filters.priority?.toLowerCase()
+      );
     }
     if (filters.status) {
-      tasks = tasks.filter(t => t.status.toLowerCase() === filters.status?.toLowerCase());
+      tasks = tasks.filter(task =>
+        task.status.toLowerCase() === filters.status?.toLowerCase()
+      );
     }
     if (filters.projectId) {
-      tasks = tasks.filter(t => t.projectId === filters.projectId);
+      tasks = tasks.filter(task => task.projectId === filters.projectId);
     }
     if (filters.isOverdue) {
-      tasks = tasks.filter(t => t.status === 'Overdue' || (t.dueDate < '2026-10-10' && t.status !== 'Completed'));
+      tasks = tasks.filter(task =>
+        task.status === 'Overdue' ||
+        (task.dueDate < '2026-10-10' && task.status !== 'Completed')
+      );
     }
     return tasks;
   }
 
-  public updateTask(taskId: string, updates: Partial<Task>): Task | null {
-    const tasks = this.loadFile<Task[]>('tasks.json');
-    const task = tasks.find(t => t.id === taskId);
-    if (task) {
-      Object.assign(task, updates);
-      this.cache.set('tasks.json', tasks);
-      return task;
+  public async updateTask(taskId: string, updates: Partial<Task>): Promise<Task | null> {
+    const row = await this.prisma.task.findUnique({ where: { id: taskId } });
+    if (!row) return null;
+
+    const updatedTask = { ...asRecord<Task>(row), ...updates };
+    const updated = await this.prisma.task.update({
+      where: { id: taskId },
+      data: { payload: asPayload(updatedTask) },
+    });
+    return asRecord<Task>(updated);
+  }
+
+  public async getEmployees(): Promise<any[]> {
+    const rows = await this.prisma.employee.findMany();
+    return rows.map(row => asRecord<any>(row));
+  }
+
+  public async getAvailability(date?: string, employeeIds?: string[]): Promise<any[]> {
+    const rows = await this.prisma.availability.findMany();
+    let availability = rows.map(row => asRecord<any>(row));
+    if (date) availability = availability.filter(record => record.date === date);
+    if (employeeIds?.length) {
+      availability = availability.filter(record => employeeIds.includes(record.employeeId));
     }
-    return null;
+    return availability;
   }
 
-  public getEmployees() {
-    return this.loadFile<any[]>('employees.json');
+  public async getActivities(): Promise<any[]> {
+    const rows = await this.prisma.activity.findMany();
+    return rows.map(row => asRecord<any>(row));
   }
 
-  public getAvailability(date?: string, employeeIds?: string[]) {
-    let avail = this.loadFile<any[]>('availability.json');
-    if (date) {
-      avail = avail.filter(a => a.date === date);
-    }
-    if (employeeIds && employeeIds.length > 0) {
-      avail = avail.filter(a => employeeIds.includes(a.employeeId));
-    }
-    return avail;
+  public async getRecommendations(): Promise<any[]> {
+    const rows = await this.prisma.recommendation.findMany();
+    return rows.map(row => asRecord<any>(row));
   }
 
-  public getActivities() {
-    return this.loadFile<any[]>('activities.json');
-  }
+  public async getOverviewKPIs() {
+    const [clients, tasks, incidents, usage, meetings] = await Promise.all([
+      this.getClients(),
+      this.getTasks(),
+      this.getSupportIncidents(),
+      this.getUsageMetrics(7),
+      this.getMeetings(),
+    ]);
 
-  public getRecommendations() {
-    return this.loadFile<any[]>('recommendations.json');
-  }
-
-  // General business overview KPIs derived directly from datasets
-  public getOverviewKPIs() {
-    const clients = this.getClients();
-    const tasks = this.getTasks();
-    const incidents = this.getSupportIncidents();
-    const usage = this.getUsageMetrics(7);
-    const meetings = this.getMeetings();
-
-    const totalMrr = clients.reduce((sum, c) => sum + (c.mrr || 0), 0);
-    const avgHealth = Math.round(clients.reduce((sum, c) => sum + (c.healthScore || 0), 0) / clients.length);
-    const overdueTasks = tasks.filter(t => t.status === 'Overdue' || (t.dueDate < '2026-10-10' && t.status !== 'Completed'));
-    const criticalIncidents = incidents.filter(i => i.priority === 'Critical' && i.status !== 'Resolved');
-    const latestDau = usage.length > 0 ? usage[usage.length - 1].dailyActiveUsers : 10800;
+    const totalMrr = clients.reduce((sum, client) => sum + (client.mrr || 0), 0);
+    const avgHealth = clients.length
+      ? Math.round(clients.reduce((sum, client) => sum + (client.healthScore || 0), 0) / clients.length)
+      : 0;
+    const overdueTasks = tasks.filter(task =>
+      task.status === 'Overdue' ||
+      (task.dueDate < '2026-10-10' && task.status !== 'Completed')
+    );
+    const criticalIncidents = incidents.filter(incident =>
+      incident.priority === 'Critical' && incident.status !== 'Resolved'
+    );
+    const latestDau = usage.length ? usage[usage.length - 1].dailyActiveUsers : 10800;
     const previousDau = usage.length > 1 ? usage[usage.length - 2].dailyActiveUsers : 11200;
-    const upcomingMeetings = meetings.filter(m => m.status === 'Scheduled');
+    const upcomingMeetings = meetings.filter(meeting => meeting.status === 'Scheduled');
 
     return {
       totalMrr,
@@ -281,9 +318,11 @@ class DataRepository {
       overdueTaskCount: overdueTasks.length,
       criticalIncidentCount: criticalIncidents.length,
       dailyActiveUsers: latestDau,
-      dauChangePercent: Number((((latestDau - previousDau) / previousDau) * 100).toFixed(1)),
+      dauChangePercent: previousDau
+        ? Number((((latestDau - previousDau) / previousDau) * 100).toFixed(1))
+        : 0,
       upcomingMeetingCount: upcomingMeetings.length,
-      activeClientCount: clients.length
+      activeClientCount: clients.length,
     };
   }
 }

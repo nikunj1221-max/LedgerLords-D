@@ -5,6 +5,8 @@ node_modules/
 dist/
 client/dist/
 server/dist/
+coverage/
+*.tsbuildinfo
 
 # Local environment variables and secrets
 .env
@@ -16,4 +18,8 @@ server/.env.*
 
 # Local logs and generated planner cache
 *.log
-server/ai-plan-cache.json
+server/data/ai-plan-cache.json
+
+# OS metadata
+.DS_Store
+Thumbs.db

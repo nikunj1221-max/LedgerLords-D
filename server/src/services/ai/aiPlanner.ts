@@ -236,9 +236,9 @@ export class AIPlannerService {
     return r.ok ? { ok: true, plan: r.plan } : { ok: false, issues: r.issues };
   }
 
-  private fallback(input: PlannerInput, reason: string, attempts: number): PlannerResult {
+  private async fallback(input: PlannerInput, reason: string, attempts: number): Promise<PlannerResult> {
     console.log(`ℹ️  Using deterministic planner: ${reason}`);
-    return { plan: fallbackPlanner.plan(input), provider: 'deterministic', attempts, fallbackReason: reason };
+    return { plan: await fallbackPlanner.plan(input), provider: 'deterministic', attempts, fallbackReason: reason };
   }
 
   // Never include the Authorization header or the key in logs.

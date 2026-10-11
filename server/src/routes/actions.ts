@@ -3,7 +3,7 @@ import { repository } from '../services/data/repository';
 
 const router = Router();
 
-router.post('/:actionId', (req: Request, res: Response) => {
+router.post('/:actionId', async (req: Request, res: Response) => {
   const { actionId } = req.params;
   const payload = req.body || {};
 
@@ -11,7 +11,7 @@ router.post('/:actionId', (req: Request, res: Response) => {
     switch (actionId) {
       case 'confirm_mock_meeting': {
         const { title, date, time, attendees, agenda, relatedProject } = payload;
-        const newMeeting = repository.addMeeting({
+        const newMeeting = await repository.addMeeting({
           id: `meet-mock-${Date.now()}`,
           title: title || 'NexusFlow 3.0 Launch Readiness',
           clientId: null,
@@ -47,7 +47,7 @@ router.post('/:actionId', (req: Request, res: Response) => {
         const { taskId } = payload;
         if (!taskId) return res.status(400).json({ error: 'taskId required' });
 
-        const updated = repository.updateTask(taskId, { status: 'Completed' });
+        const updated = await repository.updateTask(taskId, { status: 'Completed' });
         if (!updated) return res.status(404).json({ error: `Task ${taskId} not found` });
 
         return res.json({
@@ -61,7 +61,7 @@ router.post('/:actionId', (req: Request, res: Response) => {
         const { taskId, priority } = payload;
         if (!taskId || !priority) return res.status(400).json({ error: 'taskId and priority required' });
 
-        const updated = repository.updateTask(taskId, { priority });
+        const updated = await repository.updateTask(taskId, { priority });
         return res.json({
           success: true,
           message: `Task priority updated to ${priority}.`,
@@ -71,7 +71,7 @@ router.post('/:actionId', (req: Request, res: Response) => {
 
       case 'resolve_incident': {
         const { incidentId } = payload;
-        const resolved = repository.resolveIncident(incidentId);
+        const resolved = await repository.resolveIncident(incidentId);
         if (!resolved) return res.status(404).json({ error: `Incident ${incidentId} not found` });
 
         return res.json({
@@ -104,7 +104,7 @@ router.post('/:actionId', (req: Request, res: Response) => {
       }
     }
   } catch (error: any) {
-    console.error(`Error executing action ${actionId}:`, error);
+    console.error(`Error executing action ${actionId} using Supabase:`, error);
     res.status(500).json({ error: `Action ${actionId} failed`, details: error.message });
   }
 });

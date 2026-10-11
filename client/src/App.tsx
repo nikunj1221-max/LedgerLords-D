@@ -10,9 +10,12 @@ import { ComponentWrapper } from './components/common/ComponentWrapper';
 import { ClarificationModal } from './components/common/ClarificationModal';
 import { NotificationToast } from './components/common/NotificationToast';
 import { getComponentForType } from './components/registry';
-import { Eye, Sparkles } from 'lucide-react';
+import { Eye, Loader2, Sparkles } from 'lucide-react';
+import { AuthScreen } from './components/auth/AuthScreen';
+import { useAuthStore } from './store/authStore';
 
 export const App: React.FC = () => {
+  const { status: authStatus, checkSession } = useAuthStore();
   const {
     currentPlan,
     isAdapting,
@@ -30,6 +33,25 @@ export const App: React.FC = () => {
       document.documentElement.classList.remove('dark');
     }
   }, [theme]);
+
+  useEffect(() => {
+    void checkSession();
+  }, [checkSession]);
+
+  if (authStatus === 'checking') {
+    return (
+      <main className="min-h-screen bg-[var(--bg-color)] text-[var(--text-secondary)] flex items-center justify-center">
+        <div className="flex items-center gap-3 text-sm">
+          <Loader2 className="h-5 w-5 animate-spin text-primary" />
+          Checking your session…
+        </div>
+      </main>
+    );
+  }
+
+  if (authStatus === 'unauthenticated' || authStatus === 'unavailable') {
+    return <AuthScreen unavailable={authStatus === 'unavailable'} onRetry={() => void checkSession()} />;
+  }
 
   const visibleComponents = (isAdapting ? [] : currentPlan?.components || []).filter(
     c => !hiddenComponentIds.includes(c.id)

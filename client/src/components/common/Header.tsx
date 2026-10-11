@@ -1,6 +1,7 @@
 import React from 'react';
-import { Sparkles, Menu, Sun, Moon, Trash2 } from 'lucide-react';
+import { Sparkles, Menu, Sun, Moon, Trash2, LogOut } from 'lucide-react';
 import { useWorkspaceStore } from '../../store/workspaceStore';
+import { useAuthStore } from '../../store/authStore';
 
 export const Header: React.FC = () => {
   const {
@@ -12,6 +13,7 @@ export const Header: React.FC = () => {
     theme,
     toggleTheme
   } = useWorkspaceStore();
+  const { user, error: authError, signOut } = useAuthStore();
 
   return (
     <header className="h-16 px-6 border-b border-[var(--border-color)] bg-[var(--bg-color)]/95 backdrop-blur-md flex items-center justify-between sticky top-0 z-30 transition-colors">
@@ -44,6 +46,24 @@ export const Header: React.FC = () => {
 
       {/* Right controls */}
       <div className="flex items-center gap-3">
+        {authError && (
+          <span role="alert" className="max-w-48 text-[11px] text-coral">
+            {authError}
+          </span>
+        )}
+        <div className="hidden text-right sm:block">
+          <div className="text-xs font-medium text-[var(--text-primary)]">{user?.name}</div>
+          <div className="text-[10px] text-[var(--text-muted)]">{user?.email}</div>
+        </div>
+        <button
+          type="button"
+          onClick={() => void signOut()}
+          title={authError || 'Sign out'}
+          className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-card hover:bg-card-hover text-xs text-[var(--text-primary)] border border-[var(--border-color)] transition-all font-medium"
+        >
+          <LogOut className="w-3.5 h-3.5" />
+          <span className="hidden sm:inline">Sign out</span>
+        </button>
         {/* Theme Toggle Button */}
         <button
           onClick={toggleTheme}

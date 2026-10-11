@@ -4,6 +4,8 @@ import { ComponentTypeSchema } from '../../schemas/uiPlan';
 import { AIPlannerService, PostFn } from './aiPlanner';
 import { buildSystemPrompt } from './plannerPrompt';
 
+delete process.env.AI_CACHE_FILE;
+
 const draft = (over: Record<string, unknown> = {}) => JSON.stringify({
   intent: 'overdue_tasks_triage', intentLabel: 'Overdue triage', title: 'Overdue work', subtitle: '',
   components: [{ type: 'OverdueTasksTable', title: 'Overdue tasks', dataSource: 'tasks', colSpan: 4, explanation: 'Lists late work.' }],

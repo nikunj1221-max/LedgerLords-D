@@ -13,7 +13,7 @@ export interface PlannerInput {
 }
 
 export class FallbackPlanner {
-  public plan(input: PlannerInput): UIPlan {
+  public async plan(input: PlannerInput): Promise<UIPlan> {
     const prompt = (input.prompt || '').trim();
     const promptLower = prompt.toLowerCase();
     const prevPlan = input.previousPlan;
@@ -98,8 +98,8 @@ export class FallbackPlanner {
   }
 
   // 1. Generic Overview
-  public buildGenericOverviewPlan(prompt: string, prevPlan?: UIPlan | null, pinnedIds: string[] = []): UIPlan {
-    const kpis = repository.getOverviewKPIs();
+  public async buildGenericOverviewPlan(prompt: string, prevPlan?: UIPlan | null, pinnedIds: string[] = []): Promise<UIPlan> {
+    const kpis = await repository.getOverviewKPIs();
     const components: ComponentSpec[] = [
       {
         id: 'overview-metric-mrr',
@@ -483,8 +483,8 @@ export class FallbackPlanner {
   }
 
   // 4. Overdue Tasks Plan
-  public buildOverdueTasksPlan(prompt: string, prevPlan?: UIPlan | null, pinnedIds: string[] = []): UIPlan {
-    const overdueTasks = repository.getTasks({ isOverdue: true });
+  public async buildOverdueTasksPlan(prompt: string, prevPlan?: UIPlan | null, pinnedIds: string[] = []): Promise<UIPlan> {
+    const overdueTasks = await repository.getTasks({ isOverdue: true });
     const criticalOverdue = overdueTasks.filter(t => t.priority === 'Critical');
 
     const components: ComponentSpec[] = [
