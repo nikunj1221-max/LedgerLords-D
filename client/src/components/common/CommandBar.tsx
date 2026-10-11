@@ -53,11 +53,16 @@ export const CommandBar: React.FC = () => {
           <button
             onClick={handleSend}
             disabled={!input.trim() || isAdapting}
+            style={
+              input.trim() && !isAdapting
+                ? { background: 'linear-gradient(135deg, #471ca8 0%, #884ab2 50%, #ff8008 100%)' }
+                : undefined
+            }
             className={`rounded-xl font-semibold flex items-center gap-2 transition-all shrink-0 ${
               isInitial ? 'px-5 py-3 text-sm md:text-base' : 'px-4 py-2.5 text-xs md:text-sm'
             } ${
               input.trim() && !isAdapting
-                ? 'bg-gradient-to-r from-primary to-teal-400 text-white shadow-md hover:opacity-95'
+                ? 'text-white shadow-md hover:opacity-95 shadow-[#471ca8]/30'
                 : 'bg-black/5 dark:bg-white/5 text-[var(--text-muted)] cursor-not-allowed'
             }`}
           >

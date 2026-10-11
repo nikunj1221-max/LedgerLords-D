@@ -5,7 +5,6 @@ import { Header } from './components/common/Header';
 import { Sidebar } from './components/common/Sidebar';
 import { CommandBar } from './components/common/CommandBar';
 import { WorkspaceExplanationPanel } from './components/general/WorkspaceExplanationPanel';
-import { WorkspaceChangeSummary } from './components/general/WorkspaceChangeSummary';
 import { ComponentWrapper } from './components/common/ComponentWrapper';
 import { ClarificationModal } from './components/common/ClarificationModal';
 import { NotificationToast } from './components/common/NotificationToast';
@@ -58,7 +57,7 @@ export const App: React.FC = () => {
   );
 
   return (
-    <div className="min-h-screen bg-[var(--bg-color)] text-[var(--text-primary)] flex flex-col font-sans transition-colors duration-200">
+    <div className="h-screen bg-[var(--bg-color)] text-[var(--text-primary)] flex flex-col font-sans transition-colors duration-200 overflow-hidden">
       {/* Top Application Bar */}
       <Header />
 
@@ -69,9 +68,8 @@ export const App: React.FC = () => {
 
         {/* Dynamic Workspace Canvas */}
         <main
-          className={`flex-1 overflow-y-auto p-4 md:p-8 bg-transparent ${
-            !currentPlan && !isAdapting ? 'flex items-center' : ''
-          }`}
+          className={`flex-1 overflow-y-auto p-4 md:p-8 bg-transparent ${!currentPlan && !isAdapting ? 'flex items-center' : ''
+            }`}
         >
           <div className={`w-full max-w-7xl mx-auto space-y-6 ${!currentPlan && !isAdapting ? 'lg:max-w-4xl' : ''}`}>
             {/* Natural-Language Command Bar */}
@@ -83,9 +81,6 @@ export const App: React.FC = () => {
                 <span>{error}</span>
               </div>
             )}
-
-            {/* Workspace Change Summary */}
-            <WorkspaceChangeSummary />
 
             {/* Active Workspace Header & Quick Actions */}
             {currentPlan && !isAdapting && (
@@ -111,13 +106,12 @@ export const App: React.FC = () => {
                       <button
                         key={action.id}
                         onClick={() => executeMockAction(action.actionType, action.payload)}
-                        className={`px-3.5 py-2 rounded-xl text-xs font-semibold shadow-sm transition-all flex items-center gap-1.5 ${
-                          action.variant === 'primary'
+                        className={`px-3.5 py-2 rounded-xl text-xs font-semibold shadow-sm transition-all flex items-center gap-1.5 ${action.variant === 'primary'
                             ? 'bg-primary hover:bg-primary-hover text-white shadow-glow-violet/30'
                             : action.variant === 'secondary'
-                            ? 'bg-card hover:bg-plum-800 text-teal-600 dark:text-teal-300 border border-teal-500/30'
-                            : 'bg-card hover:bg-plum-800 text-[var(--text-primary)] border border-[var(--border-color)]'
-                        }`}
+                              ? 'bg-card hover:bg-plum-800 text-teal-600 dark:text-teal-300 border border-teal-500/30'
+                              : 'bg-card hover:bg-plum-800 text-[var(--text-primary)] border border-[var(--border-color)]'
+                          }`}
                       >
                         <Sparkles className="w-3.5 h-3.5 text-primary" />
                         {action.label}
@@ -129,7 +123,7 @@ export const App: React.FC = () => {
             )}
 
             {/* Expandable Explanation Panel */}
-            {!isAdapting && <WorkspaceExplanationPanel />}
+            {/* {!isAdapting && <WorkspaceExplanationPanel />} */}
 
             {/* Hidden Components Restore Banner */}
             {!isAdapting && hiddenComponentIds.length > 0 && (
@@ -157,12 +151,14 @@ export const App: React.FC = () => {
                 <p className="text-sm text-[var(--text-secondary)]">Building a workspace for your goal...</p>
               </div>
             ) : currentPlan ? (
-              <AnimatePresence mode="popLayout">
-                <motion.div
-                  layout
-                  className="grid grid-cols-12 gap-5"
-                  transition={{ duration: 0.35, ease: 'easeInOut' }}
-                >
+              <motion.div
+                layout
+                className="grid grid-cols-12 gap-5"
+                transition={{
+                  layout: { type: 'spring', stiffness: 350, damping: 32 }
+                }}
+              >
+                <AnimatePresence mode="popLayout" initial={false}>
                   {visibleComponents.map(spec => {
                     const Component = getComponentForType(spec.type);
 
@@ -171,18 +167,22 @@ export const App: React.FC = () => {
                         key={spec.id}
                         id={`workspace-component-${spec.id}`}
                         layout
-                        initial={{ opacity: 0, y: 12, scale: 0.98 }}
-                        animate={{ opacity: 1, y: 0, scale: 1 }}
-                        exit={{ opacity: 0, scale: 0.95 }}
-                        transition={{ duration: 0.25 }}
-                        className={`${
-                          {
+                        initial={{ opacity: 0, y: 24, scale: 0.92, filter: 'blur(4px)' }}
+                        animate={{ opacity: 1, y: 0, scale: 1, filter: 'blur(0px)' }}
+                        exit={{ opacity: 0, scale: 0.9, y: -16, filter: 'blur(4px)' }}
+                        transition={{
+                          layout: { type: 'spring', stiffness: 350, damping: 32 },
+                          opacity: { duration: 0.28, ease: 'easeOut' },
+                          scale: { duration: 0.28 },
+                          y: { duration: 0.28, ease: 'easeOut' }
+                        }}
+                        className={`${{
                             1: 'col-span-12 md:col-span-6 lg:col-span-3',
                             2: 'col-span-12 md:col-span-6 lg:col-span-6',
                             3: 'col-span-12 lg:col-span-9',
                             4: 'col-span-12',
                           }[spec.colSpan || 2]
-                        }`}
+                          }`}
                       >
                         <ComponentWrapper spec={spec}>
                           <Component spec={spec} />
@@ -190,8 +190,8 @@ export const App: React.FC = () => {
                       </motion.div>
                     );
                   })}
-                </motion.div>
-              </AnimatePresence>
+                </AnimatePresence>
+              </motion.div>
             ) : null}
           </div>
         </main>

@@ -44,9 +44,14 @@ interface WorkspaceState {
 const getInitialTheme = (): 'dark' | 'light' => {
   if (typeof window !== 'undefined') {
     const saved = localStorage.getItem('nexusflow_theme');
-    if (saved === 'light' || saved === 'dark') return saved;
+    if (saved === 'dark') {
+      localStorage.setItem('nexusflow_theme', 'light');
+      document.documentElement.classList.remove('dark');
+      return 'light';
+    }
+    if (saved === 'light') return 'light';
   }
-  return 'dark';
+  return 'light';
 };
 
 export const useWorkspaceStore = create<WorkspaceState>((set, get) => ({
