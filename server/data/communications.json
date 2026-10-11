@@ -1,0 +1,857 @@
+[
+  {
+    "id": "comm-1",
+    "clientId": "client-acme-corp",
+    "clientName": "Acme Corp",
+    "type": "Email",
+    "direction": "Inbound",
+    "sender": "Sarah Jenkins <s.jenkins@acmeww.com>",
+    "recipient": "Marcus Vance <marcus.vance@nexusflow.io>",
+    "cc": [
+      "Alex Rivera <alex.rivera@nexusflow.io>",
+      "David Kim <david.kim@nexusflow.io>"
+    ],
+    "date": "2026-10-09T14:22:00Z",
+    "subject": "Urgent: Agenda items for tomorrow's meeting & Query Builder freeze",
+    "preview": "Hi Marcus & Alex, Looking forward to our quarterly sync tomorrow at 10 AM. We need to allocate at least 20 minutes to the query timeout issue our Chicago team hit yesterday...",
+    "sentiment": "Concerned",
+    "tags": [
+      "Quarterly Sync",
+      "Query Timeout",
+      "Agenda"
+    ]
+  },
+  {
+    "id": "comm-2",
+    "clientId": "client-acme-corp",
+    "clientName": "Acme Corp",
+    "type": "Slack / Message",
+    "direction": "Outbound",
+    "sender": "Marcus Vance <marcus.vance@nexusflow.io>",
+    "recipient": "Sarah Jenkins <s.jenkins@acmeww.com>",
+    "date": "2026-10-09T15:05:00Z",
+    "subject": "Re: Agenda items & Query Builder freeze",
+    "preview": "Sarah - understood completely. Alex Rivera (Head of Product) and Elena Rostova (VP Eng) are on top of the root cause from release v2.8.4. We will present the exact fix timeline in tomorrow's meeting.",
+    "sentiment": "Reassuring",
+    "tags": [
+      "Meeting Prep",
+      "Executive"
+    ]
+  },
+  {
+    "id": "comm-3",
+    "clientId": "client-acme-corp",
+    "clientName": "Acme Corp",
+    "type": "Email",
+    "direction": "Inbound",
+    "sender": "Sarah Jenkins <s.jenkins@acmeww.com>",
+    "recipient": "Alex Rivera <alex.rivera@nexusflow.io>",
+    "date": "2026-10-08T09:14:00Z",
+    "subject": "Quarterly Operations Review - Executive pre-read request",
+    "preview": "Alex, could you share the updated roadmap for NexusFlow 3.0 ahead of our call? Our COO wants to understand how the autonomous routing feature impacts our Q4 expansion.",
+    "sentiment": "Positive",
+    "tags": [
+      "Roadmap",
+      "Nexus 3.0"
+    ]
+  },
+  {
+    "id": "comm-4",
+    "clientId": "client-acme-corp",
+    "clientName": "Acme Corp",
+    "type": "Meeting Notes",
+    "direction": "Internal",
+    "sender": "Marcus Vance <marcus.vance@nexusflow.io>",
+    "recipient": "Alex Rivera, Siddharth Patel",
+    "date": "2026-09-24T16:00:00Z",
+    "subject": "Previous Executive Sync Notes - Acme Corp (Sept 24)",
+    "preview": "Recap: Acme committed to expanding from 5 to 14 distribution centers ($18k MRR upsell). Hard requirements: SAML attribute sync must be certified by Oct 15, and 99.9% query latency under 800ms.",
+    "sentiment": "Positive",
+    "tags": [
+      "Previous Notes",
+      "Contract Milestone"
+    ]
+  },
+  {
+    "id": "comm-5",
+    "clientId": "client-acme-labs",
+    "clientName": "Acme Labs Inc",
+    "type": "Email",
+    "direction": "Inbound",
+    "sender": "Dr. Raymond Scott <rscott@acmelabs.bio>",
+    "recipient": "Brian O'Connor <brian.oc@nexusflow.io>",
+    "date": "2026-10-08T11:45:00Z",
+    "subject": "Acme Labs seat expansion proposal review",
+    "preview": "Brian, our oncology research team loves the automated ingestion pipeline. We would like to add 80 researcher licenses before November.",
+    "sentiment": "Delighted",
+    "tags": [
+      "Expansion",
+      "Acme Labs"
+    ]
+  },
+  {
+    "id": "comm-6",
+    "clientId": "client-apex-fintech",
+    "clientName": "Apex Global Financial",
+    "type": "Email",
+    "direction": "Inbound",
+    "sender": "Victoria Vance-Reid <v.vancereid@apexfin.com>",
+    "recipient": "Aisha Al-Mansoor <aisha.m@nexusflow.io>",
+    "date": "2026-10-07T16:30:00Z",
+    "subject": "Formal notice: SOC2 Key rotation audit findings",
+    "preview": "Dear NexusFlow Compliance Team, we have not received the signed attestation report for task APX-COMPL-02 that was due on Oct 2nd. Please provide immediate status.",
+    "sentiment": "Escalated",
+    "tags": [
+      "Compliance",
+      "Overdue"
+    ]
+  },
+  {
+    "id": "comm-7",
+    "clientId": "client-strata-cloud",
+    "clientName": "Strata Cloud Systems",
+    "type": "Slack / Message",
+    "direction": "Inbound",
+    "sender": "Marcus Sterling <sterling@stratacloud.io>",
+    "recipient": "David Kim <david.kim@nexusflow.io>",
+    "date": "2026-10-09T18:10:00Z",
+    "subject": "Query latency spike during our staging load test",
+    "preview": "Hey David, noticed a 3x p99 latency jump on the query endpoint after your recent v2.8.4 deployment. Are you tracking this internally?",
+    "sentiment": "Concerned",
+    "tags": [
+      "Latency",
+      "v2.8.4"
+    ]
+  },
+  {
+    "id": "comm-8",
+    "clientId": "client-pulsar-robotics",
+    "clientName": "Pulsar Industrial Robotics",
+    "type": "Email",
+    "direction": "Inbound",
+    "sender": "Tatsuya Mori <mori@pulsar-robotics.jp>",
+    "recipient": "Aisha Al-Mansoor <aisha.m@nexusflow.io>",
+    "date": "2026-10-09T10:56:00Z",
+    "subject": "Discussion regarding Pulsar Industrial Robotics feature adoption",
+    "preview": "Following up on our recent sync with Pulsar Industrial Robotics. Key points discussed include upcoming deliverables, operational health, and workflow enhancements.",
+    "sentiment": "Positive",
+    "tags": [
+      "Pulsar",
+      "Email"
+    ]
+  },
+  {
+    "id": "comm-9",
+    "clientId": "client-aerofleet-intl",
+    "clientName": "AeroFleet International",
+    "type": "Slack / Message",
+    "direction": "Outbound",
+    "sender": "Captain Robert Dubois <rdubois@aerofleet.aero>",
+    "recipient": "Julian Thorne <julian.t@nexusflow.io>",
+    "date": "2026-10-01T11:3:00Z",
+    "subject": "Discussion regarding AeroFleet International feedback on recent release",
+    "preview": "Following up on our recent sync with AeroFleet International. Key points discussed include upcoming deliverables, operational health, and workflow enhancements.",
+    "sentiment": "Neutral",
+    "tags": [
+      "AeroFleet",
+      "Slack / Message"
+    ]
+  },
+  {
+    "id": "comm-10",
+    "clientId": "client-novus-edu",
+    "clientName": "Novus Higher Education Group",
+    "type": "Call Summary",
+    "direction": "Inbound",
+    "sender": "Dr. Pamela Wright <pwright@novus.edu>",
+    "recipient": "Rachel Green <rachel.g@nexusflow.io>",
+    "date": "2026-10-02T12:10:00Z",
+    "subject": "Discussion regarding Novus Higher Education Group milestone progress",
+    "preview": "Following up on our recent sync with Novus Higher Education Group. Key points discussed include upcoming deliverables, operational health, and workflow enhancements.",
+    "sentiment": "Concerned",
+    "tags": [
+      "Novus Edu",
+      "Call Summary"
+    ]
+  },
+  {
+    "id": "comm-11",
+    "clientId": "client-vanguard-cyber",
+    "clientName": "Vanguard Cyber Defense",
+    "type": "Support Ticket Comment",
+    "direction": "Outbound",
+    "sender": "Gareth Evans <gevans@vanguarddefense.uk>",
+    "recipient": "Thomas Wright <thomas.w@nexusflow.io>",
+    "date": "2026-10-03T13:17:00Z",
+    "subject": "Discussion regarding Vanguard Cyber Defense API throughput",
+    "preview": "Following up on our recent sync with Vanguard Cyber Defense. Key points discussed include upcoming deliverables, operational health, and workflow enhancements.",
+    "sentiment": "Delighted",
+    "tags": [
+      "Vanguard",
+      "Support Ticket Comment"
+    ]
+  },
+  {
+    "id": "comm-12",
+    "clientId": "client-acme-corp",
+    "clientName": "Acme Corp",
+    "type": "Email",
+    "direction": "Inbound",
+    "sender": "Sarah Jenkins <s.jenkins@acmeww.com>",
+    "recipient": "Sofia Rodriguez <sofia.r@nexusflow.io>",
+    "date": "2026-10-04T14:24:00Z",
+    "subject": "Discussion regarding Acme Corp quarterly targets",
+    "preview": "Following up on our recent sync with Acme Corp. Key points discussed include upcoming deliverables, operational health, and workflow enhancements.",
+    "sentiment": "Positive",
+    "tags": [
+      "Acme",
+      "Email"
+    ]
+  },
+  {
+    "id": "comm-13",
+    "clientId": "client-acme-labs",
+    "clientName": "Acme Labs Inc",
+    "type": "Slack / Message",
+    "direction": "Outbound",
+    "sender": "Dr. Raymond Scott <rscott@acmelabs.bio>",
+    "recipient": "Kevin Zhang <kevin.z@nexusflow.io>",
+    "date": "2026-10-05T15:31:00Z",
+    "subject": "Discussion regarding Acme Labs Inc feature adoption",
+    "preview": "Following up on our recent sync with Acme Labs Inc. Key points discussed include upcoming deliverables, operational health, and workflow enhancements.",
+    "sentiment": "Neutral",
+    "tags": [
+      "Acme Labs",
+      "Slack / Message"
+    ]
+  },
+  {
+    "id": "comm-14",
+    "clientId": "client-strata-cloud",
+    "clientName": "Strata Cloud Systems",
+    "type": "Call Summary",
+    "direction": "Inbound",
+    "sender": "Marcus Sterling <sterling@stratacloud.io>",
+    "recipient": "Nora Lindqvist <nora.l@nexusflow.io>",
+    "date": "2026-10-06T16:38:00Z",
+    "subject": "Discussion regarding Strata Cloud Systems feedback on recent release",
+    "preview": "Following up on our recent sync with Strata Cloud Systems. Key points discussed include upcoming deliverables, operational health, and workflow enhancements.",
+    "sentiment": "Concerned",
+    "tags": [
+      "Strata",
+      "Call Summary"
+    ]
+  },
+  {
+    "id": "comm-15",
+    "clientId": "client-apex-fintech",
+    "clientName": "Apex Global Financial",
+    "type": "Support Ticket Comment",
+    "direction": "Outbound",
+    "sender": "Victoria Vance-Reid <v.vancereid@apexfin.com>",
+    "recipient": "Brian O'Connor <brian.oc@nexusflow.io>",
+    "date": "2026-10-07T17:45:00Z",
+    "subject": "Discussion regarding Apex Global Financial milestone progress",
+    "preview": "Following up on our recent sync with Apex Global Financial. Key points discussed include upcoming deliverables, operational health, and workflow enhancements.",
+    "sentiment": "Delighted",
+    "tags": [
+      "Apex",
+      "Support Ticket Comment"
+    ]
+  },
+  {
+    "id": "comm-16",
+    "clientId": "client-lumina-health",
+    "clientName": "Lumina Health Network",
+    "type": "Email",
+    "direction": "Inbound",
+    "sender": "Dr. Evelyn Morales <emorales@luminahealth.org>",
+    "recipient": "Fatima Zahra <fatima.z@nexusflow.io>",
+    "date": "2026-10-08T10:52:00Z",
+    "subject": "Discussion regarding Lumina Health Network API throughput",
+    "preview": "Following up on our recent sync with Lumina Health Network. Key points discussed include upcoming deliverables, operational health, and workflow enhancements.",
+    "sentiment": "Positive",
+    "tags": [
+      "Lumina",
+      "Email"
+    ]
+  },
+  {
+    "id": "comm-17",
+    "clientId": "client-omni-retail",
+    "clientName": "Omni Retail Group",
+    "type": "Slack / Message",
+    "direction": "Outbound",
+    "sender": "Kenneth Barnes <kbarnes@omniretail.com>",
+    "recipient": "Samuel Gomez <samuel.g@nexusflow.io>",
+    "date": "2026-10-09T11:59:00Z",
+    "subject": "Discussion regarding Omni Retail Group quarterly targets",
+    "preview": "Following up on our recent sync with Omni Retail Group. Key points discussed include upcoming deliverables, operational health, and workflow enhancements.",
+    "sentiment": "Neutral",
+    "tags": [
+      "Omni",
+      "Slack / Message"
+    ]
+  },
+  {
+    "id": "comm-18",
+    "clientId": "client-zenith-media",
+    "clientName": "Zenith Interactive Media",
+    "type": "Call Summary",
+    "direction": "Inbound",
+    "sender": "Chloe Laurent <claurent@zenithmedia.net>",
+    "recipient": "Leila Farouk <leila.f@nexusflow.io>",
+    "date": "2026-10-01T12:6:00Z",
+    "subject": "Discussion regarding Zenith Interactive Media feature adoption",
+    "preview": "Following up on our recent sync with Zenith Interactive Media. Key points discussed include upcoming deliverables, operational health, and workflow enhancements.",
+    "sentiment": "Concerned",
+    "tags": [
+      "Zenith",
+      "Call Summary"
+    ]
+  },
+  {
+    "id": "comm-19",
+    "clientId": "client-hyperion-energy",
+    "clientName": "Hyperion Renewable Dynamics",
+    "type": "Support Ticket Comment",
+    "direction": "Outbound",
+    "sender": "Erik Vestergaard <vestergaard@hyperiondynamics.eu>",
+    "recipient": "Daniel Brooks <daniel.b@nexusflow.io>",
+    "date": "2026-10-02T13:13:00Z",
+    "subject": "Discussion regarding Hyperion Renewable Dynamics feedback on recent release",
+    "preview": "Following up on our recent sync with Hyperion Renewable Dynamics. Key points discussed include upcoming deliverables, operational health, and workflow enhancements.",
+    "sentiment": "Delighted",
+    "tags": [
+      "Hyperion",
+      "Support Ticket Comment"
+    ]
+  },
+  {
+    "id": "comm-20",
+    "clientId": "client-pulsar-robotics",
+    "clientName": "Pulsar Industrial Robotics",
+    "type": "Email",
+    "direction": "Inbound",
+    "sender": "Tatsuya Mori <mori@pulsar-robotics.jp>",
+    "recipient": "Alex Rivera <alex.rivera@nexusflow.io>",
+    "date": "2026-10-03T14:20:00Z",
+    "subject": "Discussion regarding Pulsar Industrial Robotics milestone progress",
+    "preview": "Following up on our recent sync with Pulsar Industrial Robotics. Key points discussed include upcoming deliverables, operational health, and workflow enhancements.",
+    "sentiment": "Positive",
+    "tags": [
+      "Pulsar",
+      "Email"
+    ]
+  },
+  {
+    "id": "comm-21",
+    "clientId": "client-aerofleet-intl",
+    "clientName": "AeroFleet International",
+    "type": "Slack / Message",
+    "direction": "Outbound",
+    "sender": "Captain Robert Dubois <rdubois@aerofleet.aero>",
+    "recipient": "Elena Rostova <elena.rostova@nexusflow.io>",
+    "date": "2026-10-04T15:27:00Z",
+    "subject": "Discussion regarding AeroFleet International API throughput",
+    "preview": "Following up on our recent sync with AeroFleet International. Key points discussed include upcoming deliverables, operational health, and workflow enhancements.",
+    "sentiment": "Neutral",
+    "tags": [
+      "AeroFleet",
+      "Slack / Message"
+    ]
+  },
+  {
+    "id": "comm-22",
+    "clientId": "client-novus-edu",
+    "clientName": "Novus Higher Education Group",
+    "type": "Call Summary",
+    "direction": "Inbound",
+    "sender": "Dr. Pamela Wright <pwright@novus.edu>",
+    "recipient": "Marcus Vance <marcus.vance@nexusflow.io>",
+    "date": "2026-10-05T16:34:00Z",
+    "subject": "Discussion regarding Novus Higher Education Group quarterly targets",
+    "preview": "Following up on our recent sync with Novus Higher Education Group. Key points discussed include upcoming deliverables, operational health, and workflow enhancements.",
+    "sentiment": "Concerned",
+    "tags": [
+      "Novus Edu",
+      "Call Summary"
+    ]
+  },
+  {
+    "id": "comm-23",
+    "clientId": "client-vanguard-cyber",
+    "clientName": "Vanguard Cyber Defense",
+    "type": "Support Ticket Comment",
+    "direction": "Outbound",
+    "sender": "Gareth Evans <gevans@vanguarddefense.uk>",
+    "recipient": "Chloe Chen <chloe.chen@nexusflow.io>",
+    "date": "2026-10-06T17:41:00Z",
+    "subject": "Discussion regarding Vanguard Cyber Defense feature adoption",
+    "preview": "Following up on our recent sync with Vanguard Cyber Defense. Key points discussed include upcoming deliverables, operational health, and workflow enhancements.",
+    "sentiment": "Delighted",
+    "tags": [
+      "Vanguard",
+      "Support Ticket Comment"
+    ]
+  },
+  {
+    "id": "comm-24",
+    "clientId": "client-acme-corp",
+    "clientName": "Acme Corp",
+    "type": "Email",
+    "direction": "Inbound",
+    "sender": "Sarah Jenkins <s.jenkins@acmeww.com>",
+    "recipient": "David Kim <david.kim@nexusflow.io>",
+    "date": "2026-10-07T10:48:00Z",
+    "subject": "Discussion regarding Acme Corp feedback on recent release",
+    "preview": "Following up on our recent sync with Acme Corp. Key points discussed include upcoming deliverables, operational health, and workflow enhancements.",
+    "sentiment": "Positive",
+    "tags": [
+      "Acme",
+      "Email"
+    ]
+  },
+  {
+    "id": "comm-25",
+    "clientId": "client-acme-labs",
+    "clientName": "Acme Labs Inc",
+    "type": "Slack / Message",
+    "direction": "Outbound",
+    "sender": "Dr. Raymond Scott <rscott@acmelabs.bio>",
+    "recipient": "Siddharth Patel <siddharth.p@nexusflow.io>",
+    "date": "2026-10-08T11:55:00Z",
+    "subject": "Discussion regarding Acme Labs Inc milestone progress",
+    "preview": "Following up on our recent sync with Acme Labs Inc. Key points discussed include upcoming deliverables, operational health, and workflow enhancements.",
+    "sentiment": "Neutral",
+    "tags": [
+      "Acme Labs",
+      "Slack / Message"
+    ]
+  },
+  {
+    "id": "comm-26",
+    "clientId": "client-strata-cloud",
+    "clientName": "Strata Cloud Systems",
+    "type": "Call Summary",
+    "direction": "Inbound",
+    "sender": "Marcus Sterling <sterling@stratacloud.io>",
+    "recipient": "Maya Lin <maya.lin@nexusflow.io>",
+    "date": "2026-10-09T12:2:00Z",
+    "subject": "Discussion regarding Strata Cloud Systems API throughput",
+    "preview": "Following up on our recent sync with Strata Cloud Systems. Key points discussed include upcoming deliverables, operational health, and workflow enhancements.",
+    "sentiment": "Concerned",
+    "tags": [
+      "Strata",
+      "Call Summary"
+    ]
+  },
+  {
+    "id": "comm-27",
+    "clientId": "client-apex-fintech",
+    "clientName": "Apex Global Financial",
+    "type": "Support Ticket Comment",
+    "direction": "Outbound",
+    "sender": "Victoria Vance-Reid <v.vancereid@apexfin.com>",
+    "recipient": "Lucas Meyer <lucas.m@nexusflow.io>",
+    "date": "2026-10-01T13:9:00Z",
+    "subject": "Discussion regarding Apex Global Financial quarterly targets",
+    "preview": "Following up on our recent sync with Apex Global Financial. Key points discussed include upcoming deliverables, operational health, and workflow enhancements.",
+    "sentiment": "Delighted",
+    "tags": [
+      "Apex",
+      "Support Ticket Comment"
+    ]
+  },
+  {
+    "id": "comm-28",
+    "clientId": "client-lumina-health",
+    "clientName": "Lumina Health Network",
+    "type": "Email",
+    "direction": "Inbound",
+    "sender": "Dr. Evelyn Morales <emorales@luminahealth.org>",
+    "recipient": "Aisha Al-Mansoor <aisha.m@nexusflow.io>",
+    "date": "2026-10-02T14:16:00Z",
+    "subject": "Discussion regarding Lumina Health Network feature adoption",
+    "preview": "Following up on our recent sync with Lumina Health Network. Key points discussed include upcoming deliverables, operational health, and workflow enhancements.",
+    "sentiment": "Positive",
+    "tags": [
+      "Lumina",
+      "Email"
+    ]
+  },
+  {
+    "id": "comm-29",
+    "clientId": "client-omni-retail",
+    "clientName": "Omni Retail Group",
+    "type": "Slack / Message",
+    "direction": "Outbound",
+    "sender": "Kenneth Barnes <kbarnes@omniretail.com>",
+    "recipient": "Julian Thorne <julian.t@nexusflow.io>",
+    "date": "2026-10-03T15:23:00Z",
+    "subject": "Discussion regarding Omni Retail Group feedback on recent release",
+    "preview": "Following up on our recent sync with Omni Retail Group. Key points discussed include upcoming deliverables, operational health, and workflow enhancements.",
+    "sentiment": "Neutral",
+    "tags": [
+      "Omni",
+      "Slack / Message"
+    ]
+  },
+  {
+    "id": "comm-30",
+    "clientId": "client-zenith-media",
+    "clientName": "Zenith Interactive Media",
+    "type": "Call Summary",
+    "direction": "Inbound",
+    "sender": "Chloe Laurent <claurent@zenithmedia.net>",
+    "recipient": "Rachel Green <rachel.g@nexusflow.io>",
+    "date": "2026-10-04T16:30:00Z",
+    "subject": "Discussion regarding Zenith Interactive Media milestone progress",
+    "preview": "Following up on our recent sync with Zenith Interactive Media. Key points discussed include upcoming deliverables, operational health, and workflow enhancements.",
+    "sentiment": "Concerned",
+    "tags": [
+      "Zenith",
+      "Call Summary"
+    ]
+  },
+  {
+    "id": "comm-31",
+    "clientId": "client-hyperion-energy",
+    "clientName": "Hyperion Renewable Dynamics",
+    "type": "Support Ticket Comment",
+    "direction": "Outbound",
+    "sender": "Erik Vestergaard <vestergaard@hyperiondynamics.eu>",
+    "recipient": "Thomas Wright <thomas.w@nexusflow.io>",
+    "date": "2026-10-05T17:37:00Z",
+    "subject": "Discussion regarding Hyperion Renewable Dynamics API throughput",
+    "preview": "Following up on our recent sync with Hyperion Renewable Dynamics. Key points discussed include upcoming deliverables, operational health, and workflow enhancements.",
+    "sentiment": "Delighted",
+    "tags": [
+      "Hyperion",
+      "Support Ticket Comment"
+    ]
+  },
+  {
+    "id": "comm-32",
+    "clientId": "client-pulsar-robotics",
+    "clientName": "Pulsar Industrial Robotics",
+    "type": "Email",
+    "direction": "Inbound",
+    "sender": "Tatsuya Mori <mori@pulsar-robotics.jp>",
+    "recipient": "Sofia Rodriguez <sofia.r@nexusflow.io>",
+    "date": "2026-10-06T10:44:00Z",
+    "subject": "Discussion regarding Pulsar Industrial Robotics quarterly targets",
+    "preview": "Following up on our recent sync with Pulsar Industrial Robotics. Key points discussed include upcoming deliverables, operational health, and workflow enhancements.",
+    "sentiment": "Positive",
+    "tags": [
+      "Pulsar",
+      "Email"
+    ]
+  },
+  {
+    "id": "comm-33",
+    "clientId": "client-aerofleet-intl",
+    "clientName": "AeroFleet International",
+    "type": "Slack / Message",
+    "direction": "Outbound",
+    "sender": "Captain Robert Dubois <rdubois@aerofleet.aero>",
+    "recipient": "Kevin Zhang <kevin.z@nexusflow.io>",
+    "date": "2026-10-07T11:51:00Z",
+    "subject": "Discussion regarding AeroFleet International feature adoption",
+    "preview": "Following up on our recent sync with AeroFleet International. Key points discussed include upcoming deliverables, operational health, and workflow enhancements.",
+    "sentiment": "Neutral",
+    "tags": [
+      "AeroFleet",
+      "Slack / Message"
+    ]
+  },
+  {
+    "id": "comm-34",
+    "clientId": "client-novus-edu",
+    "clientName": "Novus Higher Education Group",
+    "type": "Call Summary",
+    "direction": "Inbound",
+    "sender": "Dr. Pamela Wright <pwright@novus.edu>",
+    "recipient": "Nora Lindqvist <nora.l@nexusflow.io>",
+    "date": "2026-10-08T12:58:00Z",
+    "subject": "Discussion regarding Novus Higher Education Group feedback on recent release",
+    "preview": "Following up on our recent sync with Novus Higher Education Group. Key points discussed include upcoming deliverables, operational health, and workflow enhancements.",
+    "sentiment": "Concerned",
+    "tags": [
+      "Novus Edu",
+      "Call Summary"
+    ]
+  },
+  {
+    "id": "comm-35",
+    "clientId": "client-vanguard-cyber",
+    "clientName": "Vanguard Cyber Defense",
+    "type": "Support Ticket Comment",
+    "direction": "Outbound",
+    "sender": "Gareth Evans <gevans@vanguarddefense.uk>",
+    "recipient": "Brian O'Connor <brian.oc@nexusflow.io>",
+    "date": "2026-10-09T13:5:00Z",
+    "subject": "Discussion regarding Vanguard Cyber Defense milestone progress",
+    "preview": "Following up on our recent sync with Vanguard Cyber Defense. Key points discussed include upcoming deliverables, operational health, and workflow enhancements.",
+    "sentiment": "Delighted",
+    "tags": [
+      "Vanguard",
+      "Support Ticket Comment"
+    ]
+  },
+  {
+    "id": "comm-36",
+    "clientId": "client-acme-corp",
+    "clientName": "Acme Corp",
+    "type": "Email",
+    "direction": "Inbound",
+    "sender": "Sarah Jenkins <s.jenkins@acmeww.com>",
+    "recipient": "Fatima Zahra <fatima.z@nexusflow.io>",
+    "date": "2026-10-01T14:12:00Z",
+    "subject": "Discussion regarding Acme Corp API throughput",
+    "preview": "Following up on our recent sync with Acme Corp. Key points discussed include upcoming deliverables, operational health, and workflow enhancements.",
+    "sentiment": "Positive",
+    "tags": [
+      "Acme",
+      "Email"
+    ]
+  },
+  {
+    "id": "comm-37",
+    "clientId": "client-acme-labs",
+    "clientName": "Acme Labs Inc",
+    "type": "Slack / Message",
+    "direction": "Outbound",
+    "sender": "Dr. Raymond Scott <rscott@acmelabs.bio>",
+    "recipient": "Samuel Gomez <samuel.g@nexusflow.io>",
+    "date": "2026-10-02T15:19:00Z",
+    "subject": "Discussion regarding Acme Labs Inc quarterly targets",
+    "preview": "Following up on our recent sync with Acme Labs Inc. Key points discussed include upcoming deliverables, operational health, and workflow enhancements.",
+    "sentiment": "Neutral",
+    "tags": [
+      "Acme Labs",
+      "Slack / Message"
+    ]
+  },
+  {
+    "id": "comm-38",
+    "clientId": "client-strata-cloud",
+    "clientName": "Strata Cloud Systems",
+    "type": "Call Summary",
+    "direction": "Inbound",
+    "sender": "Marcus Sterling <sterling@stratacloud.io>",
+    "recipient": "Leila Farouk <leila.f@nexusflow.io>",
+    "date": "2026-10-03T16:26:00Z",
+    "subject": "Discussion regarding Strata Cloud Systems feature adoption",
+    "preview": "Following up on our recent sync with Strata Cloud Systems. Key points discussed include upcoming deliverables, operational health, and workflow enhancements.",
+    "sentiment": "Concerned",
+    "tags": [
+      "Strata",
+      "Call Summary"
+    ]
+  },
+  {
+    "id": "comm-39",
+    "clientId": "client-apex-fintech",
+    "clientName": "Apex Global Financial",
+    "type": "Support Ticket Comment",
+    "direction": "Outbound",
+    "sender": "Victoria Vance-Reid <v.vancereid@apexfin.com>",
+    "recipient": "Daniel Brooks <daniel.b@nexusflow.io>",
+    "date": "2026-10-04T17:33:00Z",
+    "subject": "Discussion regarding Apex Global Financial feedback on recent release",
+    "preview": "Following up on our recent sync with Apex Global Financial. Key points discussed include upcoming deliverables, operational health, and workflow enhancements.",
+    "sentiment": "Delighted",
+    "tags": [
+      "Apex",
+      "Support Ticket Comment"
+    ]
+  },
+  {
+    "id": "comm-40",
+    "clientId": "client-lumina-health",
+    "clientName": "Lumina Health Network",
+    "type": "Email",
+    "direction": "Inbound",
+    "sender": "Dr. Evelyn Morales <emorales@luminahealth.org>",
+    "recipient": "Alex Rivera <alex.rivera@nexusflow.io>",
+    "date": "2026-10-05T10:40:00Z",
+    "subject": "Discussion regarding Lumina Health Network milestone progress",
+    "preview": "Following up on our recent sync with Lumina Health Network. Key points discussed include upcoming deliverables, operational health, and workflow enhancements.",
+    "sentiment": "Positive",
+    "tags": [
+      "Lumina",
+      "Email"
+    ]
+  },
+  {
+    "id": "comm-41",
+    "clientId": "client-omni-retail",
+    "clientName": "Omni Retail Group",
+    "type": "Slack / Message",
+    "direction": "Outbound",
+    "sender": "Kenneth Barnes <kbarnes@omniretail.com>",
+    "recipient": "Elena Rostova <elena.rostova@nexusflow.io>",
+    "date": "2026-10-06T11:47:00Z",
+    "subject": "Discussion regarding Omni Retail Group API throughput",
+    "preview": "Following up on our recent sync with Omni Retail Group. Key points discussed include upcoming deliverables, operational health, and workflow enhancements.",
+    "sentiment": "Neutral",
+    "tags": [
+      "Omni",
+      "Slack / Message"
+    ]
+  },
+  {
+    "id": "comm-42",
+    "clientId": "client-zenith-media",
+    "clientName": "Zenith Interactive Media",
+    "type": "Call Summary",
+    "direction": "Inbound",
+    "sender": "Chloe Laurent <claurent@zenithmedia.net>",
+    "recipient": "Marcus Vance <marcus.vance@nexusflow.io>",
+    "date": "2026-10-07T12:54:00Z",
+    "subject": "Discussion regarding Zenith Interactive Media quarterly targets",
+    "preview": "Following up on our recent sync with Zenith Interactive Media. Key points discussed include upcoming deliverables, operational health, and workflow enhancements.",
+    "sentiment": "Concerned",
+    "tags": [
+      "Zenith",
+      "Call Summary"
+    ]
+  },
+  {
+    "id": "comm-43",
+    "clientId": "client-hyperion-energy",
+    "clientName": "Hyperion Renewable Dynamics",
+    "type": "Support Ticket Comment",
+    "direction": "Outbound",
+    "sender": "Erik Vestergaard <vestergaard@hyperiondynamics.eu>",
+    "recipient": "Chloe Chen <chloe.chen@nexusflow.io>",
+    "date": "2026-10-08T13:1:00Z",
+    "subject": "Discussion regarding Hyperion Renewable Dynamics feature adoption",
+    "preview": "Following up on our recent sync with Hyperion Renewable Dynamics. Key points discussed include upcoming deliverables, operational health, and workflow enhancements.",
+    "sentiment": "Delighted",
+    "tags": [
+      "Hyperion",
+      "Support Ticket Comment"
+    ]
+  },
+  {
+    "id": "comm-44",
+    "clientId": "client-pulsar-robotics",
+    "clientName": "Pulsar Industrial Robotics",
+    "type": "Email",
+    "direction": "Inbound",
+    "sender": "Tatsuya Mori <mori@pulsar-robotics.jp>",
+    "recipient": "David Kim <david.kim@nexusflow.io>",
+    "date": "2026-10-09T14:8:00Z",
+    "subject": "Discussion regarding Pulsar Industrial Robotics feedback on recent release",
+    "preview": "Following up on our recent sync with Pulsar Industrial Robotics. Key points discussed include upcoming deliverables, operational health, and workflow enhancements.",
+    "sentiment": "Positive",
+    "tags": [
+      "Pulsar",
+      "Email"
+    ]
+  },
+  {
+    "id": "comm-45",
+    "clientId": "client-aerofleet-intl",
+    "clientName": "AeroFleet International",
+    "type": "Slack / Message",
+    "direction": "Outbound",
+    "sender": "Captain Robert Dubois <rdubois@aerofleet.aero>",
+    "recipient": "Siddharth Patel <siddharth.p@nexusflow.io>",
+    "date": "2026-10-01T15:15:00Z",
+    "subject": "Discussion regarding AeroFleet International milestone progress",
+    "preview": "Following up on our recent sync with AeroFleet International. Key points discussed include upcoming deliverables, operational health, and workflow enhancements.",
+    "sentiment": "Neutral",
+    "tags": [
+      "AeroFleet",
+      "Slack / Message"
+    ]
+  },
+  {
+    "id": "comm-46",
+    "clientId": "client-novus-edu",
+    "clientName": "Novus Higher Education Group",
+    "type": "Call Summary",
+    "direction": "Inbound",
+    "sender": "Dr. Pamela Wright <pwright@novus.edu>",
+    "recipient": "Maya Lin <maya.lin@nexusflow.io>",
+    "date": "2026-10-02T16:22:00Z",
+    "subject": "Discussion regarding Novus Higher Education Group API throughput",
+    "preview": "Following up on our recent sync with Novus Higher Education Group. Key points discussed include upcoming deliverables, operational health, and workflow enhancements.",
+    "sentiment": "Concerned",
+    "tags": [
+      "Novus Edu",
+      "Call Summary"
+    ]
+  },
+  {
+    "id": "comm-47",
+    "clientId": "client-vanguard-cyber",
+    "clientName": "Vanguard Cyber Defense",
+    "type": "Support Ticket Comment",
+    "direction": "Outbound",
+    "sender": "Gareth Evans <gevans@vanguarddefense.uk>",
+    "recipient": "Lucas Meyer <lucas.m@nexusflow.io>",
+    "date": "2026-10-03T17:29:00Z",
+    "subject": "Discussion regarding Vanguard Cyber Defense quarterly targets",
+    "preview": "Following up on our recent sync with Vanguard Cyber Defense. Key points discussed include upcoming deliverables, operational health, and workflow enhancements.",
+    "sentiment": "Delighted",
+    "tags": [
+      "Vanguard",
+      "Support Ticket Comment"
+    ]
+  },
+  {
+    "id": "comm-48",
+    "clientId": "client-acme-corp",
+    "clientName": "Acme Corp",
+    "type": "Email",
+    "direction": "Inbound",
+    "sender": "Sarah Jenkins <s.jenkins@acmeww.com>",
+    "recipient": "Aisha Al-Mansoor <aisha.m@nexusflow.io>",
+    "date": "2026-10-04T10:36:00Z",
+    "subject": "Discussion regarding Acme Corp feature adoption",
+    "preview": "Following up on our recent sync with Acme Corp. Key points discussed include upcoming deliverables, operational health, and workflow enhancements.",
+    "sentiment": "Positive",
+    "tags": [
+      "Acme",
+      "Email"
+    ]
+  },
+  {
+    "id": "comm-49",
+    "clientId": "client-acme-labs",
+    "clientName": "Acme Labs Inc",
+    "type": "Slack / Message",
+    "direction": "Outbound",
+    "sender": "Dr. Raymond Scott <rscott@acmelabs.bio>",
+    "recipient": "Julian Thorne <julian.t@nexusflow.io>",
+    "date": "2026-10-05T11:43:00Z",
+    "subject": "Discussion regarding Acme Labs Inc feedback on recent release",
+    "preview": "Following up on our recent sync with Acme Labs Inc. Key points discussed include upcoming deliverables, operational health, and workflow enhancements.",
+    "sentiment": "Neutral",
+    "tags": [
+      "Acme Labs",
+      "Slack / Message"
+    ]
+  },
+  {
+    "id": "comm-50",
+    "clientId": "client-strata-cloud",
+    "clientName": "Strata Cloud Systems",
+    "type": "Call Summary",
+    "direction": "Inbound",
+    "sender": "Marcus Sterling <sterling@stratacloud.io>",
+    "recipient": "Rachel Green <rachel.g@nexusflow.io>",
+    "date": "2026-10-06T12:50:00Z",
+    "subject": "Discussion regarding Strata Cloud Systems milestone progress",
+    "preview": "Following up on our recent sync with Strata Cloud Systems. Key points discussed include upcoming deliverables, operational health, and workflow enhancements.",
+    "sentiment": "Concerned",
+    "tags": [
+      "Strata",
+      "Call Summary"
+    ]
+  }
+]

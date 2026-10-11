@@ -1,0 +1,137 @@
+[
+  {
+    "id": "rec-1",
+    "category": "Client Escalation",
+    "title": "Review Acme Corp Query Timeout before tomorrow's 10 AM sync",
+    "description": "Sarah Jenkins raised INC-1042 yesterday. Review Elena's hotfix PR and prepare a 3-point remediation summary for the executive deck.",
+    "urgency": "Immediate",
+    "suggestedAction": "Open Meeting Prep Workspace",
+    "actionId": "prep_acme_meeting"
+  },
+  {
+    "id": "rec-2",
+    "category": "Product Health",
+    "title": "Validate v2.8.5 hotfix impact on Query Builder adoption",
+    "description": "Daily active users declined 32% since v2.8.4. Telemetry shows query error rate peaked at 4.4%. Deploying hotfix is estimated to restore 4,800 DAU.",
+    "urgency": "Immediate",
+    "suggestedAction": "Inspect Usage Telemetry",
+    "actionId": "investigate_usage_drop"
+  },
+  {
+    "id": "rec-3",
+    "category": "Project Delivery",
+    "title": "Triage 4 Critical Overdue Tasks across Acme & Apex deliverables",
+    "description": "Tasks #task-1 (SAML mapping) and #task-6 (SOC2 key rotation) are over 5 days past due and directly blocking contract milestones.",
+    "urgency": "High",
+    "suggestedAction": "View Overdue Task Board",
+    "actionId": "view_overdue_tasks"
+  },
+  {
+    "id": "rec-4",
+    "category": "Meeting Scheduling",
+    "title": "Schedule Go/No-Go Executive Alignment Meeting for Nexus 3.0",
+    "description": "Launch target is Oct 25. Core leadership availability aligns tomorrow at 2:00 PM for the decision vote.",
+    "urgency": "High",
+    "suggestedAction": "Launch Scheduler",
+    "actionId": "schedule_launch_meeting"
+  },
+  {
+    "id": "rec-5",
+    "category": "Customer Expansion",
+    "title": "Send 80-seat expansion contract amendment to Acme Labs",
+    "description": "Dr. Raymond Scott requested contract terms. Expected to add $3,200 MRR without engineering overhead.",
+    "urgency": "Medium",
+    "suggestedAction": "Review Client Profile",
+    "actionId": "view_acme_labs"
+  },
+  {
+    "id": "rec-6",
+    "category": "Team Capacity",
+    "title": "Operational recommendation #6: Maintain cadence on Autonomous AI Insights & Executive Summarizer",
+    "description": "Automated health monitor suggests addressing upcoming dependencies in Autonomous AI Insights & Executive Summarizer to preserve quarterly velocity.",
+    "urgency": "High",
+    "suggestedAction": "Inspect Project Detail",
+    "actionId": "view_project_proj-ai-summarizer"
+  },
+  {
+    "id": "rec-7",
+    "category": "Account Health",
+    "title": "Operational recommendation #7: Maintain cadence on Strata Cloud High-Throughput Webhook Bridge",
+    "description": "Automated health monitor suggests addressing upcoming dependencies in Strata Cloud High-Throughput Webhook Bridge to preserve quarterly velocity.",
+    "urgency": "Low",
+    "suggestedAction": "Inspect Project Detail",
+    "actionId": "view_project_proj-strata-api-gw"
+  },
+  {
+    "id": "rec-8",
+    "category": "Infrastructure",
+    "title": "Operational recommendation #8: Maintain cadence on NexusFlow 3.0 Platform Launch",
+    "description": "Automated health monitor suggests addressing upcoming dependencies in NexusFlow 3.0 Platform Launch to preserve quarterly velocity.",
+    "urgency": "Low",
+    "suggestedAction": "Inspect Project Detail",
+    "actionId": "view_project_proj-nexus-3"
+  },
+  {
+    "id": "rec-9",
+    "category": "Compliance",
+    "title": "Operational recommendation #9: Maintain cadence on Acme Corp Global Distribution Integration",
+    "description": "Automated health monitor suggests addressing upcoming dependencies in Acme Corp Global Distribution Integration to preserve quarterly velocity.",
+    "urgency": "High",
+    "suggestedAction": "Inspect Project Detail",
+    "actionId": "view_project_proj-acme-onboard"
+  },
+  {
+    "id": "rec-10",
+    "category": "Team Capacity",
+    "title": "Operational recommendation #10: Maintain cadence on Apex Financial Dedicated VPC & SOC2 Compliance",
+    "description": "Automated health monitor suggests addressing upcoming dependencies in Apex Financial Dedicated VPC & SOC2 Compliance to preserve quarterly velocity.",
+    "urgency": "Low",
+    "suggestedAction": "Inspect Project Detail",
+    "actionId": "view_project_proj-apex-soc2"
+  },
+  {
+    "id": "rec-11",
+    "category": "Account Health",
+    "title": "Operational recommendation #11: Maintain cadence on Mobile Analytics & Real-Time SDK v2",
+    "description": "Automated health monitor suggests addressing upcoming dependencies in Mobile Analytics & Real-Time SDK v2 to preserve quarterly velocity.",
+    "urgency": "Low",
+    "suggestedAction": "Inspect Project Detail",
+    "actionId": "view_project_proj-mobile-sdk"
+  },
+  {
+    "id": "rec-12",
+    "category": "Infrastructure",
+    "title": "Operational recommendation #12: Maintain cadence on Omni Retail Live Catalog Feed Pipeline",
+    "description": "Automated health monitor suggests addressing upcoming dependencies in Omni Retail Live Catalog Feed Pipeline to preserve quarterly velocity.",
+    "urgency": "High",
+    "suggestedAction": "Inspect Project Detail",
+    "actionId": "view_project_proj-omni-feed"
+  },
+  {
+    "id": "rec-13",
+    "category": "Compliance",
+    "title": "Operational recommendation #13: Maintain cadence on Hyperion Wind Turbine Telemetry Gateway",
+    "description": "Automated health monitor suggests addressing upcoming dependencies in Hyperion Wind Turbine Telemetry Gateway to preserve quarterly velocity.",
+    "urgency": "Low",
+    "suggestedAction": "Inspect Project Detail",
+    "actionId": "view_project_proj-hyperion-iot"
+  },
+  {
+    "id": "rec-14",
+    "category": "Team Capacity",
+    "title": "Operational recommendation #14: Maintain cadence on Autonomous AI Insights & Executive Summarizer",
+    "description": "Automated health monitor suggests addressing upcoming dependencies in Autonomous AI Insights & Executive Summarizer to preserve quarterly velocity.",
+    "urgency": "Low",
+    "suggestedAction": "Inspect Project Detail",
+    "actionId": "view_project_proj-ai-summarizer"
+  },
+  {
+    "id": "rec-15",
+    "category": "Account Health",
+    "title": "Operational recommendation #15: Maintain cadence on Strata Cloud High-Throughput Webhook Bridge",
+    "description": "Automated health monitor suggests addressing upcoming dependencies in Strata Cloud High-Throughput Webhook Bridge to preserve quarterly velocity.",
+    "urgency": "High",
+    "suggestedAction": "Inspect Project Detail",
+    "actionId": "view_project_proj-strata-api-gw"
+  }
+]

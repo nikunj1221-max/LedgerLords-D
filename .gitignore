@@ -1,0 +1,25 @@
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+client/dist/
+server/dist/
+coverage/
+*.tsbuildinfo
+
+# Local environment variables and secrets
+.env
+.env.*
+!.env.example
+server/.env
+server/.env.*
+!server/.env.example
+
+# Local logs and generated planner cache
+*.log
+server/data/ai-plan-cache.json
+
+# OS metadata
+.DS_Store
+Thumbs.db
