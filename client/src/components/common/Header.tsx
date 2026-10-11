@@ -1,9 +1,13 @@
 import React from 'react';
-import { Sparkles, Menu, Sun, Moon, Trash2, LogOut } from 'lucide-react';
+import { Sparkles, Menu, Sun, Moon, Trash2, LogOut, Upload } from 'lucide-react';
 import { useWorkspaceStore } from '../../store/workspaceStore';
 import { useAuthStore } from '../../store/authStore';
 
-export const Header: React.FC = () => {
+interface HeaderProps {
+  onUploadData: () => void;
+}
+
+export const Header: React.FC<HeaderProps> = ({ onUploadData }) => {
   const {
     sidebarOpen,
     setSidebarOpen,
@@ -46,6 +50,15 @@ export const Header: React.FC = () => {
 
       {/* Right controls */}
       <div className="flex items-center gap-3">
+        <button
+          type="button"
+          onClick={onUploadData}
+          title="Upload data files"
+          className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-card hover:bg-card-hover text-xs text-[var(--text-primary)] border border-[var(--border-color)] transition-all font-medium"
+        >
+          <Upload className="w-3.5 h-3.5 text-primary" />
+          <span className="hidden sm:inline">Upload data</span>
+        </button>
         {authError && (
           <span role="alert" className="max-w-48 text-[11px] text-coral">
             {authError}

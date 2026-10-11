@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useWorkspaceStore } from './store/workspaceStore';
 import { Header } from './components/common/Header';
@@ -12,10 +12,12 @@ import { NotificationToast } from './components/common/NotificationToast';
 import { getComponentForType } from './components/registry';
 import { Eye, Loader2, Sparkles } from 'lucide-react';
 import { AuthScreen } from './components/auth/AuthScreen';
+import { DataOnboardingScreen } from './components/auth/DataOnboardingScreen';
 import { useAuthStore } from './store/authStore';
 
 export const App: React.FC = () => {
-  const { status: authStatus, checkSession } = useAuthStore();
+  const [showDataUpload, setShowDataUpload] = useState(false);
+  const { status: authStatus, user, checkSession } = useAuthStore();
   const {
     currentPlan,
     isAdapting,
@@ -25,6 +27,7 @@ export const App: React.FC = () => {
     executeMockAction,
     theme
   } = useWorkspaceStore();
+  const clearWorkspace = useWorkspaceStore(state => state.clearWorkspace);
 
   useEffect(() => {
     if (theme === 'dark') {
@@ -53,6 +56,29 @@ export const App: React.FC = () => {
     return <AuthScreen unavailable={authStatus === 'unavailable'} onRetry={() => void checkSession()} />;
   }
 
+  if (!user?.onboardingComplete) {
+    return (
+      <DataOnboardingScreen
+        onComplete={() => {
+          clearWorkspace();
+          setShowDataUpload(false);
+        }}
+      />
+    );
+  }
+
+  if (showDataUpload) {
+    return (
+      <DataOnboardingScreen
+        onComplete={() => {
+          clearWorkspace();
+          setShowDataUpload(false);
+        }}
+        onCancel={() => setShowDataUpload(false)}
+      />
+    );
+  }
+
   const visibleComponents = (isAdapting ? [] : currentPlan?.components || []).filter(
     c => !hiddenComponentIds.includes(c.id)
   );
@@ -60,7 +86,7 @@ export const App: React.FC = () => {
   return (
     <div className="min-h-screen bg-[var(--bg-color)] text-[var(--text-primary)] flex flex-col font-sans transition-colors duration-200">
       {/* Top Application Bar */}
-      <Header />
+      <Header onUploadData={() => setShowDataUpload(true)} />
 
       {/* Main Layout */}
       <div className="flex-1 flex overflow-hidden">

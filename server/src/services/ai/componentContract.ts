@@ -105,6 +105,12 @@ export const COMPONENT_CONTRACT: Record<string, ComponentContractEntry> = {
     filterKeys: {},
     usage: 'BANNED for LLM — internal use only',
   },
+  UserDatasetTable: {
+    dataSources: ['user-data'],
+    configKeys: { datasetId: 'id of one of the signed-in user datasets' },
+    filterKeys: {},
+    usage: 'view and search records from a dataset uploaded by the signed-in user',
+  },
 
   // ─── Client & Comm ────────────────────────────────────────
   ClientProfileCard: {

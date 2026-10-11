@@ -6,6 +6,7 @@ export interface AuthUser {
   id: string;
   email: string;
   name: string;
+  onboardingComplete: boolean;
   createdAt: string;
 }
 
@@ -18,6 +19,8 @@ interface AuthState {
   checkSession: () => Promise<void>;
   signIn: (email: string, password: string) => Promise<void>;
   signUp: (name: string, email: string, password: string) => Promise<void>;
+  uploadDataset: (file: File) => Promise<void>;
+  completeOnboarding: () => Promise<void>;
   signOut: () => Promise<boolean>;
 }
 
@@ -63,6 +66,50 @@ export const useAuthStore = create<AuthState>(set => ({
     try {
       const response = await axios.post('/api/auth/signup', { name, email, password });
       set({ status: 'authenticated', user: response.data.user, error: null });
+    } catch (error) {
+      const message = getApiError(error);
+      set({ error: message });
+      throw new Error(message);
+    }
+  },
+
+  uploadDataset: async file => {
+    if (file.size > 5 * 1024 * 1024) {
+      throw new Error('Files must be 5 MB or smaller.');
+    }
+    const format = file.name.toLowerCase().endsWith('.csv')
+      ? 'csv'
+      : file.name.toLowerCase().endsWith('.json')
+      ? 'json'
+      : null;
+    if (!format) throw new Error('Choose a CSV or JSON file.');
+
+    set({ error: null });
+    try {
+      const response = await axios.post('/api/user-data', {
+        name: file.name,
+        format,
+        content: await file.text(),
+      });
+      set(state => ({
+        user: state.user
+          ? { ...state.user, onboardingComplete: response.data.onboardingComplete }
+          : state.user,
+      }));
+    } catch (error) {
+      const message = getApiError(error);
+      set({ error: message });
+      throw new Error(message);
+    }
+  },
+
+  completeOnboarding: async () => {
+    set({ error: null });
+    try {
+      await axios.post('/api/user-data/complete');
+      set(state => ({
+        user: state.user ? { ...state.user, onboardingComplete: true } : state.user,
+      }));
     } catch (error) {
       const message = getApiError(error);
       set({ error: message });

@@ -31,7 +31,13 @@ function isValidEmail(value: unknown): value is string {
 }
 
 function publicUser(user: PublicUser) {
-  return { id: user.id, email: user.email, name: user.name, createdAt: user.createdAt };
+  return {
+    id: user.id,
+    email: user.email,
+    name: user.name,
+    onboardingComplete: user.onboardingComplete,
+    createdAt: user.createdAt,
+  };
 }
 
 router.post('/signup', authAttemptLimit, async (req: Request, res: Response) => {

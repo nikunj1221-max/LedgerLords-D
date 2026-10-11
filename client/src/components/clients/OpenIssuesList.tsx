@@ -37,7 +37,7 @@ export const OpenIssuesList: React.FC<{ spec: ComponentSpec }> = ({ spec }) => {
       .then(res => {
         let items = res.data;
         if (clientId) {
-          items = items.filter((i: Incident) => i.clientId === clientId || i.clientName.toLowerCase().includes('acme'));
+          items = items.filter((i: Incident) => i.clientId === clientId);
         }
         setIncidents(items.slice(0, 6));
       })

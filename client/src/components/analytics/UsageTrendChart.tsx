@@ -7,7 +7,6 @@ import {
   YAxis,
   Tooltip,
   ResponsiveContainer,
-  ReferenceLine
 } from 'recharts';
 import { ComponentSpec } from '../../types/workspace';
 
@@ -29,24 +28,32 @@ export const UsageTrendChart: React.FC<{ spec: ComponentSpec }> = () => {
   // Format date for chart labels
   const formattedData = data.map(d => ({
     ...d,
-    displayDate: d.date.slice(5) // MM-DD
+    displayDate: typeof d.date === 'string' ? d.date.slice(5) : String(d.date ?? '')
   }));
+  const firstValue = Number(data[0]?.[viewMetric]) || 0;
+  const latestValue = Number(data[data.length - 1]?.[viewMetric]) || 0;
+  const periodChange = firstValue
+    ? ((latestValue - firstValue) / firstValue) * 100
+    : 0;
+  const changeColor = periodChange < 0 ? 'text-coral' : 'text-mint';
 
   const customTooltip = ({ active, payload, label }: any) => {
     if (active && payload && payload.length) {
       const item = payload[0].payload;
       return (
         <div className="bg-canvas border border-border p-3 rounded-lg shadow-xl text-xs space-y-1">
-          <div className="font-semibold text-white">{item.date} (Day #{item.dayIndex})</div>
+          <div className="font-semibold text-white">{item.date || 'Unknown date'}</div>
           <div className="text-primary font-bold">
-            DAU: {item.dailyActiveUsers.toLocaleString()}
+            DAU: {(Number(item.dailyActiveUsers) || 0).toLocaleString()}
           </div>
-          <div className="text-teal-300">Sessions: {item.totalSessions.toLocaleString()}</div>
+          <div className="text-teal-300">Sessions: {(Number(item.totalSessions) || 0).toLocaleString()}</div>
           <div className="text-coral">
-            Error Rate: {item.errorRatePercent}% {item.dayIndex >= 84 ? '(Degraded)' : '(Normal)'}
+            Error Rate: {item.errorRatePercent ?? '—'}%
           </div>
           <div className="text-gray-400 text-[11px] pt-1 border-t border-border/50">
-            Query Builder Users: {item.featureBreakdown?.queryBuilder?.toLocaleString()}
+            {item.featureBreakdown?.queryBuilder !== undefined
+              ? `Query Builder Users: ${Number(item.featureBreakdown.queryBuilder).toLocaleString()}`
+              : 'Feature breakdown not provided'}
           </div>
         </div>
       );
@@ -93,7 +100,9 @@ export const UsageTrendChart: React.FC<{ spec: ComponentSpec }> = () => {
 
         <div className="text-xs flex items-center gap-2">
           <span className="w-2.5 h-2.5 rounded-full bg-coral animate-ping" />
-          <span className="text-coral font-medium">Release v2.8.4 Deployed (Oct 4) — 32% DAU Drop</span>
+          <span className={`${changeColor} font-medium`}>
+            Period change: {periodChange > 0 ? '+' : ''}{periodChange.toFixed(1)}%
+          </span>
         </div>
       </div>
 
@@ -125,12 +134,6 @@ export const UsageTrendChart: React.FC<{ spec: ComponentSpec }> = () => {
               tickFormatter={(val: number) => (val > 1000 ? `${(val / 1000).toFixed(0)}k` : `${val}`)}
             />
             <Tooltip content={customTooltip} />
-            <ReferenceLine
-              x={formattedData[83]?.displayDate}
-              stroke="#ff6363"
-              strokeDasharray="4 4"
-              label={{ value: 'v2.8.4 Deployed', position: 'insideTopLeft', fill: '#ff6363', fontSize: 11 }}
-            />
             <Area
               type="monotone"
               dataKey={viewMetric}
@@ -144,9 +147,9 @@ export const UsageTrendChart: React.FC<{ spec: ComponentSpec }> = () => {
       </div>
 
       <div className="p-2.5 rounded-lg bg-plum-900/30 border border-border/40 text-[11px] text-gray-400 flex items-center justify-between">
-        <span>Normal average baseline: <strong>~15,200 DAU</strong></span>
-        <span className="text-coral font-medium">Current drop level: <strong>10,820 DAU (-29.7%)</strong></span>
-        <span>Days tracked: <strong>90 continuous days</strong></span>
+        <span>First value: <strong>{firstValue.toLocaleString()}</strong></span>
+        <span className={`${changeColor} font-medium`}>Latest: <strong>{latestValue.toLocaleString()}</strong></span>
+        <span>Data points: <strong>{data.length}</strong></span>
       </div>
     </div>
   );

@@ -30,6 +30,68 @@ test('unknown data source rejected', () => {
   const r = buildPlanFromDraft(draft({ components: [{ type: 'DataTable', title: 'x', dataSource: 'payroll', explanation: 'e' }] }), ctx);
   assert.ok(!r.ok);
 });
+test('uploaded dataset component requires a dataset owned by the current user', () => {
+  const uploadedDraft = draft({
+    components: [{
+      type: 'UserDatasetTable',
+      title: 'Uploaded records',
+      dataSource: 'user-data',
+      explanation: 'Shows the uploaded records.',
+      config: { datasetId: 'dataset-owned-by-user' },
+    }],
+  });
+  assert.ok(!buildPlanFromDraft(uploadedDraft, ctx).ok);
+  const valid = buildPlanFromDraft(uploadedDraft, {
+    ...ctx,
+    userDatasetIds: ['dataset-owned-by-user'],
+  });
+  assert.ok(valid.ok);
+});
+test('planner cannot select data sources absent from the user upload', () => {
+  const validDemoDraft = draft();
+  const r = buildPlanFromDraft(validDemoDraft, {
+    ...ctx,
+    userDatasetIds: ['dataset-owned-by-user'],
+  });
+  assert.ok(!r.ok && r.stage === 'semantic');
+});
+test('planner can select a category-specific component backed by the user upload', () => {
+  const r = buildPlanFromDraft(draft(), {
+    ...ctx,
+    userDatasetIds: ['dataset-owned-by-user'],
+    userDataSources: ['tasks'],
+  });
+  assert.ok(r.ok);
+});
+test('planner rejects a category-specific component not classified for the user', () => {
+  const r = buildPlanFromDraft(draft(), {
+    ...ctx,
+    userDatasetIds: ['dataset-owned-by-user'],
+    userDataSources: ['clients'],
+  });
+  assert.ok(!r.ok && r.stage === 'semantic');
+});
+test('pinned demo components are not carried into a user-uploaded-data workspace', () => {
+  const uploadedDraft = draft({
+    components: [{
+      type: 'UserDatasetTable',
+      title: 'Uploaded records',
+      dataSource: 'user-data',
+      explanation: 'Shows the uploaded records.',
+      config: { datasetId: 'dataset-owned-by-user' },
+    }],
+  });
+  const r = buildPlanFromDraft(uploadedDraft, {
+    ...ctx,
+    userDatasetIds: ['dataset-owned-by-user'],
+    pinnedComponentIds: ['tasks-1'],
+  });
+  assert.ok(r.ok);
+  if (r.ok) {
+    assert.equal(r.plan.components.length, 1);
+    assert.equal(r.plan.components[0].type, 'UserDatasetTable');
+  }
+});
 test('retainId must exist in current workspace', () => {
   const r = buildPlanFromDraft(draft({ components: [{ retainId: 'ghost', type: 'DataTable', title: 'x', dataSource: 'tasks', explanation: 'e' }] }), ctx);
   assert.ok(!r.ok && r.stage === 'semantic');
