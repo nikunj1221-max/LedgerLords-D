@@ -2,6 +2,15 @@ import { create } from 'zustand';
 import axios from 'axios';
 import { UIPlan, HistoryItem } from '../types/workspace';
 
+const MINIMUM_SEARCH_LOADING_MS = 700;
+
+const waitForMinimumLoadingTime = async (startedAt: number) => {
+  const remaining = MINIMUM_SEARCH_LOADING_MS - (Date.now() - startedAt);
+  if (remaining > 0) {
+    await new Promise(resolve => setTimeout(resolve, remaining));
+  }
+};
+
 interface WorkspaceState {
   currentPlan: UIPlan | null;
   previousPlan: UIPlan | null;
@@ -87,6 +96,7 @@ export const useWorkspaceStore = create<WorkspaceState>((set, get) => ({
 
   submitPrompt: async (prompt: string) => {
     const { currentPlan, pinnedComponentIds, history } = get();
+    const loadingStartedAt = Date.now();
     set({ isAdapting: true, error: null });
 
     try {
@@ -97,6 +107,7 @@ export const useWorkspaceStore = create<WorkspaceState>((set, get) => ({
       });
 
       const newPlan: UIPlan = res.data.plan;
+      await waitForMinimumLoadingTime(loadingStartedAt);
 
       set({
         previousPlan: currentPlan,
@@ -119,6 +130,7 @@ export const useWorkspaceStore = create<WorkspaceState>((set, get) => ({
         }
       });
     } catch (err: any) {
+      await waitForMinimumLoadingTime(loadingStartedAt);
       console.error('Failed to adapt workspace:', err);
       set({
         error: err.message || 'Error communicating with AI engine',
@@ -275,6 +287,20 @@ export const useWorkspaceStore = create<WorkspaceState>((set, get) => ({
   },
 
   executeMockAction: async (actionId: string, payload: any = {}) => {
+    if (actionId === 'run_prompt') {
+      if (typeof payload.prompt !== 'string' || !payload.prompt.trim()) {
+        set({
+          notification: {
+            message: 'Could not open the suggested workspace because its prompt is missing.',
+            type: 'error'
+          }
+        });
+        return;
+      }
+      await get().submitPrompt(payload.prompt.trim());
+      return;
+    }
+
     try {
       const res = await axios.post(`/api/actions/${actionId}`, payload);
       set({

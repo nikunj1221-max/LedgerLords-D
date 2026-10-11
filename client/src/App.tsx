@@ -10,7 +10,7 @@ import { ComponentWrapper } from './components/common/ComponentWrapper';
 import { ClarificationModal } from './components/common/ClarificationModal';
 import { NotificationToast } from './components/common/NotificationToast';
 import { getComponentForType } from './components/registry';
-import { Eye, Loader2, Sparkles } from 'lucide-react';
+import { Eye, Sparkles } from 'lucide-react';
 
 export const App: React.FC = () => {
   const {
@@ -125,8 +125,13 @@ export const App: React.FC = () => {
 
             {/* Dynamic Component Grid */}
             {isAdapting ? (
-              <div className="py-24 text-center space-y-3">
-                <Loader2 className="w-8 h-8 text-primary animate-spin mx-auto" />
+              <div className="py-16 text-center space-y-3" role="status" aria-live="polite">
+                <img
+                  src="/loaders/workspace-loading.svg"
+                  alt=""
+                  aria-hidden="true"
+                  className="w-20 h-20 mx-auto"
+                />
                 <p className="text-sm text-[var(--text-secondary)]">Building a workspace for your goal...</p>
               </div>
             ) : currentPlan ? (
