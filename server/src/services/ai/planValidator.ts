@@ -13,7 +13,7 @@ export const INTENTS = [
 export const DATA_SOURCES = [
   'clients', 'tasks', 'usage-metrics', 'projects', 'recommendations', 'activities',
   'meetings', 'communications', 'support-incidents', 'feature-adoption',
-  'releases', 'availability', 'employees',
+  'releases', 'availability', 'employees', 'user-data',
 ] as const;
 
 const CONFIDENCE = { high: 0.9, medium: 0.7, low: 0.4 } as const;
@@ -52,6 +52,8 @@ export interface ValidationContext {
   prompt: string;
   previousPlan?: UIPlan | null;
   pinnedComponentIds?: string[];
+  userDatasetIds?: string[];
+  userDataSources?: string[];
 }
 export type PlanResult =
   | { ok: true; plan: UIPlan }
@@ -87,7 +89,12 @@ function normalizeConfigValue(key: string, value: unknown): unknown {
   return value;
 }
 
-function semanticIssues(d: PlanDraft, prevById: Map<string, ComponentSpec>): string[] {
+function semanticIssues(
+  d: PlanDraft,
+  prevById: Map<string, ComponentSpec>,
+  userDatasetIds: string[] = [],
+  userDataSources: string[] = []
+): string[] {
   const issues: string[] = [];
   const retained = d.components.map(c => c.retainId).filter((x): x is string => !!x);
   for (const id of retained) {
@@ -99,7 +106,31 @@ function semanticIssues(d: PlanDraft, prevById: Map<string, ComponentSpec>): str
     if (c.type === 'MetricCard' && ('value' in c.config || 'change' in c.config)) {
       issues.push(`components.${i}: MetricCard numbers must come from data tools; remove config.value/change`);
     }
+    if (c.type === 'UserDatasetTable') {
+      if (c.dataSource !== 'user-data') {
+        issues.push(`components.${i}: UserDatasetTable must use the user-data source`);
+      }
+      if (
+        typeof c.config.datasetId !== 'string' ||
+        !userDatasetIds.includes(c.config.datasetId)
+      ) {
+        issues.push(`components.${i}: datasetId must match one of the signed-in user's uploaded datasets`);
+      }
+    } else if (c.dataSource === 'user-data') {
+      issues.push(`components.${i}: user-data is only supported by UserDatasetTable`);
+    } else if (userDatasetIds.length > 0 && !userDataSources.includes(c.dataSource)) {
+      issues.push(`components.${i}: ${c.dataSource} is not present in this user's uploaded data`);
+    }
   });
+
+  if (userDatasetIds.length > 0) {
+    if (
+      userDataSources.length === 0 &&
+      (d.components.length !== 1 || d.components[0].type !== 'UserDatasetTable')
+    ) {
+      issues.push('when uploaded data has no recognized schema category, use exactly one UserDatasetTable');
+    }
+  }
 
   // Task 3: reject duplicate type|dataSource (model should retainId and change filters/config instead)
   const seen = new Set<string>();
@@ -166,7 +197,7 @@ export function buildPlanFromDraft(raw: unknown, ctx: ValidationContext): PlanRe
   const prev = ctx.previousPlan ?? null;
   const prevById = new Map((prev?.components ?? []).map(c => [c.id, c] as [string, ComponentSpec]));
 
-  const issues = semanticIssues(d, prevById);
+  const issues = semanticIssues(d, prevById, ctx.userDatasetIds, ctx.userDataSources);
   if (issues.length) return { ok: false, stage: 'semantic', issues };
 
   const pinned = new Set(ctx.pinnedComponentIds ?? []);
@@ -186,11 +217,13 @@ export function buildPlanFromDraft(raw: unknown, ctx: ValidationContext): PlanRe
   });
 
   // Pinned components survive, matched by ID (not by type).
-  for (const id of pinned) {
-    const old = prevById.get(id);
-    if (old && !used.has(id)) {
-      components.push({ ...old, pinned: true, position: components.length + 1 });
-      used.add(id);
+  if (!ctx.userDatasetIds?.length) {
+    for (const id of pinned) {
+      const old = prevById.get(id);
+      if (old && !used.has(id)) {
+        components.push({ ...old, pinned: true, position: components.length + 1 });
+        used.add(id);
+      }
     }
   }
 

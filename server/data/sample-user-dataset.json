@@ -1,0 +1,52 @@
+[
+  {
+    "client_id": "demo-001",
+    "client_name": "Northstar Analytics",
+    "industry": "Technology",
+    "status": "Active",
+    "mrr": 12500,
+    "health_score": 92,
+    "primary_contact": "Jordan Lee",
+    "contact_email": "jordan.lee@example.com"
+  },
+  {
+    "client_id": "demo-002",
+    "client_name": "Maple Street Finance",
+    "industry": "Financial Services",
+    "status": "Active",
+    "mrr": 8400,
+    "health_score": 78,
+    "primary_contact": "Casey Morgan",
+    "contact_email": "casey.morgan@example.com"
+  },
+  {
+    "client_id": "demo-003",
+    "client_name": "Greenfield Health",
+    "industry": "Healthcare",
+    "status": "Onboarding",
+    "mrr": 5600,
+    "health_score": 65,
+    "primary_contact": "Taylor Quinn",
+    "contact_email": "taylor.quinn@example.com"
+  },
+  {
+    "client_id": "demo-004",
+    "client_name": "Harborlight Retail",
+    "industry": "Retail",
+    "status": "At Risk",
+    "mrr": 10200,
+    "health_score": 48,
+    "primary_contact": "Alex Rivera",
+    "contact_email": "alex.rivera@example.com"
+  },
+  {
+    "client_id": "demo-005",
+    "client_name": "Bluebird Logistics",
+    "industry": "Transportation",
+    "status": "Active",
+    "mrr": 7300,
+    "health_score": 86,
+    "primary_contact": "Sam Chen",
+    "contact_email": "sam.chen@example.com"
+  }
+]

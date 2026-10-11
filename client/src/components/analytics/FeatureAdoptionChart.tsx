@@ -88,7 +88,7 @@ export const FeatureAdoptionChart: React.FC<{ spec: ComponentSpec }> = () => {
             className="p-2 rounded bg-coral/10 border border-coral/30 text-[11px] text-gray-300 flex items-center justify-between"
           >
             <span className="font-semibold text-coral">{f.name}</span>
-            <span>Collapse: <strong>{f.weeklyGrowthPercent}%</strong> (Correlates with v2.8.4 optimizer)</span>
+            <span>Weekly change: <strong>{f.weeklyGrowthPercent}%</strong></span>
           </div>
         ))}
       </div>

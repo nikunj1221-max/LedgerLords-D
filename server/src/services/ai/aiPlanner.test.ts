@@ -104,6 +104,40 @@ test('identical request is served from cache with no second HTTP call', async ()
   assert.equal(f.calls.length, 1); assert.equal(r2.cached, true);
 });
 
+test('dataset interpreter asks Groq for a validated per-group database schema mapping', async () => {
+  const response = JSON.stringify({
+    groups: {
+      'usage-metrics.json': { schema: 'UsageMetric', confidence: 0.97 },
+    },
+  });
+  const f = fake(response);
+  const records = [
+    { source_file: 'usage-metrics.json', dailyActiveUsers: 120, secretNote: 'row value' },
+    { source_file: 'usage-metrics.json', dailyActiveUsers: 115 },
+    { source_file: 'usage-metrics.json', dailyActiveUsers: 110 },
+  ];
+  const result = await make(f.post, {
+    endpoint: 'https://api.openai.com/v1/chat/completions',
+  }).interpretDataset(records);
+
+  assert.equal(result.provider, 'ai');
+  assert.equal(result.groups['usage-metrics.json'].schema, 'UsageMetric');
+  assert.equal(f.calls.length, 1);
+  const sample = JSON.parse(f.calls[0].messages[1].content);
+  assert.equal(sample.groups[0].records.length, 2);
+  assert.equal(sample.groups[0].records[0].secretNote, 'row value');
+});
+
+test('dataset interpreter falls back to deterministic known-file mapping if Groq fails', async () => {
+  const f = fake(new Error('temporary Groq outage'));
+  const result = await make(f.post).interpretDataset([
+    { source_file: 'clients.json', id: 'client-1', name: 'Example' },
+  ]);
+
+  assert.equal(result.provider, 'field-mapping');
+  assert.equal(result.groups['clients.json'].schema, 'Client');
+});
+
 // ---- Task 2: Groq json_validate_failed tests ----
 
 test('salvage from failed_generation on 400', async () => {

@@ -3,6 +3,27 @@ import axios from 'axios';
 import { UIPlan, HistoryItem } from '../types/workspace';
 
 const MINIMUM_SEARCH_LOADING_MS = 700;
+const MAX_ACTION_HISTORY = 100;
+
+type ReversibleAction =
+  | { type: 'pin'; componentId: string; before: boolean; after: boolean }
+  | { type: 'incident-status'; incidentId: string; before: string; after: string };
+
+const withPinnedState = (
+  plan: UIPlan | null,
+  componentId: string,
+  pinned: boolean
+): UIPlan | null => plan && ({
+  ...plan,
+  components: plan.components.map(component =>
+    component.id === componentId ? { ...component, pinned } : component
+  )
+});
+
+const updatePinnedIds = (ids: string[], componentId: string, pinned: boolean) => {
+  if (pinned) return ids.includes(componentId) ? ids : [...ids, componentId];
+  return ids.filter(id => id !== componentId);
+};
 
 const waitForMinimumLoadingTime = async (startedAt: number) => {
   const remaining = MINIMUM_SEARCH_LOADING_MS - (Date.now() - startedAt);
@@ -17,6 +38,10 @@ interface WorkspaceState {
   history: HistoryItem[];
   pinnedComponentIds: string[];
   hiddenComponentIds: string[];
+  incidentStatusById: Record<string, string>;
+  undoStack: ReversibleAction[];
+  redoStack: ReversibleAction[];
+  isHistoryActionPending: boolean;
   isAdapting: boolean;
   error: string | null;
   provider: 'llm' | 'deterministic';
@@ -32,6 +57,9 @@ interface WorkspaceState {
   submitRefinement: (prompt: string) => Promise<void>;
   answerClarification: (entityKey: string, selectedId: string) => Promise<void>;
   togglePinComponent: (componentId: string) => void;
+  setIncidentStatus: (incidentId: string, before: string, after: string) => Promise<void>;
+  undo: () => Promise<void>;
+  redo: () => Promise<void>;
   hideComponent: (componentId: string) => void;
   unhideAllComponents: () => void;
   restoreFromHistory: (index: number) => void;
@@ -60,6 +88,10 @@ export const useWorkspaceStore = create<WorkspaceState>((set, get) => ({
   history: [],
   pinnedComponentIds: [],
   hiddenComponentIds: [],
+  incidentStatusById: {},
+  undoStack: [],
+  redoStack: [],
+  isHistoryActionPending: false,
   isAdapting: false,
   error: null,
   provider: 'deterministic',
@@ -94,6 +126,10 @@ export const useWorkspaceStore = create<WorkspaceState>((set, get) => ({
       history: [],
       pinnedComponentIds: [],
       hiddenComponentIds: [],
+      incidentStatusById: {},
+      undoStack: [],
+      redoStack: [],
+      isHistoryActionPending: false,
       error: null,
       notification: null
     });
@@ -230,29 +266,138 @@ export const useWorkspaceStore = create<WorkspaceState>((set, get) => ({
   togglePinComponent: (componentId: string) => {
     const { pinnedComponentIds, currentPlan } = get();
     const isPinned = pinnedComponentIds.includes(componentId);
-    const updated = isPinned
-      ? pinnedComponentIds.filter(id => id !== componentId)
-      : [...pinnedComponentIds, componentId];
-
-    // Also update pinned property on component
-    let updatedPlan = currentPlan;
-    if (currentPlan) {
-      updatedPlan = {
-        ...currentPlan,
-        components: currentPlan.components.map(c =>
-          c.id === componentId ? { ...c, pinned: !isPinned } : c
-        )
-      };
-    }
-
+    const nextPinned = !isPinned;
+    const action: ReversibleAction = {
+      type: 'pin',
+      componentId,
+      before: isPinned,
+      after: nextPinned
+    };
     set({
-      pinnedComponentIds: updated,
-      currentPlan: updatedPlan,
+      pinnedComponentIds: updatePinnedIds(pinnedComponentIds, componentId, nextPinned),
+      currentPlan: withPinnedState(currentPlan, componentId, nextPinned),
+      undoStack: [...get().undoStack, action].slice(-MAX_ACTION_HISTORY),
+      redoStack: [],
       notification: {
         message: isPinned ? 'Component unpinned' : 'Component pinned to persist across goals',
         type: 'info'
       }
     });
+  },
+
+  setIncidentStatus: async (incidentId: string, before: string, after: string) => {
+    if (!incidentId || before === after) return;
+    try {
+      const res = await axios.post('/api/actions/set_incident_status', { incidentId, status: after });
+      const ticketNumber = res.data.incident?.ticketNumber;
+      const statusById = { ...get().incidentStatusById, [incidentId]: after };
+      if (typeof ticketNumber === 'string') statusById[ticketNumber] = after;
+      const action: ReversibleAction = { type: 'incident-status', incidentId, before, after };
+      set(state => ({
+        incidentStatusById: statusById,
+        undoStack: [...state.undoStack, action].slice(-MAX_ACTION_HISTORY),
+        redoStack: [],
+        notification: {
+          message: res.data.message || `Incident status changed to ${after}.`,
+          type: 'success'
+        }
+      }));
+    } catch (err: any) {
+      set({
+        notification: {
+          message: `Could not update incident status: ${err.response?.data?.error || err.message}`,
+          type: 'error'
+        }
+      });
+    }
+  },
+
+  undo: async () => {
+    const { undoStack, isHistoryActionPending } = get();
+    const action = undoStack[undoStack.length - 1];
+    if (!action || isHistoryActionPending) return;
+    set({ isHistoryActionPending: true });
+    try {
+      if (action.type === 'incident-status') {
+        const res = await axios.post('/api/actions/set_incident_status', {
+          incidentId: action.incidentId,
+          status: action.before
+        });
+        const ticketNumber = res.data.incident?.ticketNumber;
+        set(state => {
+          const incidentStatusById = { ...state.incidentStatusById, [action.incidentId]: action.before };
+          if (typeof ticketNumber === 'string') incidentStatusById[ticketNumber] = action.before;
+          return {
+            incidentStatusById,
+            undoStack: state.undoStack.slice(0, -1),
+            redoStack: [...state.redoStack, action].slice(-MAX_ACTION_HISTORY),
+            isHistoryActionPending: false,
+            notification: { message: `Undo: incident status restored to ${action.before}.`, type: 'info' }
+          };
+        });
+      } else {
+        set(state => ({
+          pinnedComponentIds: updatePinnedIds(state.pinnedComponentIds, action.componentId, action.before),
+          currentPlan: withPinnedState(state.currentPlan, action.componentId, action.before),
+          undoStack: state.undoStack.slice(0, -1),
+          redoStack: [...state.redoStack, action].slice(-MAX_ACTION_HISTORY),
+          isHistoryActionPending: false,
+          notification: { message: `Undo: component ${action.before ? 'pinned' : 'unpinned'}.`, type: 'info' }
+        }));
+      }
+    } catch (err: any) {
+      set({
+        isHistoryActionPending: false,
+        notification: {
+          message: `Undo failed: ${err.response?.data?.error || err.message}`,
+          type: 'error'
+        }
+      });
+    }
+  },
+
+  redo: async () => {
+    const { redoStack, isHistoryActionPending } = get();
+    const action = redoStack[redoStack.length - 1];
+    if (!action || isHistoryActionPending) return;
+    set({ isHistoryActionPending: true });
+    try {
+      if (action.type === 'incident-status') {
+        const res = await axios.post('/api/actions/set_incident_status', {
+          incidentId: action.incidentId,
+          status: action.after
+        });
+        const ticketNumber = res.data.incident?.ticketNumber;
+        set(state => {
+          const incidentStatusById = { ...state.incidentStatusById, [action.incidentId]: action.after };
+          if (typeof ticketNumber === 'string') incidentStatusById[ticketNumber] = action.after;
+          return {
+            incidentStatusById,
+            redoStack: state.redoStack.slice(0, -1),
+            undoStack: [...state.undoStack, action].slice(-MAX_ACTION_HISTORY),
+            isHistoryActionPending: false,
+            notification: { message: `Redo: incident status changed to ${action.after}.`, type: 'info' }
+          };
+        });
+      } else {
+        set(state => ({
+          pinnedComponentIds: updatePinnedIds(state.pinnedComponentIds, action.componentId, action.after),
+          currentPlan: withPinnedState(state.currentPlan, action.componentId, action.after),
+          redoStack: state.redoStack.slice(0, -1),
+          undoStack: [...state.undoStack, action].slice(-MAX_ACTION_HISTORY),
+          isHistoryActionPending: false,
+          notification: { message: `Redo: component ${action.after ? 'pinned' : 'unpinned'}.`, type: 'info' }
+        }));
+      }
+    } catch (err: any) {
+      set({
+        isHistoryActionPending: false,
+        notification: {
+          message: `Redo failed: ${err.response?.data?.error || err.message}`,
+          type: 'error'
+        }
+      });
+    }
   },
 
   hideComponent: (componentId: string) => {

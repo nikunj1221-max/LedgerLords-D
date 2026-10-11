@@ -1,5 +1,13 @@
 import { Router, Request, Response } from 'express';
+import { Prisma } from '@prisma/client';
 import { repository } from '../services/data/repository';
+import { prisma } from '../services/database/prisma';
+import { PublicUser } from '../services/auth/auth';
+import {
+  createFieldMappingInterpretation,
+  DatasetInterpretation,
+  getRecordGroup,
+} from '../services/data/datasetSchemaMapping';
 
 const router = Router();
 
@@ -78,6 +86,68 @@ router.post('/:actionId', async (req: Request, res: Response) => {
           success: true,
           message: `Incident ${resolved.ticketNumber} marked as Resolved.`,
           incident: resolved
+        });
+      }
+
+      case 'set_incident_status': {
+        const { incidentId, status } = payload;
+        if (typeof incidentId !== 'string' || !incidentId.trim()) {
+          return res.status(400).json({ error: 'incidentId is required' });
+        }
+        if (typeof status !== 'string' || !status.trim() || status.length > 50) {
+          return res.status(400).json({ error: 'A valid incident status is required' });
+        }
+
+        const user = res.locals.authUser as PublicUser;
+        const datasets = await prisma.userDataset.findMany({
+          where: { userId: user.id },
+          orderBy: { createdAt: 'desc' },
+        });
+        for (const dataset of datasets) {
+          const storedData = dataset.data as Prisma.JsonObject;
+          const records = (Array.isArray(storedData.records) ? storedData.records : [])
+            .filter((record): record is Prisma.JsonObject =>
+              !!record && typeof record === 'object' && !Array.isArray(record)
+            ) as Record<string, unknown>[];
+          const interpretation = storedData.interpretation as DatasetInterpretation | undefined;
+          const mapping = interpretation ?? createFieldMappingInterpretation(records);
+          const incident = records.find(record =>
+            mapping.groups[getRecordGroup(record)]?.schema === 'SupportIncident' &&
+            (record.id === incidentId || record.ticketNumber === incidentId)
+          );
+          if (!incident) continue;
+
+          const resolvedAt = status.toLowerCase() === 'resolved'
+            ? (typeof incident.resolvedAt === 'string' ? incident.resolvedAt : new Date().toISOString())
+            : null;
+          const updatedIncident = { ...incident, status, resolvedAt };
+          const updatedRecords = records.map(record =>
+            record.id === incidentId || record.ticketNumber === incidentId
+              ? updatedIncident
+              : record
+          );
+          await prisma.userDataset.update({
+            where: { id: dataset.id },
+            data: {
+              data: JSON.parse(JSON.stringify({ ...storedData, records: updatedRecords })) as Prisma.InputJsonValue,
+            },
+          });
+          return res.json({
+            success: true,
+            message: `Incident ${incident.ticketNumber ?? incidentId} status changed to ${status}.`,
+            incident: updatedIncident,
+          });
+        }
+
+        if (datasets.length > 0) {
+          return res.status(404).json({ error: `Incident ${incidentId} not found in your uploaded data` });
+        }
+        const updated = await repository.setIncidentStatus(incidentId, status);
+        if (!updated) return res.status(404).json({ error: `Incident ${incidentId} not found` });
+        return res.json({
+          success: true,
+          message: `Incident ${updated.ticketNumber} status changed to ${status}.`,
+          incident: updated,
         });
       }
 

@@ -39,6 +39,9 @@ Never use: MetricCard, TrendIndicator, LoadingState, IntentHistorySwitcher, Work
 # Known entity ids (use only these in config; never invent ids)
 ${KNOWN_ENTITIES}
 
+# User-uploaded datasets
+The user message includes uploadedDatasets metadata: dataset ids, names, row counts, column names, and the existing schema categories detected for each upload. No record contents are sent to you during workspace planning. If uploaded datasets have categories, select the matching existing dashboard components and use only the dataSource categories listed in uploadedDatasets. Those data sources return the signed-in user's categorized rows, not shared demo data. Never select a category the user's uploads do not contain. If no categories were recognized, use UserDatasetTable with dataSource "user-data" and config.datasetId set to an id from uploadedDatasets. Never invent a dataset id. If uploadedDatasets is empty, do not select UserDatasetTable.
+
 # Rules
 1. Pick 4-8 components that directly support the task. Most important first. Charts/tables get colSpan 2-4, small cards 1-2. Never include a component merely because it exists in the catalog.
 2. "explanation" is user-facing relevance text shown as the component's Selection Rationale. Write one clear sentence connecting that component to THIS request. Do not state data facts, numbers, names or dates you were not given.
@@ -53,6 +56,8 @@ ${KNOWN_ENTITIES}
 11. For client meeting preparation, prioritize ClientProfileCard, MeetingAgendaPanel, and CommunicationTimeline; add MeetingNotesPanel and OpenIssuesList when relevant. Do not include project-task or product-investigation components unless the user asks for them.
 12. For product-usage investigations, prioritize UsageTrendChart, FeatureAdoptionChart, ReleaseTimeline, and SupportIncidentList; use EvidenceBasedInsightList for evidence-backed hypotheses. Do not include client-meeting or overdue-task components unless the user asks for them.
 13. For overdue-work reviews, prioritize OverdueTasksTable, PriorityDistributionChart, TeamWorkloadPanel, and DependencyIndicator. Do not include client-meeting or product-investigation components unless the user asks for them.
+14. For uploaded data with recognized schema categories, match the user's goal to relevant category-specific components (for example, product usage to UsageTrendChart, FeatureAdoptionChart, ReleaseTimeline and SupportIncidentList; client meeting preparation to ClientProfileCard, MeetingAgendaPanel and CommunicationTimeline). Use only the user's detected categories and never add shared demo-data sources. Use UserDatasetTable only when no suitable category-specific component exists or the user asks to inspect the raw upload.
+15. When planning for uploaded data, do not copy identifiers from the known demo entities into component config. Leave entity filters unset unless the user explicitly supplied the identifier; account-specific category endpoints can select from the user's uploaded records.
 
 # Example (fresh request)
 User request: "Why did usage drop this week?"
@@ -64,6 +69,7 @@ export function buildUserPayload(input: PlannerInput) {
   const prev: UIPlan | null | undefined = input.previousPlan;
   return {
     userRequest: input.prompt,
+    uploadedDatasets: input.userDatasets ?? [],
     currentWorkspace: prev
       ? {
           intent: prev.intent,

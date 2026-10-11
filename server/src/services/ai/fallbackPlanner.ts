@@ -1,11 +1,19 @@
 import { UIPlan, ComponentSpec, ChangeSummary } from '../../schemas/uiPlan';
 import { repository } from '../data/repository';
 import { computeWorkspaceDiff } from '../workspace/diffEngine';
+import { WorkspaceDataSource } from '../data/datasetSchemaMapping';
 
 export interface PlannerInput {
   prompt: string;
   previousPlan?: UIPlan | null;
   pinnedComponentIds?: string[];
+  userDatasets?: Array<{
+    id: string;
+    name: string;
+    recordCount: number;
+    columns: string[];
+    sources?: WorkspaceDataSource[];
+  }>;
   clarificationResponse?: {
     entityKey: string;
     selectedId: string;
@@ -18,6 +26,10 @@ export class FallbackPlanner {
     const promptLower = prompt.toLowerCase();
     const prevPlan = input.previousPlan;
     const pinnedIds = input.pinnedComponentIds || [];
+
+    if (input.userDatasets?.length) {
+      return this.buildUserDatasetPlan(input, prompt, prevPlan, pinnedIds);
+    }
 
     // Check for Ambiguity Scenario (Test 8)
     // "Prepare for the meeting with Acme" or mentions "Acme" without "Corp" or "Labs"
@@ -95,6 +107,132 @@ export class FallbackPlanner {
 
     // Default / Generic initial dashboard (Test 1)
     return this.buildGenericOverviewPlan(prompt || 'Overview of current workspace', prevPlan, pinnedIds);
+  }
+
+  private buildUserDatasetPlan(
+    input: PlannerInput,
+    prompt: string,
+    prevPlan?: UIPlan | null,
+    pinnedIds: string[] = []
+  ): UIPlan {
+    const datasets = input.userDatasets ?? [];
+    const availableSources = Array.from(new Set(datasets.flatMap(dataset => dataset.sources ?? [])));
+    const has = (source: WorkspaceDataSource) => availableSources.includes(source);
+    const matches = (...words: string[]) => words.some(word => prompt.toLowerCase().includes(word));
+    const components: ComponentSpec[] = [];
+    let intent: UIPlan['intent'] = 'custom_goal';
+    let intentLabel = 'Your uploaded data';
+    let title = prompt ? `Your data: ${prompt.slice(0, 90)}` : `Your data: ${datasets[0]?.name ?? 'uploaded dataset'}`;
+    let subtitle = `${datasets.reduce((sum, dataset) => sum + dataset.recordCount, 0)} private uploaded records`;
+
+    const add = (
+      type: string,
+      componentTitle: string,
+      dataSource: WorkspaceDataSource,
+      explanation: string,
+      colSpan: ComponentSpec['colSpan'] = 2
+    ) => {
+      if (!has(dataSource)) return;
+      components.push({
+        id: `user-${type.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase()}`,
+        type: type as ComponentSpec['type'],
+        title: componentTitle,
+        dataSource,
+        position: components.length + 1,
+        colSpan,
+        explanation,
+        pinned: pinnedIds.includes(`user-${type.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase()}`),
+      });
+    };
+
+    if (matches('usage', 'dau', 'telemetry', 'adoption', 'release')) {
+      intent = 'product_usage_investigation';
+      intentLabel = 'Product usage investigation';
+      title = 'Investigating product usage';
+      subtitle = 'Usage trends, adoption, releases, and related incidents from your uploaded data.';
+      add('UsageTrendChart', 'Usage trend', 'usage-metrics', 'Shows how usage changes over time.', 3);
+      add('FeatureAdoptionChart', 'Feature adoption', 'feature-adoption', 'Compares adoption across product features.', 2);
+      add('ReleaseTimeline', 'Recent releases', 'releases', 'Provides release context for changes in usage.', 2);
+      add('SupportIncidentList', 'Related incidents', 'support-incidents', 'Surfaces reported problems related to product usage.', 4);
+    } else if (matches('client', 'customer', 'meeting', 'account', 'qbr')) {
+      intent = 'client_meeting_prep';
+      intentLabel = 'Client meeting preparation';
+      title = 'Client meeting workspace';
+      subtitle = 'Your uploaded client, meeting, communication, and support records.';
+      add('ClientProfileCard', 'Client profile', 'clients', 'Shows the client details available in your uploaded data.', 2);
+      add('MeetingAgendaPanel', 'Meeting agenda', 'meetings', 'Displays the uploaded meeting details and agenda.', 2);
+      add('CommunicationTimeline', 'Client communications', 'communications', 'Shows communications associated with the client.', 4);
+      add('MeetingNotesPanel', 'Meeting notes', 'communications', 'Shows uploaded meeting notes and related correspondence.', 2);
+      add('OpenIssuesList', 'Open support issues', 'support-incidents', 'Highlights uploaded unresolved support issues.', 2);
+    } else if (matches('overdue', 'task', 'project', 'blocked', 'workload')) {
+      intent = 'overdue_tasks_triage';
+      intentLabel = 'Work and task review';
+      title = 'Reviewing project work';
+      subtitle = 'Tasks and delivery records from your uploaded data.';
+      add('OverdueTasksTable', 'Project tasks', 'tasks', 'Lists tasks from your uploaded records.', 4);
+      add('PriorityDistributionChart', 'Task priorities', 'tasks', 'Summarizes the priority distribution in your task data.', 2);
+      add('TeamWorkloadPanel', 'Team workload', 'employees', 'Shows team records relevant to the uploaded work.', 2);
+      add('DependencyIndicator', 'Task dependencies', 'tasks', 'Highlights dependency information in uploaded tasks.', 2);
+      add('ProjectProgressCard', 'Project progress', 'projects', 'Summarizes progress in your uploaded project records.', 2);
+    } else if (availableSources.length > 0) {
+      const source = availableSources[0];
+      const dataset = datasets[0];
+      components.push({
+        id: 'user-uploaded-data',
+        type: 'UserDatasetTable',
+        title: dataset.name,
+        dataSource: 'user-data',
+        position: 1,
+        colSpan: 4,
+        explanation: 'Shows records from your uploaded dataset for this request.',
+        config: { datasetId: dataset.id },
+        pinned: pinnedIds.includes('user-uploaded-data'),
+      });
+      subtitle += ` | categorized as ${source}`;
+    }
+
+    if (components.length === 0) {
+      const dataset = datasets[0];
+      const previousDatasetId = prevPlan?.components.find(
+        component => component.type === 'UserDatasetTable'
+      )?.config?.datasetId;
+      const selectedDataset = datasets.find(item => item.id === previousDatasetId) ?? dataset;
+      components.push({
+        id: 'user-uploaded-data',
+        type: 'UserDatasetTable',
+        title: selectedDataset.name,
+        dataSource: 'user-data',
+        position: 1,
+        colSpan: 4,
+        explanation: `Shows records from your uploaded dataset, ${selectedDataset.name}, for this request.`,
+        config: { datasetId: selectedDataset.id },
+        pinned: pinnedIds.includes('user-uploaded-data'),
+      });
+    }
+
+    const sources = Array.from(new Set(components.map(component => component.dataSource)));
+    const plan: UIPlan = {
+      id: `plan-user-data-${Date.now()}`,
+      intent,
+      intentLabel,
+      title,
+      subtitle,
+      prompt,
+      entities: { datasetNames: datasets.map(dataset => dataset.name) },
+      layout: 'grid-standard',
+      components,
+      dataSources: sources,
+      filters: {},
+      actions: [],
+      explanations: {
+        overallRationale: 'This workspace uses categorized records from your private uploads.',
+        selectedSources: sources,
+        confidence: 0.9,
+      },
+      clarificationRequired: false,
+    };
+    plan.changeSummary = computeWorkspaceDiff(prevPlan, plan);
+    return plan;
   }
 
   // 1. Generic Overview

@@ -27,13 +27,14 @@ interface Client {
 }
 
 export const ClientProfileCard: React.FC<{ spec: ComponentSpec }> = ({ spec }) => {
-  const clientId = spec.config?.clientId || 'client-acme-corp';
+  const clientId = spec.config?.clientId;
   const [client, setClient] = useState<Client | null>(null);
 
   useEffect(() => {
+    const query = clientId ? `?clientId=${encodeURIComponent(clientId)}` : '';
     axios
-      .get(`/api/data/clients?clientId=${clientId}`)
-      .then(res => setClient(res.data))
+      .get(`/api/data/clients${query}`)
+      .then(res => setClient(clientId ? res.data : res.data[0] ?? null))
       .catch(console.error);
   }, [clientId]);
 

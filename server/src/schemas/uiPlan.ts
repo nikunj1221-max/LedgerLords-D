@@ -15,6 +15,7 @@ export const ComponentTypeSchema = z.enum([
   'WorkspaceExplanationPanel',
   'IntentHistorySwitcher',
   'WorkspaceChangeSummary',
+  'UserDatasetTable',
   // Client & Comm
   'ClientProfileCard',
   'ClientHealthCard',

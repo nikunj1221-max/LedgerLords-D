@@ -17,13 +17,14 @@ interface Communication {
 }
 
 export const CommunicationTimeline: React.FC<{ spec: ComponentSpec }> = ({ spec }) => {
-  const clientId = spec.config?.clientId || 'client-acme-corp';
+  const clientId = spec.config?.clientId;
   const [comms, setComms] = useState<Communication[]>([]);
   const [expandedId, setExpandedId] = useState<string | null>('comm-1');
 
   useEffect(() => {
+    const query = clientId ? `?clientId=${encodeURIComponent(clientId)}` : '';
     axios
-      .get(`/api/data/communications?clientId=${clientId}`)
+      .get(`/api/data/communications${query}`)
       .then(res => setComms(res.data.slice(0, 6)))
       .catch(console.error);
   }, [clientId]);
