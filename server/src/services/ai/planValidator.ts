@@ -38,9 +38,11 @@ const MEETING_CONTEXT_COMPONENT_TYPES = new Set([
 
 function isNewMeetingRequest(prompt: string): boolean {
   return (
-    (/\b(schedule|book|set up|arrange|create)\b/i.test(prompt) &&
+    (/\b(schedule|shecdule|sched|book|set up|arrange|create)\b/i.test(prompt) &&
       /\b(meeting|call|calendar event)\b/i.test(prompt)) ||
-    /\bprepare\s+(?:(?:a|the)\s+)?(?:new\s+)?meeting\b/i.test(prompt)
+    /\bprepare\s+(?:(?:a|the)\s+)?(?:new\s+)?meeting\b/i.test(prompt) ||
+    /schedule\s+meeting/i.test(prompt) ||
+    /shecdule\s+meeting/i.test(prompt)
   );
 }
 
@@ -288,6 +290,37 @@ export function buildPlanFromDraft(raw: unknown, ctx: ValidationContext): PlanRe
       }
     }
   }
+
+  // Ensure MeetingScheduler is the FIRST component for meeting scheduling
+  const schedulerIndex = components.findIndex(c =>
+    c.type === 'MeetingScheduler' || c.type === 'MeetingConfirmationCard' || c.type === 'DatePicker'
+  );
+  if (schedulerIndex > 0) {
+    const [scheduler] = components.splice(schedulerIndex, 1);
+    components.unshift(scheduler);
+  } else if (schedulerIndex === -1 && startsNewMeeting) {
+    const id = freshId('MeetingScheduler', 'meetings', used);
+    used.add(id);
+    components.unshift({
+      id,
+      type: 'MeetingScheduler',
+      title: 'Schedule a Meeting',
+      dataSource: 'meetings',
+      position: 1,
+      colSpan: 2,
+      explanation: 'Set the meeting date, start time, duration, and invite attendees.',
+      pinned: false,
+      config: {
+        defaultDuration: '45',
+        preselectedIds: ['emp-1', 'emp-2']
+      },
+      filters: {},
+    });
+  }
+
+  components.forEach((c, idx) => {
+    c.position = idx + 1;
+  });
 
   const sources = Array.from(new Set(components.map(c => c.dataSource)));
   const plan: UIPlan = {

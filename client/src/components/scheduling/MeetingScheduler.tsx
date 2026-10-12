@@ -44,7 +44,7 @@ export const MeetingScheduler: React.FC<{ spec: ComponentSpec }> = ({ spec }) =>
   const config = spec.config || {};
   const initialStartTime = '14:00';
   const [title, setTitle] = useState(
-    config.defaultTitle || 'Client Meeting'
+    config.defaultTitle || 'Strategic Review & Team Sync'
   );
   const [date, setDate] = useState(getInitialMeetingDate(config.defaultDate, initialStartTime));
   const [startTime, setStartTime] = useState(initialStartTime);
@@ -55,6 +55,12 @@ export const MeetingScheduler: React.FC<{ spec: ComponentSpec }> = ({ spec }) =>
   const [error, setError] = useState<string | null>(null);
   const selectedAttendeeIds = useWorkspaceStore(state => state.selectedAttendeeIds);
   const requestIdRef = useRef<string | null>(null);
+
+  useEffect(() => {
+    if (config.defaultTitle) {
+      setTitle(config.defaultTitle);
+    }
+  }, [config.defaultTitle]);
 
   useEffect(() => {
     requestIdRef.current = null;
@@ -234,7 +240,7 @@ export const MeetingScheduler: React.FC<{ spec: ComponentSpec }> = ({ spec }) =>
       </div>
 
       <div className="rounded-lg border border-[var(--border-color)] p-3 space-y-2">
-        <h4 className="font-semibold text-[var(--text-primary)]">Invitees</h4>
+        <h4 className="font-semibold text-[var(--text-primary)]">Invite Attendees</h4>
         <p className="text-[var(--text-secondary)]">
           Only selected employee emails explicitly allowlisted in the server environment will receive invitations.
         </p>

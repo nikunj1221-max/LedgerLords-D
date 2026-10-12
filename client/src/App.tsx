@@ -19,6 +19,21 @@ import { AuthScreen } from './components/auth/AuthScreen';
 import { DataOnboardingScreen } from './components/auth/DataOnboardingScreen';
 import { useAuthStore } from './store/authStore';
 
+// Aliases that render the same React component share one card identity,
+// so a card glides instead of exiting and re-entering when the planner
+// switches between an alias and its target.
+const CANONICAL_TYPE: Record<string, string> = {
+  ClientHealthCard: 'ClientProfileCard',
+  PeriodComparisonCard: 'UsageTrendChart',
+  TrendIndicator: 'MetricCard',
+  InsightPanel: 'EvidenceBasedInsightList',
+  DataTable: 'OverdueTasksTable',
+  TaskDetailDrawer: 'OverdueTasksTable',
+  DatePicker: 'MeetingScheduler',
+  MeetingConfirmationCard: 'MeetingScheduler',
+  TimeSlotSelector: 'AvailabilityPanel',
+};
+
 export const App: React.FC = () => {
   const {
     status: authStatus,
@@ -123,10 +138,33 @@ export const App: React.FC = () => {
   const hasIntegratedMeetingScheduler = planComponents.some(component =>
     ['MeetingScheduler', 'MeetingConfirmationCard', 'DatePicker'].includes(component.type)
   );
-  const visibleComponents = planComponents.filter(component =>
-    !hiddenComponentIds.includes(component.id) &&
-    !(hasIntegratedMeetingScheduler && component.type === 'AttendeeSelector')
-  );
+  const visibleComponents = [...planComponents]
+    .filter(component =>
+      !hiddenComponentIds.includes(component.id) &&
+      !(hasIntegratedMeetingScheduler && component.type === 'AttendeeSelector')
+    )
+    .sort((a, b) => {
+      if (hasIntegratedMeetingScheduler) {
+        const isSchedulerA = ['MeetingScheduler', 'MeetingConfirmationCard', 'DatePicker'].includes(a.type);
+        const isSchedulerB = ['MeetingScheduler', 'MeetingConfirmationCard', 'DatePicker'].includes(b.type);
+        if (isSchedulerA && !isSchedulerB) return -1;
+        if (!isSchedulerA && isSchedulerB) return 1;
+      }
+      return (a.position || 0) - (b.position || 0);
+    });
+
+  // Stable card identity: canonical type | data source | occurrence number.
+  // The occurrence number keeps keys unique when a plan has two cards of the
+  // same type and data source (e.g. two MetricCards on "tasks").
+  // Plain const, not a hook: this code sits below the early returns above.
+  const keyCounts = new Map<string, number>();
+  const cardKeys = visibleComponents.map(spec => {
+    const base = `${CANONICAL_TYPE[spec.type] ?? spec.type}|${spec.dataSource}`;
+    const n = (keyCounts.get(base) ?? 0) + 1;
+    keyCounts.set(base, n);
+    return `${base}|${n}`;
+  });
+
   const layoutTransition = prefersReducedMotion
     ? reducedWorkspaceLayoutTransition
     : workspaceLayoutTransition;
@@ -163,19 +201,27 @@ export const App: React.FC = () => {
             {/* Active Workspace Header & Quick Actions */}
             {currentPlan && (
               <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 border-b border-[var(--border-color)]">
-                <div>
-                  <div className="flex items-center gap-2">
-                    <h1 className="text-xl md:text-2xl font-bold tracking-tight text-[var(--text-primary)]">
-                      {currentPlan.title}
-                    </h1>
-                    <span className="text-xs font-mono font-semibold px-2.5 py-0.5 rounded-full bg-primary/15 text-primary border border-primary/30">
-                      {currentPlan.intentLabel}
-                    </span>
-                  </div>
-                  <p className="text-xs text-[var(--text-secondary)] mt-1.5 max-w-2xl leading-relaxed">
-                    {currentPlan.subtitle}
-                  </p>
-                </div>
+                <AnimatePresence mode="wait" initial={false}>
+                  <motion.div
+                    key={currentPlan.id}
+                    initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 8 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: prefersReducedMotion ? 0 : -8 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    <div className="flex items-center gap-2">
+                      <h1 className="text-xl md:text-2xl font-bold tracking-tight text-[var(--text-primary)]">
+                        {currentPlan.title}
+                      </h1>
+                      <span className="text-xs font-mono font-semibold px-2.5 py-0.5 rounded-full bg-primary/15 text-primary border border-primary/30">
+                        {currentPlan.intentLabel}
+                      </span>
+                    </div>
+                    <p className="text-xs text-[var(--text-secondary)] mt-1.5 max-w-2xl leading-relaxed">
+                      {currentPlan.subtitle}
+                    </p>
+                  </motion.div>
+                </AnimatePresence>
 
                 {/* Plan-specific Top Actions */}
                 {currentPlan.actions && currentPlan.actions.length > 0 && (
@@ -233,8 +279,13 @@ export const App: React.FC = () => {
               <LayoutGroup id="workspace-components">
                 <motion.div
                   layout="position"
+                  aria-busy={isAdapting}
+                  animate={{
+                    opacity: isAdapting ? 0.55 : 1,
+                    scale: isAdapting && !prefersReducedMotion ? 0.995 : 1,
+                  }}
                   className="grid grid-cols-12 gap-5"
-                  transition={{ layout: layoutTransition }}
+                  transition={{ layout: layoutTransition, opacity: { duration: 0.2 }, scale: { duration: 0.2 } }}
                 >
                   <AnimatePresence mode="popLayout">
                     {visibleComponents.map((spec, index) => {
@@ -242,7 +293,7 @@ export const App: React.FC = () => {
 
                       return (
                         <WorkspaceMotionCard
-                          key={spec.id}
+                          key={cardKeys[index]}
                           componentId={spec.id}
                           scrollRoot={workspaceScrollRef}
                           staggerIndex={index % 4}

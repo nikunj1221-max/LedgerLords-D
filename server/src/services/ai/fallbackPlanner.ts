@@ -28,10 +28,18 @@ export class FallbackPlanner {
     const pinnedIds = input.pinnedComponentIds || [];
 
     const explicitlySchedulesMeeting =
-      /\b(schedule|book|set up|arrange|create)\b/.test(promptLower) &&
-      /\b(meeting|call|calendar event)\b/.test(promptLower);
+      (/\b(schedule|shecdule|sched|book|set up|arrange|create)\b/.test(promptLower) &&
+      /\b(meeting|call|calendar event)\b/.test(promptLower)) ||
+      promptLower.includes('schedule meeting') ||
+      promptLower.includes('shecdule meeting');
     const preparesNewMeeting = /\bprepare\s+(?:(?:a|the)\s+)?(?:new\s+)?meeting\b/.test(promptLower);
     if (explicitlySchedulesMeeting || preparesNewMeeting) {
+      if (
+        (promptLower.includes('launch') || promptLower.includes('nexus')) ||
+        (prevPlan && (prevPlan.prompt.toLowerCase().includes('launch') || prevPlan.prompt.toLowerCase().includes('product')))
+      ) {
+        return this.buildSchedulingPlan(prompt, prevPlan, pinnedIds);
+      }
       const availableSources = input.userDatasets?.length
         ? new Set(input.userDatasets.flatMap(dataset => dataset.sources ?? []))
         : undefined;
@@ -739,11 +747,26 @@ export class FallbackPlanner {
     const scheduler: ComponentSpec = {
       id: 'schedule-meeting-form',
       type: 'MeetingScheduler',
-      title: 'Schedule a meeting',
+      title: 'Schedule a Meeting',
       dataSource: 'meetings',
       position: 1,
       colSpan: 2,
-      explanation: 'Set the meeting details and choose invitees from the configured attendee list.',
+      explanation: 'Set the meeting date, start time, duration, and invite attendees.',
+      config: {
+        defaultTitle: 'Team Sync & Project Strategy Meeting',
+        defaultDuration: '45',
+        preselectedIds: ['emp-1', 'emp-2']
+      }
+    };
+    const availability: ComponentSpec = {
+      id: 'sched-attendee-availability',
+      type: 'AvailabilityPanel',
+      title: 'Attendee Calendar Availability',
+      dataSource: 'availability',
+      position: 2,
+      colSpan: 2,
+      explanation: 'Check open calendar slots across key team members and attendees.',
+      config: { recommendedSlot: '14:00 - 15:00' }
     };
     const previousBrief = this.buildAcmeCorpMeetingPlan(
       "Prepare for tomorrow's meeting with Acme Corp."
@@ -758,9 +781,9 @@ export class FallbackPlanner {
           : `Previous Acme Corp Context — ${component.title}`,
         explanation: `Previous client-meeting context: ${component.explanation}`,
         pinned: false,
-        position: index + 2,
+        position: index + 3,
       }));
-    const components = [scheduler, ...previousMeetingComponents];
+    const components = [scheduler, availability, ...previousMeetingComponents];
     const meetingPreparationTypes = new Set([
       'ClientProfileCard',
       'MeetingAgendaPanel',

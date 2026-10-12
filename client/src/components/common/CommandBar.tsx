@@ -67,7 +67,7 @@ export const CommandBar: React.FC = () => {
   }, [cancelAutoSubmit]);
 
   const starterPrompts = [
-    { label: 'Prepare a new meeting', prompt: 'Prepare a new meeting with selected attendees.' },
+    { label: 'Schedule a meeting', prompt: 'Schedule a meeting: choose date, time, and invite attendees.' },
     { label: 'Investigate a product usage drop', prompt: 'Investigate why product usage dropped this week.' },
     { label: 'Review overdue project work', prompt: 'Show me the overdue project work that needs attention first.' }
   ];
