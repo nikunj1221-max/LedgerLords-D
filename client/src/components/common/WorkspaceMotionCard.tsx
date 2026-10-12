@@ -86,7 +86,18 @@ export const WorkspaceMotionCard = React.forwardRef<HTMLDivElement, WorkspaceMot
       initial={reducedMotion ? 'visible' : 'hidden'}
       animate={reducedMotion || hasEnteredView ? 'visible' : 'hidden'}
       exit="exit"
-      transition={{ layout: layoutTransition }}
+      transition={{
+        layout: {
+          ...(reducedMotion
+            ? layoutTransition
+            : {
+              type: 'tween',
+              duration: 1.8,
+              ease: 'easeInOut',
+              delay: Math.min(staggerIndex, 5) * 0.1,
+            }),
+        },
+      }}
       className={className}
     >
       {children}

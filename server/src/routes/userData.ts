@@ -66,8 +66,12 @@ router.get('/:datasetId', async (req: Request, res: Response) => {
 
 router.post('/', async (req: Request, res: Response) => {
   const user = res.locals.authUser as PublicUser;
-  const name = typeof req.body?.name === 'string' ? req.body.name.trim() : '';
-  const format = req.body?.format;
+  const rawTextBody = typeof req.body === 'string' ? req.body : null;
+  const body = rawTextBody === null ? req.body : null;
+  const nameValue = body?.name ?? req.query.name;
+  const name = typeof nameValue === 'string' ? nameValue.trim() : '';
+  const format = body?.format ?? req.query.format;
+  const content = rawTextBody ?? body?.content;
   if (!name || name.length > 255) {
     res.status(400).json({ error: 'A file name of at most 255 characters is required.' });
     return;
@@ -75,7 +79,7 @@ router.post('/', async (req: Request, res: Response) => {
 
   let imported: ReturnType<typeof importUserDataset>;
   try {
-    imported = importUserDataset(format, req.body?.content);
+    imported = importUserDataset(format, content);
   } catch (error) {
     res.status(400).json({
       error: error instanceof Error ? error.message : 'The selected file could not be read.',

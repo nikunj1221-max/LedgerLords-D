@@ -87,8 +87,8 @@ export const useAuthStore = create<AuthState>(set => ({
   },
 
   uploadDataset: async file => {
-    if (file.size > 5 * 1024 * 1024) {
-      throw new Error('Files must be 5 MB or smaller.');
+    if (file.size > 4 * 1024 * 1024) {
+      throw new Error('Files must be 4 MB or smaller when uploading.');
     }
     const format = file.name.toLowerCase().endsWith('.csv')
       ? 'csv'
@@ -99,11 +99,14 @@ export const useAuthStore = create<AuthState>(set => ({
 
     set({ error: null });
     try {
-      const response = await axios.post('/api/user-data', {
-        name: file.name,
-        format,
-        content: await file.text(),
-      });
+      const response = await axios.post(
+        '/api/user-data',
+        await file.text(),
+        {
+          params: { name: file.name, format },
+          headers: { 'Content-Type': 'text/plain' },
+        }
+      );
       set(state => ({
         user: state.user
           ? { ...state.user, onboardingComplete: response.data.onboardingComplete }

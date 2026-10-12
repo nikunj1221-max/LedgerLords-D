@@ -265,9 +265,7 @@ export const COMPONENT_CONTRACT: Record<string, ComponentContractEntry> = {
   },
   AttendeeSelector: {
     dataSources: ['employees'],
-    configKeys: {
-      preselectedIds: 'array of employee ids e.g. ["emp-1","emp-2"]',
-    },
+    configKeys: {},
     filterKeys: {},
     usage: 'choose attendees',
   },

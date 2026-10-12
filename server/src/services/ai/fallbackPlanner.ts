@@ -754,8 +754,7 @@ export class FallbackPlanner {
       explanation: 'Set the meeting date, start time, duration, and invite attendees.',
       config: {
         defaultTitle: 'Team Sync & Project Strategy Meeting',
-        defaultDuration: '45',
-        preselectedIds: ['emp-1', 'emp-2']
+        defaultDuration: '45'
       }
     };
     const availability: ComponentSpec = {
@@ -867,10 +866,8 @@ export class FallbackPlanner {
         dataSource: 'employees',
         position: 3,
         colSpan: 2,
-        explanation: 'Pre-selected engineering and product leads responsible for the launch and hotfix verification.',
-        config: {
-          preselectedIds: ['emp-1', 'emp-2', 'emp-3', 'emp-4', 'emp-20']
-        }
+        explanation: 'Choose engineering and product leads responsible for the launch and hotfix verification.',
+        config: {}
       },
       {
         id: 'sched-agenda-editor',

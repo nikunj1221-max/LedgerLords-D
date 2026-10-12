@@ -56,7 +56,7 @@ export const DataOnboardingScreen: React.FC<DataOnboardingScreenProps> = ({ onCo
           Upload a CSV or JSON file to save a private dataset to your account. You can skip this and start with the prompt page instead.
         </p>
         <p className="mt-3 text-xs text-[var(--text-muted)]">
-          Signed in as {user?.email}. Uploads are private to your account. CSV files need a header row; JSON files must be an array of objects. Maximum file size: 5 MB.
+          Signed in as {user?.email}. Uploads are private to your account. CSV files need a header row; JSON files must be an array of objects. Maximum file size: 4 MB.
         </p>
         <p className="mt-2 text-xs text-[var(--text-muted)]">
           If an AI provider is configured, up to two sample rows per data group are sent to it to identify matching dashboard categories. The full dataset is not sent for classification.

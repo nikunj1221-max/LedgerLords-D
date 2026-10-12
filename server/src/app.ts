@@ -18,10 +18,11 @@ const app = express();
 
 app.use(
   cors({
-    origin: process.env.CLIENT_ORIGIN || true,
+    origin: process.env.CLIENT_ORIGIN || false,
     credentials: true,
   })
 );
+app.use('/api/user-data', express.text({ type: 'text/plain', limit: '4mb' }));
 app.use(express.json({ limit: '12mb' }));
 
 // API Routes

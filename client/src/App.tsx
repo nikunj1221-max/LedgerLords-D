@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { LayoutGroup, motion, AnimatePresence, MotionConfig, useReducedMotion } from 'framer-motion';
 import { useWorkspaceStore } from './store/workspaceStore';
 import {
@@ -43,6 +43,7 @@ export const App: React.FC = () => {
     dismissAuthSuccessAnimation,
   } = useAuthStore();
   const [showDataUpload, setShowDataUpload] = useState(false);
+  const [stagedArrangementPlanId, setStagedArrangementPlanId] = useState<string | null>(null);
   const workspaceScrollRef = useRef<HTMLElement>(null);
   const prefersReducedMotion = useReducedMotion();
   const {
@@ -74,6 +75,17 @@ export const App: React.FC = () => {
     const timeout = window.setTimeout(dismissAuthSuccessAnimation, 2500);
     return () => window.clearTimeout(timeout);
   }, [showAuthSuccessAnimation, dismissAuthSuccessAnimation]);
+
+  useLayoutEffect(() => {
+    if (!currentPlan || prefersReducedMotion) {
+      setStagedArrangementPlanId(null);
+      return;
+    }
+
+    setStagedArrangementPlanId(currentPlan.id);
+    const timeout = window.setTimeout(() => setStagedArrangementPlanId(null), 700);
+    return () => window.clearTimeout(timeout);
+  }, [currentPlan?.id, prefersReducedMotion]);
 
   if (authStatus === 'checking') {
     return (
@@ -138,7 +150,7 @@ export const App: React.FC = () => {
   const hasIntegratedMeetingScheduler = planComponents.some(component =>
     ['MeetingScheduler', 'MeetingConfirmationCard', 'DatePicker'].includes(component.type)
   );
-  const visibleComponents = [...planComponents]
+  const positionedComponents = [...planComponents]
     .filter(component =>
       !hiddenComponentIds.includes(component.id) &&
       !(hasIntegratedMeetingScheduler && component.type === 'AttendeeSelector')
@@ -158,12 +170,15 @@ export const App: React.FC = () => {
   // same type and data source (e.g. two MetricCards on "tasks").
   // Plain const, not a hook: this code sits below the early returns above.
   const keyCounts = new Map<string, number>();
-  const cardKeys = visibleComponents.map(spec => {
+  const keyedComponents = positionedComponents.map(spec => {
     const base = `${CANONICAL_TYPE[spec.type] ?? spec.type}|${spec.dataSource}`;
     const n = (keyCounts.get(base) ?? 0) + 1;
     keyCounts.set(base, n);
-    return `${base}|${n}`;
+    return { spec, key: `${base}|${n}` };
   });
+  const renderComponents = stagedArrangementPlanId === currentPlan?.id
+    ? [...keyedComponents].reverse()
+    : keyedComponents;
 
   const layoutTransition = prefersReducedMotion
     ? reducedWorkspaceLayoutTransition
@@ -182,6 +197,7 @@ export const App: React.FC = () => {
 
         {/* Dynamic Workspace Canvas */}
         <motion.main
+          id="workspace-scroll-container"
           layoutScroll
           ref={workspaceScrollRef}
           className={`flex-1 overflow-y-auto p-4 md:p-8 bg-transparent ${!currentPlan && !isAdapting ? 'flex items-center' : ''
@@ -284,27 +300,26 @@ export const App: React.FC = () => {
                     opacity: isAdapting ? 0.55 : 1,
                     scale: isAdapting && !prefersReducedMotion ? 0.995 : 1,
                   }}
-                  className="grid grid-cols-12 gap-5"
+                  className="grid grid-cols-1 lg:grid-cols-2 gap-5"
                   transition={{ layout: layoutTransition, opacity: { duration: 0.2 }, scale: { duration: 0.2 } }}
                 >
                   <AnimatePresence mode="popLayout">
-                    {visibleComponents.map((spec, index) => {
+                    {renderComponents.map(({ spec, key }, index) => {
                       const Component = getComponentForType(spec.type);
 
                       return (
                         <WorkspaceMotionCard
-                          key={cardKeys[index]}
+                          key={key}
                           componentId={spec.id}
                           scrollRoot={workspaceScrollRef}
-                          staggerIndex={index % 4}
+                          staggerIndex={index}
                           layoutTransition={layoutTransition}
-                          className={`${{
-                              1: 'col-span-12 md:col-span-6 lg:col-span-3',
-                              2: 'col-span-12 md:col-span-6 lg:col-span-6',
-                              3: 'col-span-12 lg:col-span-9',
-                              4: 'col-span-12',
-                            }[['MeetingScheduler', 'MeetingConfirmationCard'].includes(spec.type) ? 4 : (spec.colSpan || 2)]
-                            }`}
+                          className={
+                            spec.colSpan >= 3 ||
+                            ['MeetingScheduler', 'MeetingConfirmationCard'].includes(spec.type)
+                              ? 'col-span-1 lg:col-span-2'
+                              : 'col-span-1'
+                          }
                         >
                           <ComponentWrapper spec={spec}>
                             <Component spec={spec} />

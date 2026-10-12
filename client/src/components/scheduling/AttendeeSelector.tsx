@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import axios from 'axios';
 import { Check, Search, Users, UserCheck } from 'lucide-react';
 import { ComponentSpec } from '../../types/workspace';
@@ -13,12 +13,11 @@ interface Employee {
   department: string;
 }
 
-export const AttendeeSelector: React.FC<{ spec: ComponentSpec }> = ({ spec }) => {
+export const AttendeeSelector: React.FC<{ spec: ComponentSpec }> = () => {
   const [employees, setEmployees] = useState<Employee[]>([]);
   const [search, setSearch] = useState('');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const appliedPreselection = useRef(false);
   const selectedIds = useWorkspaceStore(state => state.selectedAttendeeIds);
   const setSelectedIds = useWorkspaceStore(state => state.setSelectedAttendeeIds);
 
@@ -36,14 +35,14 @@ export const AttendeeSelector: React.FC<{ spec: ComponentSpec }> = ({ spec }) =>
   }, []);
 
   useEffect(() => {
-    const preselectedIds = Array.isArray(spec.config?.preselectedIds)
-      ? spec.config.preselectedIds.filter((id: unknown): id is string => typeof id === 'string')
-      : [];
-    if (!appliedPreselection.current && selectedIds.length === 0 && preselectedIds.length > 0) {
-      setSelectedIds(preselectedIds);
+    if (loading || error) return;
+
+    const attendeeIds = new Set(employees.map(employee => employee.id));
+    const validSelectedIds = selectedIds.filter(id => attendeeIds.has(id));
+    if (validSelectedIds.length !== selectedIds.length) {
+      setSelectedIds(validSelectedIds);
     }
-    appliedPreselection.current = true;
-  }, [selectedIds.length, setSelectedIds, spec.config?.preselectedIds]);
+  }, [employees, error, loading, selectedIds, setSelectedIds]);
 
   const toggleSelect = (id: string) => {
     setSelectedIds(
@@ -74,7 +73,7 @@ export const AttendeeSelector: React.FC<{ spec: ComponentSpec }> = ({ spec }) =>
             <span className="font-semibold text-[var(--text-primary)] text-sm">Invite Attendees</span>
           </div>
           <span className="text-[11px] font-semibold px-2.5 py-0.5 rounded-full bg-primary/15 text-primary border border-primary/25">
-            {selectedIds.length} of {employees.length} selected
+            {selectedIds.filter(id => employees.some(employee => employee.id === id)).length} of {employees.length} selected
           </span>
         </div>
 

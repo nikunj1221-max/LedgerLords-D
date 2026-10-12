@@ -314,8 +314,7 @@ export function buildPlanFromDraft(raw: unknown, ctx: ValidationContext): PlanRe
       explanation: 'Set the meeting date, start time, duration, and invite attendees.',
       pinned: false,
       config: {
-        defaultDuration: '45',
-        preselectedIds: ['emp-1', 'emp-2']
+        defaultDuration: '45'
       },
       filters: {},
     });
