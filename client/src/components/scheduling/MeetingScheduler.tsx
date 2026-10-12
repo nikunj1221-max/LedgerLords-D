@@ -188,7 +188,7 @@ export const MeetingScheduler: React.FC<{ spec: ComponentSpec }> = ({ spec }) =>
                   type="date"
                   min={localDate(new Date())}
                   value={date}
-                  onChange={event => setDate(event.target.value)}
+                  onChange={(event: React.ChangeEvent<HTMLInputElement>) => setDate(event.target.value)}
                   className="w-full bg-canvas border border-border/70 rounded-xl pl-9 pr-3 py-2.5 text-[var(--text-primary)] focus:outline-none focus:border-primary text-xs transition-colors"
                 />
               </div>
@@ -200,7 +200,7 @@ export const MeetingScheduler: React.FC<{ spec: ComponentSpec }> = ({ spec }) =>
                 <Clock className="w-4 h-4 text-primary absolute left-3 top-2.5" />
                 <select
                   value={startTime}
-                  onChange={event => setStartTime(event.target.value)}
+                  onChange={(event: React.ChangeEvent<HTMLSelectElement>) => setStartTime(event.target.value)}
                   className="w-full bg-canvas border border-border/70 rounded-xl pl-9 pr-3 py-2.5 text-[var(--text-primary)] focus:outline-none focus:border-primary text-xs transition-colors cursor-pointer"
                 >
                   <option value="09:00">09:00 AM</option>
@@ -222,7 +222,7 @@ export const MeetingScheduler: React.FC<{ spec: ComponentSpec }> = ({ spec }) =>
               <label className="block text-[var(--text-secondary)] font-medium mb-1.5">Duration:</label>
               <select
                 value={duration}
-                onChange={event => setDuration(event.target.value)}
+                onChange={(event: React.ChangeEvent<HTMLSelectElement>) => setDuration(event.target.value)}
                 className="w-full bg-canvas border border-border/70 rounded-xl px-3 py-2.5 text-[var(--text-primary)] focus:outline-none focus:border-primary text-xs transition-colors cursor-pointer"
               >
                 <option value="15">15 minutes</option>
@@ -241,7 +241,7 @@ export const MeetingScheduler: React.FC<{ spec: ComponentSpec }> = ({ spec }) =>
                   type="text"
                   value={location}
                   maxLength={500}
-                  onChange={event => setLocation(event.target.value)}
+                  onChange={(event: React.ChangeEvent<HTMLInputElement>) => setLocation(event.target.value)}
                   placeholder="Google Meet or room (optional)"
                   className="w-full bg-canvas border border-border/70 rounded-xl pl-9 pr-3 py-2.5 text-[var(--text-primary)] focus:outline-none focus:border-primary text-xs transition-colors"
                 />
