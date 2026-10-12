@@ -1,0 +1,58 @@
+services:
+  # ============================================================================
+  # OPTION 1 (RECOMMENDED): Unified Full-Stack Service
+  # Builds both client and server; Express serves API routes (/api/*) and static
+  # frontend files (client/dist) from a single domain. This avoids CORS & cookie issues.
+  # ============================================================================
+  - type: web
+    name: ledgerlords-app
+    runtime: node
+    plan: free
+    region: oregon
+    # Installs dependencies, generates Prisma client, and builds both client & server
+    buildCommand: npm install && npm run build
+    # Starts the compiled Node.js Express server
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+
+      # Database Configuration (Supabase / PostgreSQL)
+      - key: DATABASE_URL
+        sync: false
+      - key: DIRECT_URL
+        sync: false
+
+      # AI Planner Configuration
+      - key: AI_API_KEY
+        sync: false
+      - key: AI_ENDPOINT
+        sync: false
+      - key: AI_MODEL
+        sync: false
+      - key: AI_REASONING_EFFORT
+        value: medium
+      - key: AI_CACHE_FILE
+        value: ./data/ai-plan-cache.json
+
+      # Auth & Origin Configuration (false for unified deployment)
+      - key: CROSS_ORIGIN_AUTH
+        value: "false"
+
+      # Google Calendar OAuth Integration (Optional)
+      - key: GOOGLE_CALENDAR_CLIENT_ID
+        sync: false
+      - key: GOOGLE_CALENDAR_CLIENT_SECRET
+        sync: false
+      - key: GOOGLE_CALENDAR_REFRESH_TOKEN
+        sync: false
+      - key: GOOGLE_CALENDAR_ID
+        value: primary
+      - key: GOOGLE_CALENDAR_TIME_ZONE
+        value: UTC
+      - key: MEETING_ALLOWED_ATTENDEES
+        sync: false
+      - key: MEETING_REMINDER_MINUTES
+        value: "15"
