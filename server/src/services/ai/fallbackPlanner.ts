@@ -750,7 +750,7 @@ export class FallbackPlanner {
       title: 'Schedule a Meeting',
       dataSource: 'meetings',
       position: 1,
-      colSpan: 2,
+      colSpan: 4,
       explanation: 'Set the meeting date, start time, duration, and invite attendees.',
       config: {
         defaultTitle: 'Team Sync & Project Strategy Meeting',
@@ -839,7 +839,7 @@ export class FallbackPlanner {
         title: 'Schedule Meeting: NexusFlow 3.0 Launch Readiness & Hotfix Review',
         dataSource: 'meetings',
         position: 1,
-        colSpan: 2,
+        colSpan: 4,
         explanation: 'Main interactive scheduling panel pre-filled with tomorrow date (2026-10-11), 60m duration, and launch objective.',
         evidence: 'Synthesized from follow-up request referencing product launch context.',
         config: {

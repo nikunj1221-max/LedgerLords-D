@@ -179,14 +179,14 @@ export const CommandBar: React.FC = () => {
             transition={{ duration: 0.16, ease: 'easeOut' }}
             style={
               input.trim() && !isDuplicatePrompt
-                ? { background: 'linear-gradient(135deg, #471ca8 0%, #884ab2 50%, #ff8008 100%)' }
+                ? { background: 'linear-gradient(135deg, #fc5602 0%, #ff8008 50%, #ffb703 100%)' }
                 : undefined
             }
             className={`rounded-xl font-semibold flex items-center gap-2 transition-all shrink-0 ${
               isInitial ? 'px-5 py-3 text-sm md:text-base' : 'px-4 py-2.5 text-xs md:text-sm'
             } ${
               input.trim() && !isDuplicatePrompt
-                ? 'text-white shadow-md hover:opacity-95 shadow-[#471ca8]/30'
+                ? 'text-white shadow-md hover:opacity-95 shadow-[#fc5602]/30'
                 : 'bg-black/5 dark:bg-white/5 text-[var(--text-muted)] cursor-not-allowed'
             }`}
           >

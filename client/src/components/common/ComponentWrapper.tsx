@@ -33,7 +33,7 @@ export const ComponentWrapper: React.FC<ComponentWrapperProps> = ({ spec, childr
       {/* Header bar with title and actions */}
       <div className="flex items-center justify-between px-4 py-3 border-b border-[var(--border-color)] bg-card/70 rounded-t-xl">
         <div className="flex items-center gap-2 overflow-hidden">
-          <div className="w-2 h-2 rounded-full bg-primary/80 animate-pulse" />
+          <div className="w-2.5 h-2.5 rounded-full bg-primary shrink-0 animate-pulse" />
           <h3 className="text-sm font-semibold text-[var(--text-primary)] truncate" title={spec.title}>
             {spec.title}
           </h3>

@@ -106,13 +106,13 @@ export const Header: React.FC<HeaderProps> = ({ onUploadData }) => {
               {activeTab === tab && (
                 <motion.div
                   layoutId="navbar-active-pill"
-                  className="absolute inset-0 rounded-xl sm:rounded-full bg-gradient-to-r from-[#471ca8]/15 via-[#884ab2]/15 to-[#ff8008]/15 border border-[#884ab2]/30 shadow-sm"
+                  className="absolute inset-0 rounded-xl sm:rounded-full bg-gradient-to-r from-[#fc5602]/15 via-[#ff8008]/15 to-[#ffb703]/15 border border-[#ff8008]/30 shadow-sm"
                   transition={{ type: 'spring', stiffness: 450, damping: 35 }}
                 />
               )}
               <span className="relative z-10">
                 <Icon className={`w-4 h-4 sm:w-[18px] sm:h-[18px] ${
-                  activeTab === tab ? 'text-[#471ca8] dark:text-[#ff8008]' : 'text-slate-500 dark:text-slate-400'
+                  activeTab === tab ? 'text-[#ea580c] dark:text-[#ff8008]' : 'text-slate-500 dark:text-slate-400'
                 }`} />
                 {tab === 'notifications' && notification && (
                   <span className="absolute -top-0.5 -right-0.5 w-2 h-2 rounded-full bg-primary ring-2 ring-white dark:ring-[#181524]" />

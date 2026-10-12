@@ -132,8 +132,8 @@ export const Sidebar: React.FC = () => {
             className="w-full flex items-center justify-between px-3.5 py-2.5 rounded-full bg-slate-900 dark:bg-white text-white dark:text-slate-900 text-xs font-semibold shadow-sm transition-all"
           >
             <div className="flex items-center gap-2.5 truncate text-white dark:text-slate-900">
-              <Box className="w-4 h-4 stroke-[2] shrink-0 text-white dark:text-slate-900" />
-              <span className="truncate text-white dark:text-slate-900 font-medium">Relevant Sections</span>
+              <Box className="w-4 h-4 stroke-[2] shrink-0  bg-orange text-white dark:text-slate-900" />
+              <span className="truncate text-white dark:text-slate-900  font-medium">Relevant Sections</span>
             </div>
             <div className="flex items-center gap-1.5 shrink-0 ml-2">
               <span className="text-[10px] opacity-70">({components.length})</span>

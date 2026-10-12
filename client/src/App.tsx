@@ -231,7 +231,7 @@ export const App: React.FC = () => {
                         key={action.id}
                         onClick={() => executeMockAction(action.actionType, action.payload)}
                         className={`px-3.5 py-2 rounded-xl text-xs font-semibold shadow-sm transition-all flex items-center gap-1.5 ${action.variant === 'primary'
-                            ? 'bg-primary hover:bg-primary-hover text-white shadow-glow-violet/30'
+                            ? 'bg-primary hover:bg-primary-hover text-white shadow-glow-orange/30'
                             : action.variant === 'secondary'
                               ? 'bg-card hover:bg-plum-800 text-teal-600 dark:text-teal-300 border border-teal-500/30'
                               : 'bg-card hover:bg-plum-800 text-[var(--text-primary)] border border-[var(--border-color)]'
@@ -303,7 +303,7 @@ export const App: React.FC = () => {
                               2: 'col-span-12 md:col-span-6 lg:col-span-6',
                               3: 'col-span-12 lg:col-span-9',
                               4: 'col-span-12',
-                            }[spec.colSpan || 2]
+                            }[['MeetingScheduler', 'MeetingConfirmationCard'].includes(spec.type) ? 4 : (spec.colSpan || 2)]
                             }`}
                         >
                           <ComponentWrapper spec={spec}>

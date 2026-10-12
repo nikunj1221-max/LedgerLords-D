@@ -297,7 +297,10 @@ export function buildPlanFromDraft(raw: unknown, ctx: ValidationContext): PlanRe
   );
   if (schedulerIndex > 0) {
     const [scheduler] = components.splice(schedulerIndex, 1);
+    scheduler.colSpan = 4;
     components.unshift(scheduler);
+  } else if (schedulerIndex === 0) {
+    components[0].colSpan = 4;
   } else if (schedulerIndex === -1 && startsNewMeeting) {
     const id = freshId('MeetingScheduler', 'meetings', used);
     used.add(id);
@@ -307,7 +310,7 @@ export function buildPlanFromDraft(raw: unknown, ctx: ValidationContext): PlanRe
       title: 'Schedule a Meeting',
       dataSource: 'meetings',
       position: 1,
-      colSpan: 2,
+      colSpan: 4,
       explanation: 'Set the meeting date, start time, duration, and invite attendees.',
       pinned: false,
       config: {

@@ -123,11 +123,11 @@ html:not(.dark) .bg-canvas {
 .bg-primary,
 html:not(.dark) .bg-primary,
 html.dark .bg-primary {
-  background: linear-gradient(135deg, #471ca8 0%, #884ab2 50%, #ff8008 100%) !important;
+  background: linear-gradient(135deg, #fc5602 0%, #ff8008 50%, #ffb703 100%) !important;
   color: #ffffff !important;
   border-radius: 10px !important;
   box-shadow:
-    3px 4px 12px rgba(71, 28, 168, 0.35),
+    3px 4px 12px rgba(252, 86, 2, 0.35),
     -2px -2px 8px rgba(255, 255, 255, 0.8),
     inset 0 1px 1px rgba(255, 255, 255, 0.3) !important;
 }
@@ -137,7 +137,7 @@ html.dark .bg-primary {
 .project-gradient,
 .bg-primary-gradient,
 [class*="from-primary"][class*="to-teal"] {
-  background: linear-gradient(135deg, #471ca8 0%, #884ab2 50%, #ff8008 100%) !important;
+  background: linear-gradient(135deg, #fc5602 0%, #ff8008 50%, #ffb703 100%) !important;
 }
 
 /* High Contrast WCAG AAA Typography Overrides for Light Mode */
@@ -177,7 +177,7 @@ html:not(.dark) .text-gray-500 {
 
 /* Light Mode Accent Badges (WCAG compliant) */
 html:not(.dark) .text-primary {
-  color: #471ca8 !important;
+  color: #ea580c !important;
 }
 
 html:not(.dark) .text-coral {
@@ -203,8 +203,8 @@ html:not(.dark) .text-mint {
 /* Inset Soft Badges */
 html:not(.dark) .bg-primary\/20,
 html:not(.dark) .bg-primary\/10 {
-  background-color: rgba(124, 58, 237, 0.12) !important;
-  border: 1px solid rgba(124, 58, 237, 0.28) !important;
+  background-color: rgba(255, 128, 8, 0.12) !important;
+  border: 1px solid rgba(255, 128, 8, 0.28) !important;
   border-radius: 8px !important;
 }
 
@@ -239,7 +239,7 @@ html:not(.dark) .bg-mint\/10 {
 
 /* Subtle Inset Table Rows on Hover */
 html:not(.dark) tr:hover {
-  background-color: rgba(124, 58, 237, 0.05) !important;
+  background-color: rgba(255, 128, 8, 0.05) !important;
 }
 
 html:not(.dark) thead tr {
@@ -281,11 +281,11 @@ html:not(.dark) .recharts-default-tooltip {
 
   0%,
   100% {
-    box-shadow: 0 0 15px rgba(139, 92, 246, 0.25);
+    box-shadow: 0 0 15px rgba(255, 128, 8, 0.25);
   }
 
   50% {
-    box-shadow: 0 0 25px rgba(139, 92, 246, 0.45);
+    box-shadow: 0 0 25px rgba(255, 128, 8, 0.45);
   }
 }
 
