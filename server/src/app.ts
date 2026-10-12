@@ -1,3 +1,5 @@
+import path from 'path';
+import fs from 'fs';
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
@@ -14,7 +16,12 @@ dotenv.config();
 
 const app = express();
 
-app.use(cors());
+app.use(
+  cors({
+    origin: process.env.CLIENT_ORIGIN || true,
+    credentials: true,
+  })
+);
 app.use(express.json({ limit: '12mb' }));
 
 // API Routes
@@ -26,5 +33,17 @@ app.use('/api/intent', intentRouter);
 app.use('/api/workspace', workspaceRouter);
 app.use('/api/data', dataRouter);
 app.use('/api/actions', actionsRouter);
+
+// Serve static client bundle if built
+const clientDistPath = path.resolve(__dirname, '../../client/dist');
+if (fs.existsSync(clientDistPath)) {
+  app.use(express.static(clientDistPath));
+  app.get('*', (req, res, next) => {
+    if (req.path.startsWith('/api')) {
+      return next();
+    }
+    res.sendFile(path.join(clientDistPath, 'index.html'));
+  });
+}
 
 export default app;

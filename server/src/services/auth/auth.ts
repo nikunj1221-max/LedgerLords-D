@@ -46,10 +46,12 @@ export function hashSessionToken(token: string): string {
 }
 
 function cookieOptions() {
+  const isProduction = process.env.NODE_ENV === 'production';
+  const isCrossOrigin = process.env.CROSS_ORIGIN_AUTH === 'true';
   return {
     httpOnly: true,
-    secure: process.env.NODE_ENV === 'production',
-    sameSite: 'lax' as const,
+    secure: isProduction,
+    sameSite: (isCrossOrigin ? 'none' : 'lax') as 'none' | 'lax',
     path: '/api',
   };
 }

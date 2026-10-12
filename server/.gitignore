@@ -1,0 +1,19 @@
+# Dependencies
+node_modules/
+
+# TypeScript build output
+dist/
+
+# Local environment variables and secrets
+.env
+.env.*
+.env.local
+!.env.example
+
+# Logs and cache
+*.log
+data/ai-plan-cache.json
+
+# OS files
+.DS_Store
+Thumbs.db
