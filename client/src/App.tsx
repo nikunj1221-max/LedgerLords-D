@@ -1,6 +1,12 @@
-import React, { useEffect, useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import React, { useEffect, useRef, useState } from 'react';
+import { LayoutGroup, motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import { useWorkspaceStore } from './store/workspaceStore';
+import {
+  reducedWorkspaceCardVariants,
+  reducedWorkspaceLayoutTransition,
+  workspaceCardVariants,
+  workspaceLayoutTransition
+} from './animations/workspaceMotion';
 import { Header } from './components/common/Header';
 import { Sidebar } from './components/common/Sidebar';
 import { CommandBar } from './components/common/CommandBar';
@@ -23,9 +29,12 @@ export const App: React.FC = () => {
     dismissAuthSuccessAnimation,
   } = useAuthStore();
   const [showDataUpload, setShowDataUpload] = useState(false);
+  const workspaceScrollRef = useRef<HTMLElement>(null);
+  const prefersReducedMotion = useReducedMotion();
   const {
     currentPlan,
     isAdapting,
+    pendingPrompt,
     error,
     hiddenComponentIds,
     unhideAllComponents,
@@ -111,7 +120,7 @@ export const App: React.FC = () => {
     );
   }
 
-  const planComponents = isAdapting ? [] : currentPlan?.components || [];
+  const planComponents = currentPlan?.components || [];
   const hasIntegratedMeetingScheduler = planComponents.some(component =>
     ['MeetingScheduler', 'MeetingConfirmationCard', 'DatePicker'].includes(component.type)
   );
@@ -119,6 +128,9 @@ export const App: React.FC = () => {
     !hiddenComponentIds.includes(component.id) &&
     !(hasIntegratedMeetingScheduler && component.type === 'AttendeeSelector')
   );
+  const layoutTransition = prefersReducedMotion
+    ? reducedWorkspaceLayoutTransition
+    : workspaceLayoutTransition;
 
   return (
     <div className="h-screen bg-[var(--bg-color)] text-[var(--text-primary)] flex flex-col font-sans transition-colors duration-200 overflow-hidden">
@@ -132,6 +144,7 @@ export const App: React.FC = () => {
 
         {/* Dynamic Workspace Canvas */}
         <main
+          ref={workspaceScrollRef}
           className={`flex-1 overflow-y-auto p-4 md:p-8 bg-transparent ${!currentPlan && !isAdapting ? 'flex items-center' : ''
             }`}
         >
@@ -147,7 +160,7 @@ export const App: React.FC = () => {
             )}
 
             {/* Active Workspace Header & Quick Actions */}
-            {currentPlan && !isAdapting && (
+            {currentPlan && (
               <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 border-b border-[var(--border-color)]">
                 <div>
                   <div className="flex items-center gap-2">
@@ -186,11 +199,24 @@ export const App: React.FC = () => {
               </div>
             )}
 
-            {/* Expandable Explanation Panel */}
-            {/* {!isAdapting && <WorkspaceExplanationPanel />} */}
+            <WorkspaceExplanationPanel />
+
+            {isAdapting && (
+              <div
+                className="flex items-center gap-3 rounded-xl border border-primary/20 bg-primary/5 px-4 py-3 text-sm text-[var(--text-secondary)]"
+                role="status"
+                aria-live="polite"
+                aria-atomic="true"
+              >
+                <Loader2 className="h-4 w-4 shrink-0 animate-spin text-primary motion-reduce:animate-none" />
+                <span>
+                  Updating workspace{pendingPrompt ? ` for “${pendingPrompt}”` : ''}. Your current workspace remains available.
+                </span>
+              </div>
+            )}
 
             {/* Hidden Components Restore Banner */}
-            {!isAdapting && hiddenComponentIds.length > 0 && (
+            {hiddenComponentIds.length > 0 && (
               <div className="p-2.5 rounded-lg bg-card border border-[var(--border-color)] text-xs flex items-center justify-between text-[var(--text-secondary)]">
                 <span>{hiddenComponentIds.length} component(s) hidden from active canvas.</span>
                 <button
@@ -204,58 +230,51 @@ export const App: React.FC = () => {
             )}
 
             {/* Dynamic Component Grid */}
-            {isAdapting ? (
-              <div className="py-16 text-center space-y-3" role="status" aria-live="polite">
-                <img
-                  src="/loaders/workspace-loading.svg"
-                  alt=""
-                  aria-hidden="true"
-                  className="w-20 h-20 mx-auto"
-                />
-                <p className="text-sm text-[var(--text-secondary)]">Building a workspace for your goal...</p>
-              </div>
-            ) : currentPlan ? (
-              <motion.div
-                layout
-                className="grid grid-cols-12 gap-5"
-                transition={{
-                  layout: { type: 'spring', stiffness: 350, damping: 32 }
-                }}
-              >
-                <AnimatePresence mode="popLayout" initial={false}>
-                  {visibleComponents.map(spec => {
-                    const Component = getComponentForType(spec.type);
+            {currentPlan ? (
+              <LayoutGroup id="workspace-components">
+                <motion.div
+                  layout
+                  layoutDependency={currentPlan.id}
+                  className="grid grid-cols-12 gap-5"
+                  transition={{ layout: layoutTransition }}
+                >
+                  <AnimatePresence mode="popLayout" initial={false}>
+                    {visibleComponents.map(spec => {
+                      const Component = getComponentForType(spec.type);
 
-                    return (
-                      <motion.div
-                        key={spec.id}
-                        id={`workspace-component-${spec.id}`}
-                        layout
-                        initial={{ opacity: 0, y: 24, scale: 0.92, filter: 'blur(4px)' }}
-                        animate={{ opacity: 1, y: 0, scale: 1, filter: 'blur(0px)' }}
-                        exit={{ opacity: 0, scale: 0.9, y: -16, filter: 'blur(4px)' }}
-                        transition={{
-                          layout: { type: 'spring', stiffness: 350, damping: 32 },
-                          opacity: { duration: 0.28, ease: 'easeOut' },
-                          scale: { duration: 0.28 },
-                          y: { duration: 0.28, ease: 'easeOut' }
-                        }}
-                        className={`${{
-                            1: 'col-span-12 md:col-span-6 lg:col-span-3',
-                            2: 'col-span-12 md:col-span-6 lg:col-span-6',
-                            3: 'col-span-12 lg:col-span-9',
-                            4: 'col-span-12',
-                          }[spec.colSpan || 2]
-                          }`}
-                      >
-                        <ComponentWrapper spec={spec}>
-                          <Component spec={spec} />
-                        </ComponentWrapper>
-                      </motion.div>
-                    );
-                  })}
-                </AnimatePresence>
-              </motion.div>
+                      return (
+                        <motion.div
+                          key={spec.id}
+                          id={`workspace-component-${spec.id}`}
+                          layout
+                          layoutDependency={currentPlan.id}
+                          variants={prefersReducedMotion ? reducedWorkspaceCardVariants : workspaceCardVariants}
+                          initial="hidden"
+                          whileInView="visible"
+                          viewport={{
+                            root: workspaceScrollRef,
+                            once: true,
+                            amount: 0.1
+                          }}
+                          exit="exit"
+                          transition={{ layout: layoutTransition }}
+                          className={`${{
+                              1: 'col-span-12 md:col-span-6 lg:col-span-3',
+                              2: 'col-span-12 md:col-span-6 lg:col-span-6',
+                              3: 'col-span-12 lg:col-span-9',
+                              4: 'col-span-12',
+                            }[spec.colSpan || 2]
+                            }`}
+                        >
+                          <ComponentWrapper spec={spec}>
+                            <Component spec={spec} />
+                          </ComponentWrapper>
+                        </motion.div>
+                      );
+                    })}
+                  </AnimatePresence>
+                </motion.div>
+              </LayoutGroup>
             ) : null}
           </div>
         </main>

@@ -5,6 +5,10 @@ import { UIPlan } from '../schemas/uiPlan';
 import { prisma } from '../services/database/prisma';
 import { PublicUser } from '../services/auth/auth';
 import {
+  isWorkspacePromptRelevant,
+  WORKSPACE_PROMPT_SUGGESTIONS,
+} from '../services/ai/promptRelevance';
+import {
   DatabaseSchema,
   SCHEMA_DATA_SOURCES,
   WorkspaceDataSource,
@@ -70,8 +74,20 @@ async function getUserDatasets(userId: string) {
 router.post('/generate', async (req: Request, res: Response) => {
   try {
     const { prompt, previousPlan, pinnedComponentIds, clarificationResponse } = req.body;
+    if (typeof prompt !== 'string' || prompt.trim().length === 0 || prompt.length > 1000) {
+      return res.status(400).json({ error: 'Enter a prompt between 1 and 1000 characters.' });
+    }
     const user = res.locals.authUser as PublicUser;
     const userDatasets = await getUserDatasets(user.id);
+    if (!isWorkspacePromptRelevant(prompt, {
+      hasWorkspaceContext: Boolean(previousPlan),
+      datasetColumns: userDatasets.map(dataset => dataset.columns),
+    })) {
+      return res.status(422).json({
+        error: 'That prompt doesn’t look related to your workspace. Ask about your clients, meetings, projects, tasks, product usage, support issues, or uploaded data.',
+        suggestedPrompts: WORKSPACE_PROMPT_SUGGESTIONS,
+      });
+    }
     if (userDatasets.length === 0) {
       return res.json({
         plan: buildNoDataPlan(typeof prompt === 'string' ? prompt : ''),
@@ -101,10 +117,22 @@ router.post('/refine', async (req: Request, res: Response) => {
   try {
     const { prompt, previousPlan, pinnedComponentIds } = req.body;
     const user = res.locals.authUser as PublicUser;
+    if (typeof prompt !== 'string' || prompt.trim().length === 0 || prompt.length > 1000) {
+      return res.status(400).json({ error: 'Enter a prompt between 1 and 1000 characters.' });
+    }
     if (!previousPlan) {
       return res.status(400).json({ error: 'previousPlan is required for refinement.' });
     }
     const userDatasets = await getUserDatasets(user.id);
+    if (!isWorkspacePromptRelevant(prompt, {
+      hasWorkspaceContext: true,
+      datasetColumns: userDatasets.map(dataset => dataset.columns),
+    })) {
+      return res.status(422).json({
+        error: 'That prompt doesn’t look related to your workspace. Ask about your clients, meetings, projects, tasks, product usage, support issues, or uploaded data.',
+        suggestedPrompts: WORKSPACE_PROMPT_SUGGESTIONS,
+      });
+    }
     if (userDatasets.length === 0) {
       return res.json({
         plan: buildNoDataPlan(typeof prompt === 'string' ? prompt : ''),

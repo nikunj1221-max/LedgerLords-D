@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 import {
   History,
   RotateCcw,
@@ -6,7 +7,9 @@ import {
   Minus,
   Plus,
   Home,
-  Box
+  Box,
+  PanelLeftClose,
+  PanelLeftOpen
 } from 'lucide-react';
 import { useWorkspaceStore } from '../../store/workspaceStore';
 
@@ -16,15 +19,16 @@ export const Sidebar: React.FC = () => {
     currentPlan,
     hiddenComponentIds,
     history,
-    isAdapting,
-    restoreFromHistory
+    restoreFromHistory,
+    setSidebarOpen
   } = useWorkspaceStore();
 
   const [sectionsExpanded, setSectionsExpanded] = useState(true);
   const [historyExpanded, setHistoryExpanded] = useState(true);
   const [selectedComponentId, setSelectedComponentId] = useState<string | null>(null);
+  const prefersReducedMotion = useReducedMotion();
 
-  if (!sidebarOpen || !currentPlan || isAdapting) return null;
+  if (!currentPlan) return null;
 
   const components = currentPlan.components.filter(
     component => !hiddenComponentIds.includes(component.id)
@@ -36,24 +40,65 @@ export const Sidebar: React.FC = () => {
     setSelectedComponentId(componentId);
     document
       .getElementById(`workspace-component-${componentId}`)
-      ?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      ?.scrollIntoView({ behavior: prefersReducedMotion ? 'auto' : 'smooth', block: 'start' });
   };
 
   const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({ top: 0, behavior: prefersReducedMotion ? 'auto' : 'smooth' });
   };
 
   return (
-    <aside className="w-72  mt-1 bg-[#f8f9fb] dark:bg-[#13111e] border-r border-slate-200 dark:border-white/10 flex flex-col h-full shrink-0 z-20 transition-colors  select-none ">
+    <>
+      <AnimatePresence initial={false}>
+        {!sidebarOpen && (
+          <motion.button
+            type="button"
+            key="open-sidebar"
+            initial={prefersReducedMotion ? false : { opacity: 0, x: -12 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -12 }}
+            transition={{ duration: prefersReducedMotion ? 0.01 : 0.18 }}
+            onClick={() => setSidebarOpen(true)}
+            aria-label="Show navigation panel"
+            aria-expanded={false}
+            title="Show navigation panel"
+            className="fixed left-0 top-1/2 z-30 -translate-y-1/2 rounded-r-xl border border-l-0 border-[var(--border-color)] bg-card p-2 text-[var(--text-secondary)] shadow-md transition-colors hover:text-primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary"
+          >
+            <PanelLeftOpen className="h-5 w-5" />
+          </motion.button>
+        )}
+      </AnimatePresence>
+
+      <AnimatePresence initial={false}>
+        {sidebarOpen && (
+    <motion.aside
+      initial={prefersReducedMotion ? false : { opacity: 0, x: -16 }}
+      animate={{ opacity: 1, x: 0 }}
+      exit={{ opacity: 0, x: -16 }}
+      transition={{ duration: prefersReducedMotion ? 0.01 : 0.2, ease: 'easeOut' }}
+      className="w-72 mt-1 bg-[#f8f9fb] dark:bg-[#13111e] border-r border-slate-200 dark:border-white/10 flex flex-col h-full shrink-0 z-20 transition-colors select-none"
+    >
       {/* Header with ✦ Menu matching screenshot */}
       <div className="p-4 pb-2">
-        <div className="flex items-center gap-2.5">
-          <svg className="w-5 h-5 text-slate-900 dark:text-white fill-current shrink-0" viewBox="0 0 24 24">
-            <path d="M12 2L14.6 9.4L22 12L14.6 14.6L12 22L9.4 14.6L2 12L9.4 9.4L12 2Z" />
-          </svg>
-          <span className="text-xl font-bold tracking-tight text-slate-900 dark:text-white">
-            Menu
-          </span>
+        <div className="flex items-center justify-between gap-2.5">
+          <div className="flex min-w-0 items-center gap-2.5">
+            <svg className="w-5 h-5 text-slate-900 dark:text-white fill-current shrink-0" viewBox="0 0 24 24">
+              <path d="M12 2L14.6 9.4L22 12L14.6 14.6L12 22L9.4 14.6L2 12L9.4 9.4L12 2Z" />
+            </svg>
+            <span className="text-xl font-bold tracking-tight text-slate-900 dark:text-white">
+              Menu
+            </span>
+          </div>
+          <button
+            type="button"
+            onClick={() => setSidebarOpen(false)}
+            aria-label="Hide navigation panel"
+            aria-expanded={true}
+            title="Hide navigation panel"
+            className="rounded-lg p-2 text-slate-600 transition-colors hover:bg-black/5 hover:text-primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary dark:text-slate-300 dark:hover:bg-white/10"
+          >
+            <PanelLeftClose className="h-4 w-4" />
+          </button>
         </div>
 
         {/* Current plan context tag */}
@@ -200,6 +245,9 @@ export const Sidebar: React.FC = () => {
           )}
         </div>
       </div>
-    </aside>
+    </motion.aside>
+        )}
+      </AnimatePresence>
+    </>
   );
 };

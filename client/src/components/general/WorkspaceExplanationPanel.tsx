@@ -1,9 +1,11 @@
 import React from 'react';
+import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 import { Brain, Layers, Database, Sparkles, ChevronDown, ChevronUp } from 'lucide-react';
 import { useWorkspaceStore } from '../../store/workspaceStore';
 
 export const WorkspaceExplanationPanel: React.FC = () => {
   const { currentPlan, explanationPanelExpanded, toggleExplanationPanel, provider } = useWorkspaceStore();
+  const prefersReducedMotion = useReducedMotion();
 
   if (!currentPlan) return null;
 
@@ -47,7 +49,16 @@ export const WorkspaceExplanationPanel: React.FC = () => {
       </button>
 
       {/* Expanded Rationale Details */}
+      <AnimatePresence initial={false}>
       {explanationPanelExpanded && (
+        <motion.div
+          key="workspace-rationale"
+          initial={{ height: 0, opacity: 0 }}
+          animate={{ height: 'auto', opacity: 1 }}
+          exit={{ height: 0, opacity: 0 }}
+          transition={{ duration: prefersReducedMotion ? 0.1 : 0.24, ease: 'easeOut' }}
+          className="overflow-hidden"
+        >
         <div className="p-5 border-t border-[var(--border-color)] grid grid-cols-1 md:grid-cols-3 gap-4 text-xs bg-[var(--canvas-color)]/50">
           {/* Column 1: Detected Intent & Extracted Entities */}
           <div className="p-3.5 rounded-lg bg-card border border-[var(--border-color)] space-y-2">
@@ -123,7 +134,9 @@ export const WorkspaceExplanationPanel: React.FC = () => {
             </div>
           </div>
         </div>
+        </motion.div>
       )}
+      </AnimatePresence>
     </div>
   );
 };

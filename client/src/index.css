@@ -45,6 +45,17 @@ body {
   transition: background-color 0.2s ease, color 0.2s ease;
 }
 
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
 /* -------------------------------------------------------------------------
    EVOLVED SOFT UI / NEUMORPHISM 2.0 (LIGHT MODE)
    ------------------------------------------------------------------------- */

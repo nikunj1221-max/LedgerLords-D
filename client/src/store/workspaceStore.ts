@@ -2,12 +2,41 @@ import { create } from 'zustand';
 import axios from 'axios';
 import { UIPlan, HistoryItem } from '../types/workspace';
 
-const MINIMUM_SEARCH_LOADING_MS = 700;
 const MAX_ACTION_HISTORY = 100;
+let workspaceRequestId = 0;
+
+const normalizePrompt = (prompt: string) => prompt.trim().replace(/\s+/g, ' ').toLocaleLowerCase();
 
 type ReversibleAction =
   | { type: 'pin'; componentId: string; before: boolean; after: boolean }
   | { type: 'incident-status'; incidentId: string; before: string; after: string };
+
+interface PromptSuggestion {
+  label: string;
+  prompt: string;
+}
+
+interface PromptFeedback {
+  message: string;
+  suggestedPrompts: PromptSuggestion[];
+}
+
+function getPromptFeedback(error: unknown): PromptFeedback | null {
+  if (!axios.isAxiosError<{ error?: unknown; suggestedPrompts?: unknown }>(error)) return null;
+  const data = error.response?.data;
+  if (error.response?.status !== 422 || typeof data?.error !== 'string') return null;
+  const suggestedPrompts = Array.isArray(data.suggestedPrompts)
+    ? data.suggestedPrompts.filter((item): item is PromptSuggestion =>
+        typeof item === 'object' &&
+        item !== null &&
+        'label' in item &&
+        typeof item.label === 'string' &&
+        'prompt' in item &&
+        typeof item.prompt === 'string'
+      )
+    : [];
+  return { message: data.error, suggestedPrompts };
+}
 
 const withPinnedState = (
   plan: UIPlan | null,
@@ -25,13 +54,6 @@ const updatePinnedIds = (ids: string[], componentId: string, pinned: boolean) =>
   return ids.filter(id => id !== componentId);
 };
 
-const waitForMinimumLoadingTime = async (startedAt: number) => {
-  const remaining = MINIMUM_SEARCH_LOADING_MS - (Date.now() - startedAt);
-  if (remaining > 0) {
-    await new Promise(resolve => setTimeout(resolve, remaining));
-  }
-};
-
 interface WorkspaceState {
   currentPlan: UIPlan | null;
   previousPlan: UIPlan | null;
@@ -44,6 +66,8 @@ interface WorkspaceState {
   redoStack: ReversibleAction[];
   isHistoryActionPending: boolean;
   isAdapting: boolean;
+  pendingPrompt: string | null;
+  promptFeedback: PromptFeedback | null;
   error: string | null;
   provider: 'llm' | 'deterministic';
   notification: { message: string; type: 'success' | 'info' | 'error' } | null;
@@ -69,6 +93,7 @@ interface WorkspaceState {
   setSidebarOpen: (open: boolean) => void;
   toggleExplanationPanel: () => void;
   clearNotification: () => void;
+  clearPromptFeedback: () => void;
 }
 
 const getInitialTheme = (): 'dark' | 'light' => {
@@ -96,6 +121,8 @@ export const useWorkspaceStore = create<WorkspaceState>((set, get) => ({
   redoStack: [],
   isHistoryActionPending: false,
   isAdapting: false,
+  pendingPrompt: null,
+  promptFeedback: null,
   error: null,
   provider: 'deterministic',
   notification: null,
@@ -123,6 +150,7 @@ export const useWorkspaceStore = create<WorkspaceState>((set, get) => ({
   },
 
   clearWorkspace: () => {
+    workspaceRequestId += 1;
     set({
       currentPlan: null,
       previousPlan: null,
@@ -134,6 +162,9 @@ export const useWorkspaceStore = create<WorkspaceState>((set, get) => ({
       undoStack: [],
       redoStack: [],
       isHistoryActionPending: false,
+      isAdapting: false,
+      pendingPrompt: null,
+      promptFeedback: null,
       error: null,
       notification: null
     });
@@ -144,56 +175,69 @@ export const useWorkspaceStore = create<WorkspaceState>((set, get) => ({
   },
 
   submitPrompt: async (prompt: string) => {
-    const { currentPlan, pinnedComponentIds, history } = get();
-    const loadingStartedAt = Date.now();
-    set({ isAdapting: true, error: null });
+    const normalizedPrompt = prompt.trim();
+    if (!normalizedPrompt) return;
+    const state = get();
+    if (
+      state.isAdapting &&
+      state.pendingPrompt &&
+      normalizePrompt(state.pendingPrompt) === normalizePrompt(normalizedPrompt)
+    ) return;
+    const requestId = ++workspaceRequestId;
+    const { currentPlan, pinnedComponentIds } = state;
+    set({ isAdapting: true, pendingPrompt: normalizedPrompt, error: null, promptFeedback: null });
 
     try {
       const res = await axios.post('/api/workspace/generate', {
-        prompt,
+        prompt: normalizedPrompt,
         previousPlan: currentPlan,
         pinnedComponentIds
       });
 
       const newPlan: UIPlan = res.data.plan;
-      await waitForMinimumLoadingTime(loadingStartedAt);
+      if (requestId !== workspaceRequestId) return;
 
-      set({
-        previousPlan: currentPlan,
+      set(currentState => ({
+        previousPlan: currentState.currentPlan,
         currentPlan: newPlan,
-        selectedAttendeeIds: newPlan.intent === 'schedule_meeting' ? [] : get().selectedAttendeeIds,
+        selectedAttendeeIds: newPlan.intent === 'schedule_meeting' ? [] : currentState.selectedAttendeeIds,
         provider: res.data.provider,
         isAdapting: false,
+        pendingPrompt: null,
         history: [
           {
             timestamp: new Date().toLocaleTimeString(),
-            prompt,
+            prompt: normalizedPrompt,
             intent: newPlan.intent,
             intentLabel: newPlan.intentLabel,
             plan: newPlan
           },
-          ...history
+          ...currentState.history
         ],
         notification: {
           message: newPlan.changeSummary?.reason || `Workspace reshaped for: ${newPlan.intentLabel}`,
           type: 'info'
         }
-      });
+      }));
     } catch (err: any) {
-      await waitForMinimumLoadingTime(loadingStartedAt);
-      console.error('Failed to adapt workspace:', err);
+      if (requestId !== workspaceRequestId) return;
+      const promptFeedback = getPromptFeedback(err);
+      if (!promptFeedback) console.error('Failed to adapt workspace:', err);
       set({
-        error: err.message || 'Error communicating with AI engine',
-        isAdapting: false
+        error: promptFeedback ? null : err.message || 'Error communicating with AI engine',
+        isAdapting: false,
+        pendingPrompt: null,
+        promptFeedback,
       });
     }
   },
 
   submitRefinement: async (prompt: string) => {
-    const { currentPlan, pinnedComponentIds, history } = get();
+    const { currentPlan, pinnedComponentIds } = get();
     if (!currentPlan) return;
+    const requestId = ++workspaceRequestId;
 
-    set({ isAdapting: true, error: null });
+    set({ isAdapting: true, pendingPrompt: prompt, error: null, promptFeedback: null });
 
     try {
       const res = await axios.post('/api/workspace/refine', {
@@ -203,12 +247,14 @@ export const useWorkspaceStore = create<WorkspaceState>((set, get) => ({
       });
 
       const refinedPlan: UIPlan = res.data.plan;
+      if (requestId !== workspaceRequestId) return;
 
-      set({
-        previousPlan: currentPlan,
+      set(state => ({
+        previousPlan: state.currentPlan,
         currentPlan: refinedPlan,
         provider: res.data.provider,
         isAdapting: false,
+        pendingPrompt: null,
         history: [
           {
             timestamp: new Date().toLocaleTimeString(),
@@ -217,22 +263,30 @@ export const useWorkspaceStore = create<WorkspaceState>((set, get) => ({
             intentLabel: refinedPlan.intentLabel,
             plan: refinedPlan
           },
-          ...history
+          ...state.history
         ],
         notification: {
           message: refinedPlan.changeSummary?.reason || 'Workspace refined with updated criteria',
           type: 'info'
         }
-      });
+      }));
     } catch (err: any) {
-      console.error('Failed to refine workspace:', err);
-      set({ error: err.message, isAdapting: false });
+      if (requestId !== workspaceRequestId) return;
+      const promptFeedback = getPromptFeedback(err);
+      if (!promptFeedback) console.error('Failed to refine workspace:', err);
+      set({
+        error: promptFeedback ? null : err.message,
+        isAdapting: false,
+        pendingPrompt: null,
+        promptFeedback,
+      });
     }
   },
 
   answerClarification: async (entityKey: string, selectedId: string) => {
-    const { currentPlan, previousPlan, pinnedComponentIds, history } = get();
-    set({ isAdapting: true });
+    const { currentPlan, previousPlan, pinnedComponentIds } = get();
+    const requestId = ++workspaceRequestId;
+    set({ isAdapting: true, pendingPrompt: `Clarifying ${entityKey}`, error: null });
 
     try {
       const res = await axios.post('/api/workspace/generate', {
@@ -246,12 +300,14 @@ export const useWorkspaceStore = create<WorkspaceState>((set, get) => ({
       });
 
       const resolvedPlan: UIPlan = res.data.plan;
+      if (requestId !== workspaceRequestId) return;
 
-      set({
-        previousPlan: currentPlan,
+      set(state => ({
+        previousPlan: state.currentPlan,
         currentPlan: resolvedPlan,
         provider: res.data.provider,
         isAdapting: false,
+        pendingPrompt: null,
         history: [
           {
             timestamp: new Date().toLocaleTimeString(),
@@ -260,15 +316,16 @@ export const useWorkspaceStore = create<WorkspaceState>((set, get) => ({
             intentLabel: resolvedPlan.intentLabel,
             plan: resolvedPlan
           },
-          ...history
+          ...state.history
         ],
         notification: {
           message: `Entity clarified. Assembled custom workspace for ${selectedId}`,
           type: 'success'
         }
-      });
+      }));
     } catch (err: any) {
-      set({ error: err.message, isAdapting: false });
+      if (requestId !== workspaceRequestId) return;
+      set({ error: err.message, isAdapting: false, pendingPrompt: null });
     }
   },
 
@@ -434,9 +491,12 @@ export const useWorkspaceStore = create<WorkspaceState>((set, get) => ({
     const { history, currentPlan } = get();
     const target = history[index];
     if (target) {
+      workspaceRequestId += 1;
       set({
         previousPlan: currentPlan,
         currentPlan: target.plan,
+        isAdapting: false,
+        pendingPrompt: null,
         notification: {
           message: `Restored workspace for earlier goal: "${target.intentLabel}"`,
           type: 'info'
@@ -480,5 +540,6 @@ export const useWorkspaceStore = create<WorkspaceState>((set, get) => ({
 
   setSidebarOpen: (open: boolean) => set({ sidebarOpen: open }),
   toggleExplanationPanel: () => set(state => ({ explanationPanelExpanded: !state.explanationPanelExpanded })),
-  clearNotification: () => set({ notification: null })
+  clearNotification: () => set({ notification: null }),
+  clearPromptFeedback: () => set({ promptFeedback: null })
 }));
