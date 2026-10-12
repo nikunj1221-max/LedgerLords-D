@@ -200,8 +200,6 @@ export const App: React.FC = () => {
               </div>
             )}
 
-            <WorkspaceExplanationPanel />
-
             {isAdapting && (
               <div
                 className="flex items-center gap-3 rounded-xl border border-primary/20 bg-primary/5 px-4 py-3 text-sm text-[var(--text-secondary)]"
@@ -267,6 +265,9 @@ export const App: React.FC = () => {
                 </motion.div>
               </LayoutGroup>
             ) : null}
+
+            {/* Why This Workspace? AI Rationale & Explanation Section */}
+            <WorkspaceExplanationPanel />
           </div>
         </motion.main>
       </div>
