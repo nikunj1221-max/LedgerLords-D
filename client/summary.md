@@ -8,7 +8,7 @@
 ## 1. Project at a glance
 
 **Project name:** Adaptive AI Workspace\
-**Hackathon context:** HACKWAVE 3.0 --- PS4\
+ 
 **Problem statement:** *Intent-to-Interface: An Adaptive AI Workspace
 That Reshapes Itself Around the User's Current Goal.*
 
@@ -20,7 +20,7 @@ retrieves relevant data, builds a validated UI plan, and renders the
 appropriate approved components. When the user changes or extends the
 goal, the workspace adapts while preserving useful context.
 
-**Core product loop:**
+
 
 1.  The user describes a goal in natural language.
 2.  The system identifies the intent, entities, constraints, and
@@ -67,14 +67,12 @@ The current requirements cover these workflows:
 
 -   Prepare for a meeting with a client.
 -   Investigate a product-usage drop.
--   Find overdue project work that needs attention.
--   Schedule a meeting while retaining context from an earlier
+-   Find overdue retaining context from an earlier
     workspace.
 -   Extend or refine an existing workspace through natural-language
     follow-ups.
 
-Do not assume the app is already connected to real company systems. The
-current prototype uses local, fictional demo data and mock actions.
+Do not assume the app is already connected to real company systems
 
 ## 4. Mandatory technology and architecture decisions
 
