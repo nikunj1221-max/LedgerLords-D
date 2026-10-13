@@ -76,7 +76,7 @@ Do not assume the app is already connected to real company systems
 
 ## 4. Mandatory technology and architecture decisions
 
-### Frontend
+### Frontend and dclirent
 
 -   React with Vite.
 -   The original master prompt specifies **TypeScript** for the
